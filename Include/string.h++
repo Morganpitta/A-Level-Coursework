@@ -3,15 +3,20 @@
 
     #include <string>
     #include <array>
+    #include <memory>
     
-    template<typename ...Args>
-    std::string format( std::string string, Args... arguments )
+    template<typename ... Args>
+    std::string format( const char* format, Args ... args )
     {
-        char cstring[] = string.c_str();
-        sprintf( cstring, arguments... );
-        string = cstring;
+        int size_s = std::snprintf( nullptr, 0, format, args ... ) + 1; // Extra space for '\0'
+        if( size_s <= 0 )
+            throw std::runtime_error( "Error during formatting." );
 
-        return string;
+        auto size = static_cast<size_t>( size_s );
+        std::unique_ptr<char[]> buf( new char[ size ] );
+        std::snprintf( buf.get(), size, format, args ... );
+
+        return std::string( buf.get(), buf.get() + size - 1 ); // We don't want the '\0' inside
     }
 
 #endif /* STRING_HPP */

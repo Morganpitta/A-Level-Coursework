@@ -9,8 +9,9 @@ int main()
 
     for ( int index = North; index < NumberOfDirections; index++ )
     {
-        std::cout << format( "Currently at %s", directionToString( Direction( index ) ) );
-        transposePosition( position, Direction( index ) );
+        std::cout << format( "Currently at %d, %d, Moving %s\n", position.x, position.y, directionToString( Direction( index ) ).c_str() );
+        position = transposePosition( position, Direction( index ) );
+        std::cout << format( "Now at %d, %d\n", position.x, position.y );
     }
 
     return 0;

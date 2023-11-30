@@ -74,7 +74,7 @@
             tmp += string + "/";
         }
         
-        assertCondition( false, ( "Unable to find assets folder. (Current working directory: " + directoryString + " )" ) );
+        assert( false, ( "Unable to find assets folder. (Current working directory: " + directoryString + " )" ) );
         return false;
     }
 

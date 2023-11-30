@@ -1,27 +1,26 @@
 #if !defined( ASSERT_HPP )
 #define ASSERT_HPP
 
-    #include <iostream>
     #include <string>
-    #include <unistd.h>
+    #include <stdexcept>
 
     #ifndef NDEBUG
-    #   define assertCondition(Expr, Msg) \
-        __M_Assert(#Expr, Expr, __FILE__, __LINE__, Msg)
+    #   define assert(expression, message) \
+        AssertMacro(#expression, expression, __FILE__, __LINE__, message)
     #else
-    #   define assertCondition(Expr, Msg)
+    #   define assert(expression, message)
     #endif
 
-    void __M_Assert(const char* expr_str, bool expr, const char* file, int line, const std::string msg)
+    void AssertMacro(const char* expressionString, bool expressionValue, const char* file, int line, const std::string message)
     {
-        if (!expr)
+        if (!expressionValue)
         {
-            std::cerr << "Assert failed:\t" << msg << "\n"
-                << "Expected:\t" << expr_str << "\n"
-                << "Source:\t\t" << file << ", line " << line << "\n";
-            
-            sleep( 10 );
-            abort();
+            throw std::runtime_error(  
+                "\n"
+                "Assertion failed: " + message + "\n"
+                "Expected:         " + expressionString + "\n"
+                "In file           " + file + ", line " + std::to_string( line ) + "\n"
+            );
         }
     }
 

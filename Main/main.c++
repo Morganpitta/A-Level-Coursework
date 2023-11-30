@@ -1,17 +1,38 @@
-#include "direction.h++"
-#include "string.h++"
-#include <iostream>
+#include <SFML/Window.hpp>
+#include "time.h++"
+#include "mazeGrid.h++"
 
 int main()
 {
-    Direction direction = North;
-    sf::Vector2i position = {0,0};
+    sf::RenderWindow window( sf::VideoMode(1600,800), "Mazewars" );
 
-    for ( int index = North; index < NumberOfDirections; index++ )
+    FpsLimiter fps( 60 );
+
+    MazeGrid mazeGrid( { 10, 10 } );
+
+    while (window.isOpen())
     {
-        std::cout << format( "Currently at %d, %d, Moving %s\n", position.x, position.y, directionToString( Direction( index ) ).c_str() );
-        position = transposePosition( position, Direction( index ) );
-        std::cout << format( "Now at %d, %d\n", position.x, position.y );
+        sf::Event event;
+        while ( window.pollEvent(event) )
+        {
+            switch ( event.type )
+            {
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+
+                case sf::Event::KeyPressed:
+                
+                    break;
+            }
+        }
+
+        window.clear( sf::Color::Black );
+
+        drawMaze( window, mazeGrid, {10,10}, {790,790} );
+
+        window.display();
+        fps.restartAndSleep();
     }
 
     return 0;

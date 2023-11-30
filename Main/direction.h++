@@ -1,7 +1,7 @@
 #if !defined ( DIRECTIONS_HPP )
 #define DIRECTIONS_HPP
 
-    #include <SFML/Graphics.hpp>
+    #include <SFML/System.hpp>
     #define _USE_MATH_DEFINES
     #include <cmath>
 

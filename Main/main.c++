@@ -8,7 +8,7 @@ int main()
 
     FpsLimiter fps( 60 );
 
-    MazeGrid mazeGrid( { 10, 10 } );
+    MazeGrid mazeGrid( { 20, 10 } );
 
     while (window.isOpen())
     {

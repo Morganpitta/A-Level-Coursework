@@ -37,12 +37,12 @@
 
             int getNumberOfHorizontalSegments()
             {
-                return getDimensions().x * getDimensions().y;
+                return getDimensions().x * (getDimensions().y+1);
             }
 
             int getNumberOfVerticalSegments()
             {
-                return getDimensions().x * getDimensions().y;
+                return (getDimensions().x+1) * getDimensions().y;
             }
 
             int getNumberOfWallSegments()
@@ -164,7 +164,14 @@
             {
                 if ( maze.getHorizontal( { xIndex, yIndex } ) )
                 {
-                    vertexArray[vertexIndex++] = sf::Vertex( sf::Vector2f( xIndex * xSegmentSize, yIndex * ySegmentSize ) + topLeft, sf::Color::Green );
+                    vertexArray[vertexIndex++] = sf::Vertex( 
+                        sf::Vector2f( 
+                            xIndex * xSegmentSize, 
+                            yIndex * ySegmentSize 
+                        ) + topLeft, 
+                        sf::Color::Green
+                    
+                    );
                     vertexArray[vertexIndex++] = sf::Vertex( sf::Vector2f( ( xIndex + 1 ) * xSegmentSize, ( yIndex ) * ySegmentSize ) + topLeft, sf::Color::Green );
                 }
             }

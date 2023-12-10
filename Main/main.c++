@@ -5,11 +5,12 @@
 int main()
 {
     sf::RenderWindow window( sf::VideoMode(1600,800), "Mazewars" );
+    std::cout << "started\n";
 
     FpsLimiter fps( 60 );
 
-    MazeGrid mazeGrid( { 20, 10 } );
-
+    MazeGrid mazeGrid( { 1000, 1000 } );
+    
     while (window.isOpen())
     {
         sf::Event event;

@@ -1,7 +1,8 @@
-#include "direction.h++"
 #include <SFML/Window.hpp>
+#include "direction.h++"
 #include "time.h++"
 #include "mazeGrid.h++"
+#include "mazeGenerator.h++"
 
 void directionTestFunction()
 {
@@ -30,9 +31,11 @@ int mazeGridTestFunction()
 {
     sf::RenderWindow window( sf::VideoMode(800,800), "Mazewars" );
 
-    MazeGrid mazeGrid( { 3, 3 } );
+    MazeGrid mazeGrid( { 30, 30 } );
 
-    
+    generateMazeDepthFirst( window, mazeGrid, 0, true, 100 );
+
+    /*
     mazeGrid.set( 
         { 1, 1, 1, 
           1, 0, 0,
@@ -42,7 +45,7 @@ int mazeGridTestFunction()
           1, 0, 0, 1,
           1, 0, 0, 1 } 
     );
-    
+    */
     
     /*
     mazeGrid.set( 

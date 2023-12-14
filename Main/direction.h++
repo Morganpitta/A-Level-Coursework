@@ -44,7 +44,7 @@
         switch ( direction )
         {
             case North:
-                return { position.x, position.y+1 };
+                return { position.x, position.y-1 };
                 break;
 
             case East:
@@ -52,7 +52,7 @@
                 break;
 
             case South:
-                return { position.x, position.y-1 };
+                return { position.x, position.y+1 };
                 break;
 
             case West:

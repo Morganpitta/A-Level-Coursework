@@ -184,7 +184,7 @@
             }
     };
 
-    void drawMaze( sf::RenderWindow &window, MazeGrid &maze, sf::Vector2f topLeft, sf::Vector2f bottomRight  )
+    void drawMaze( sf::RenderWindow &window, MazeGrid &maze, sf::Vector2f topLeft, sf::Vector2f bottomRight, sf::Vector2i marker = {-1,-1} )
     {
         // Create a vertex array with double the number of vertcies as the number of walls
         // ( As each wall is comprised of two vertices )
@@ -252,6 +252,14 @@
             }
         }
         window.draw( vertexArray );
+        if ( marker != sf::Vector2i(-1,-1) )
+        {
+            sf::RectangleShape markerRectangle = sf::RectangleShape({xSegmentSize/2.f,ySegmentSize/2.f});
+
+            markerRectangle.setPosition( sf::Vector2f(marker.x*xSegmentSize,marker.y*ySegmentSize) + sf::Vector2f(50+xSegmentSize/4.f,50+ySegmentSize/4.f) );
+
+            window.draw( markerRectangle );
+        }
     }
 
 #endif /* MAZE_GRID_HPP */

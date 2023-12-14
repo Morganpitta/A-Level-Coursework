@@ -32,7 +32,7 @@ int mazeGridTestFunction()
 
     MazeGrid mazeGrid( { 3, 3 } );
 
-    /*
+    
     mazeGrid.set( 
         { 1, 1, 1, 
           1, 0, 0,
@@ -42,7 +42,7 @@ int mazeGridTestFunction()
           1, 0, 0, 1,
           1, 0, 0, 1 } 
     );
-    */
+    
     
     /*
     mazeGrid.set( 

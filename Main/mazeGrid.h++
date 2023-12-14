@@ -43,12 +43,12 @@
 
             int getNumberOfHorizontalSegments()
             {
-                return getDimensions().x * getDimensions().y;
+                return getDimensions().x * (getDimensions().y+1);
             }
 
             int getNumberOfVerticalSegments()
             {
-                return getDimensions().x * getDimensions().y;
+                return (getDimensions().x+1) * getDimensions().y;
             }
 
             int getNumberOfWallSegments()
@@ -73,7 +73,7 @@
                     "Cannot access a vertical wall segment that doesn't exist"
                 );
 
-                return this->verticalSegments[position.x+position.y*getDimensions().x];
+                return this->verticalSegments[position.x+position.y*(getDimensions().x+1)];
             }
 
             bool getCell( sf::Vector2i position, Direction direction )
@@ -157,7 +157,7 @@
                     // If the value is true, we have just added a wall, therefore we need to add 1 to the number of walls
                     // Else the value is false, and we have just removed a wall, therefore we need to minus 1.
                     numberOfWalls += value == true ? 1 : -1;
-                    this->verticalSegments[position.x+position.y*getDimensions().x] = value;
+                    this->verticalSegments[position.x+position.y*(getDimensions().x+1)] = value;
                 }
             }
             
@@ -198,7 +198,7 @@
         // Loop through each horizontal wall
         for ( int xIndex = 0; xIndex < maze.getDimensions().x; xIndex++ )
         {
-            for ( int yIndex = 0; yIndex < maze.getDimensions().y; yIndex++ )
+            for ( int yIndex = 0; yIndex < (maze.getDimensions().y+1); yIndex++ )
             {
                 if ( maze.getHorizontal( { xIndex, yIndex } ) )
                 {
@@ -224,7 +224,7 @@
         }
 
         // Loop through each vertical wall
-        for ( int xIndex = 0; xIndex < maze.getDimensions().x; xIndex++ )
+        for ( int xIndex = 0; xIndex < (maze.getDimensions().x+1); xIndex++ )
         {
             for ( int yIndex = 0; yIndex < maze.getDimensions().y; yIndex++ )
             {

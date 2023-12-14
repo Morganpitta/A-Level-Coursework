@@ -43,12 +43,12 @@
 
             int getNumberOfHorizontalSegments()
             {
-                return getDimensions().x * (getDimensions().y+1);
+                return getDimensions().x * getDimensions().y;
             }
 
             int getNumberOfVerticalSegments()
             {
-                return (getDimensions().x+1) * getDimensions().y;
+                return getDimensions().x * getDimensions().y;
             }
 
             int getNumberOfWallSegments()
@@ -69,11 +69,11 @@
             bool getVertical( sf::Vector2i position )
             {
                 assert( 
-                    position.x+position.y*(getDimensions().x+1) < getNumberOfVerticalSegments(),
+                    position.x+position.y*getDimensions().x < getNumberOfVerticalSegments(),
                     "Cannot access a vertical wall segment that doesn't exist"
                 );
 
-                return this->verticalSegments[position.x+position.y*(getDimensions().x+1)];
+                return this->verticalSegments[position.x+position.y*getDimensions().x];
             }
 
             bool getCell( sf::Vector2i position, Direction direction )
@@ -157,7 +157,7 @@
                     // If the value is true, we have just added a wall, therefore we need to add 1 to the number of walls
                     // Else the value is false, and we have just removed a wall, therefore we need to minus 1.
                     numberOfWalls += value == true ? 1 : -1;
-                    this->verticalSegments[position.x+position.y*(getDimensions().x+1)] = value;
+                    this->verticalSegments[position.x+position.y*getDimensions().x] = value;
                 }
             }
             
@@ -182,8 +182,6 @@
                         break;
                 }
             }
-
-            
     };
 
     void drawMaze( sf::RenderWindow &window, MazeGrid &maze, sf::Vector2f topLeft, sf::Vector2f bottomRight  )
@@ -200,7 +198,7 @@
         // Loop through each horizontal wall
         for ( int xIndex = 0; xIndex < maze.getDimensions().x; xIndex++ )
         {
-            for ( int yIndex = 0; yIndex < ( maze.getDimensions().y + 1 ); yIndex++ )
+            for ( int yIndex = 0; yIndex < maze.getDimensions().y; yIndex++ )
             {
                 if ( maze.getHorizontal( { xIndex, yIndex } ) )
                 {
@@ -226,7 +224,7 @@
         }
 
         // Loop through each vertical wall
-        for ( int xIndex = 0; xIndex < ( maze.getDimensions().x + 1 ); xIndex++ )
+        for ( int xIndex = 0; xIndex < maze.getDimensions().x; xIndex++ )
         {
             for ( int yIndex = 0; yIndex < maze.getDimensions().y; yIndex++ )
             {

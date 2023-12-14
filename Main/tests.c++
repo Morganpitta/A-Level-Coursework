@@ -31,9 +31,9 @@ int mazeGridTestFunction()
 {
     sf::RenderWindow window( sf::VideoMode(800,800), "Mazewars" );
 
-    MazeGrid mazeGrid( { 30, 30 } );
+    MazeGrid mazeGrid( { 10, 10 } );
 
-    generateMazeDepthFirst( window, mazeGrid, 0, true, 100 );
+    generateMazeDepthFirst( window, mazeGrid, 1 );
 
     /*
     mazeGrid.set( 

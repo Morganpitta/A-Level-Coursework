@@ -5,18 +5,26 @@
     #include "time.h++"
     #include <array>
 
-    // void randomlyRemoveWall( sf::Vector2i position, MazeGrid &mazeGrid, float randomness )
-    // {
-    //     if ( ( std::rand() / float(RAND_MAX) ) < randomness )
-    //     {
-    //         Direction direction = Direction( std::rand() % NumberOfDirections );
-
-    //         if ( mazeGrid.inBounds( transposePosition( position, direction ) ) )
-    //         {
-    //             mazeGrid.setCell( position, direction, false );
-    //         }
-    //     }
-    // }
+    void randomlyRemoveWall( 
+        sf::Vector2i position,
+        MazeGrid &mazeGrid,
+        float randomness
+    )
+    {
+        if ( ( std::rand() / float(RAND_MAX) ) < randomness )
+        {
+            Direction direction = Direction( std::rand() % NumberOfDirections );
+    
+            if ( mazeGrid.inBounds( transposePosition( position, direction ) ) )
+            {
+                mazeGrid.setCell( 
+                    position, 
+                    direction, 
+                    false 
+                );
+            }
+        }
+    }
 
     Direction getRandomValidDirection( 
         sf::Vector2i position, 
@@ -46,8 +54,6 @@
         sf::RenderWindow& window,
         MazeGrid &mazeGrid, 
         float randomness, 
-        bool showMazeGeneration,
-        float mazeDisplaySpeed,
         std::size_t seed = time(NULL)
     )
     {
@@ -62,20 +68,6 @@
 
         while ( true )
         {
-            if ( showMazeGeneration )
-            {
-                window.clear( sf::Color::Black );
-                drawMaze( 
-                    window, 
-                    mazeGrid, 
-                    {50,50}, 
-                    {750,750}, 
-                    position 
-                );
-                window.display();
-                sleepFor( (1/mazeDisplaySpeed)*0.1*1000 );
-            }
-
             Direction direction = getRandomValidDirection( position, mazeGrid, isSearched );
             isSearched[position.x][position.y] = true;
 
@@ -93,7 +85,7 @@
                 mazeGrid.setCell( position, direction, false );
                 position = transposePosition( position, direction );
                 positionStack.push_back( position );
-                //randomlyRemoveWall( position, mazeGrid, randomness );
+                randomlyRemoveWall( position, mazeGrid, randomness );
             }
         }
     }

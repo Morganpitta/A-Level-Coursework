@@ -84,7 +84,7 @@
 
             sf::Vector2i relativePositionOf( sf::Vector2i position )
             {
-                return position - getPosition();
+                return sf::Vector2i( rotatePosition( sf::Vector2f( position - getPosition() ), getDirection() ) );
             }
 
             void setHealth( int health )

@@ -115,6 +115,13 @@ void rendererTestFunction()
                 case sf::Event::Closed:
                     window.close();
                     break;
+                
+                case sf::Event::KeyPressed:
+                    if ( event.key.code == sf::Keyboard::D )
+                        renderer.getCamera().turnRight();
+                    if ( event.key.code == sf::Keyboard::W )
+                        renderer.getCamera().moveForward();
+                    break;
             }
         }
 

@@ -16,13 +16,13 @@
 
         bool hasBeenDrawnOn( int position )
         {
-            assert( 0 < position && position < wallSpans.size(), "Cannot access position off screen" );
+            assert( 0 <= position && position < wallSpans.size(), "Cannot access position off screen" );
             return this->wallSpans[position];
         }
 
         void setHasBeenDrawnOn( int position, bool value )
         {
-            assert( 0 < position && position < wallSpans.size(), "Cannot access position off screen" );
+            assert( 0 <= position && position < wallSpans.size(), "Cannot access position off screen" );
             this->wallSpans[position] = value;
         }
 
@@ -270,10 +270,10 @@
                         bool isWall = mazeGrid.getCell( cellPosition, (Direction) direction );
                         sf::Vector2f wallStart = sf::Vector2f( cellPosition ) + 
                                                  sf::Vector2f( 0.5, 0.5 )  + 
-                                                 rotatePosition( { 0.5, 0.5 }, (Direction) direction );
+                                                 rotatePosition( { 0.5, -0.5 }, (Direction) direction );
                         sf::Vector2f wallEnd = sf::Vector2f( cellPosition ) + 
                                                sf::Vector2f( 0.5, 0.5 ) + 
-                                               rotatePosition( {-0.5, 0.5}, (Direction) direction );
+                                               rotatePosition( {-0.5, -0.5}, (Direction) direction );
 
                         if ( !projectWall( window, wallStart, wallEnd ) )
                             continue;
@@ -284,7 +284,7 @@
                         }
                         else
                         {
-                            bool shouldCheckCell = true;
+                            bool shouldCheckCell = false;
                             for ( int xIndex = std::max( 0, (int) std::floor( wallStart.x ) ); xIndex <= std::floor( wallEnd.x ) && xIndex < window.getSize().x; xIndex++ )
                             {
                                 if ( !hasBeenDrawnOn(xIndex) )
@@ -296,7 +296,7 @@
                             if ( shouldCheckCell )
                             {
                                 sf::Vector2i nextPosition = transposePosition( cellPosition, (Direction) direction );
-                                if ( !visitedCells[nextPosition.x][nextPosition.y] )
+                                if ( mazeGrid.inBounds(nextPosition) && !visitedCells[nextPosition.x][nextPosition.y] )
                                     cellsToVisitQueue.push( nextPosition );
                             }
                         }

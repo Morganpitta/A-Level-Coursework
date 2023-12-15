@@ -158,7 +158,7 @@
 
                 drawWallEdge( window, wallEnd );
 
-                // If its one or two pixel thin we can stop
+                // If it's one or two pixels thin we can stop
                 if ( std::floor( wallEnd.x ) - std::floor( wallStart.x ) <= 1 )
                     return;
 
@@ -175,12 +175,18 @@
                     {
                         for ( int direction = North; direction < NumberOfDirections; direction++ )
                         {
-                            sf::Vector2f wallStart = sf::Vector2f(xIndex + 0.5, yIndex + 0.5 ) + 
-                                                     rotatePosition({-0.5, 0.5}, (Direction) direction);
-                            sf::Vector2f wallEnd = sf::Vector2f(xIndex + 0.5, yIndex + 0.5 ) + 
-                                                     rotatePosition({0.5, 0.5}, (Direction) direction);
+                            if ( mazeGrid.getCell( {xIndex, yIndex}, (Direction) direction ) )
+                            {
+                                sf::Vector2f wallStart = sf::Vector2f(xIndex + 0.5, yIndex + 0.5 ) + 
+                                                        rotatePosition({-0.5, -0.5}, (Direction) direction);
+                                sf::Vector2f wallEnd = sf::Vector2f(xIndex + 0.5, yIndex + 0.5 ) + 
+                                                        rotatePosition({0.5, -0.5}, (Direction) direction);
 
-                            drawWall( window, wallStart, wallEnd );
+                                if ( !projectWall( window, wallStart, wallEnd ) )
+                                    continue;
+
+                                drawWall( window, wallStart, wallEnd );
+                            }
                         }
                     }
                 }

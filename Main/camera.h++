@@ -5,13 +5,14 @@
     #include "assert.h++"
     #include "SFML/Graphics.hpp"
 
-    class Entity
+    class Camera
     {
         sf::Vector2i position = {0,0};
         Direction direction = North;
+        float fov = M_PI/2;
         
         public:
-            Entity()
+            Camera()
             {
             }
 
@@ -25,6 +26,11 @@
                 return this->direction;
             }
 
+            float getFov()
+            {
+                return this->fov;
+            }
+
             void setPosition( sf::Vector2i position )
             {
                 this->position = position;
@@ -33,6 +39,11 @@
             void setDirection( Direction direction )
             {
                 this->direction = direction;
+            }
+
+            void setFov( float fov )
+            {
+                this->fov = fov;
             }
 
             void moveForward()

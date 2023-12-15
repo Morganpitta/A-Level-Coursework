@@ -3,6 +3,7 @@
 #include "time.h++"
 #include "mazeGrid.h++"
 #include "mazeGenerator.h++"
+#include "renderer.h++"
 
 void directionTestFunction()
 {
@@ -27,7 +28,7 @@ void directionTestFunction()
     std::cout << format( "(%d, %d)\n", position.x, position.y );
 }
 
-int mazeGridTestFunction()
+void mazeGridTestFunction()
 {
     sf::RenderWindow window( sf::VideoMode(800,800), "Mazewars" );
 
@@ -86,11 +87,47 @@ int mazeGridTestFunction()
 
         window.display();
     }
+}
 
-    return 0;
+void rendererTestFunction()
+{
+    sf::RenderWindow window( sf::VideoMode(800,800), "Mazewars" );
+
+    MazeGrid mazeGrid( { 10, 10 } );
+
+    generateMazeDepthFirst( window, mazeGrid, 0 );
+
+    window.clear( sf::Color::Black );
+    drawMaze( window, mazeGrid, {50,50}, {750,750}, {5,5} );
+    window.display();
+
+    Renderer renderer;
+
+    renderer.getCamera().setPosition( {5,5} );
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while ( window.pollEvent(event) )
+        {
+            switch ( event.type )
+            {
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+            }
+        }
+
+        window.clear( sf::Color::Black );
+
+        renderer.render( window, mazeGrid );
+
+        window.display();
+    }
 }
 
 int main()
 {
-    mazeGridTestFunction();
+    rendererTestFunction();
+    return 0;
 }

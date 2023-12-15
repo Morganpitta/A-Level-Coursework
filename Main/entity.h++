@@ -56,5 +56,63 @@
             {
                 return this->type;
             }
+
+            void setPosition( sf::Vector2i position )
+            {
+                this->position = position;
+            }
+
+            void setDirection( Direction direction )
+            {
+                this->direction = direction;
+            }
+
+            void moveForward()
+            {
+                setPosition( transposePosition( getPosition(), getDirection() ) );
+            }
+
+            void turnLeft()
+            {
+                setDirection( Direction( ( getDirection() - 1 ) % NumberOfDirections ) );
+            }
+
+            void turnRight()
+            {
+                setDirection( Direction( ( getDirection() + 1 ) % NumberOfDirections ) );
+            }
+
+            sf::Vector2i relativePositionOf( sf::Vector2i position )
+            {
+                return position - getPosition();
+            }
+
+            void setHealth( int health )
+            {
+                this->health = health;
+            }
+
+            void damage( int amount )
+            {
+                setHealth( std::max( getHealth() - amount, 0 ) );
+
+                if ( getHealth() <= 0 )
+                    kill();
+            }
+
+            void setId( Id id )
+            {
+                this->id = id;
+            }
+
+            void kill()
+            {
+                this->dead = true;
+            }
+
+            virtual void update()
+            {
+
+            }
     };
 #endif /* ENTITY_HPP */

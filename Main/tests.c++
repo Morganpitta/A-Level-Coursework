@@ -97,10 +97,6 @@ void rendererTestFunction()
 
     generateMazeDepthFirst( window, mazeGrid, 0 );
 
-    window.clear( sf::Color::Black );
-    drawMaze( window, mazeGrid, {50,50}, {750,750}, {5,5} );
-    window.display();
-
     Renderer renderer;
 
     renderer.getCamera().setPosition( {5,5} );

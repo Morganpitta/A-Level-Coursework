@@ -63,7 +63,7 @@
 
             sf::Vector2f relativePositionOf( sf::Vector2f position )
             {
-                return sf::Vector2f( rotatePosition( position - sf::Vector2f( getPosition().x+0.5, getPosition().y+0.5 ), Direction( ( int(South) + getDirection() ) % 4 ) ) );
+                return sf::Vector2f( rotatePosition( position - sf::Vector2f( getPosition().x+0.5, getPosition().y+0.5 ), getDirection() ) );
             }
 
             virtual void update()

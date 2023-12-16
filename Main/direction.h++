@@ -3,7 +3,6 @@
 
     #include <SFML/System.hpp>
     #include <iostream>
-    #include "string.h++"
     #define _USE_MATH_DEFINES
     #include <cmath>
 
@@ -39,7 +38,10 @@
         }
     }
 
-    sf::Vector2i transposePosition( sf::Vector2i position, Direction direction )
+    sf::Vector2i transposePosition( 
+        sf::Vector2i position,
+        Direction direction 
+    )
     {
         switch ( direction )
         {
@@ -65,13 +67,20 @@
         }
     }
 
-    sf::Vector2f rotatePosition( sf::Vector2f position, Direction direction )
+    sf::Vector2f rotatePosition( 
+        sf::Vector2f position, 
+        Direction direction 
+    )
     {
         float angle = (M_PI / 2) * ( ( direction ) % NumberOfDirections );
 
         return {
-            static_cast<float>( position.x*cos( angle ) - position.y*sin( angle ) ),
-            static_cast<float>( position.x*sin( angle ) + position.y*cos( angle ) ) 
+            static_cast<float>( 
+                position.x*cos( angle ) - position.y*sin( angle ) 
+            ),
+            static_cast<float>( 
+                position.x*sin( angle ) + position.y*cos( angle )
+            ) 
         };
     }
 

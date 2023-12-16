@@ -76,7 +76,10 @@
                 return this->verticalSegments[position.x+position.y*(getDimensions().x+1)];
             }
 
-            bool getCell( sf::Vector2i position, Direction direction )
+            bool getCell( 
+                sf::Vector2i position, 
+                Direction direction 
+            )
             {
                 switch( direction )
                 {
@@ -100,14 +103,30 @@
                 throw std::runtime_error( "Direction can only be: North, East, South, West" );
             }
 
-            void set( std::vector<bool> horizontalSegments, std::vector<bool> verticalSegments )
+            void set( 
+                std::vector<bool> horizontalSegments, 
+                std::vector<bool> verticalSegments 
+            )
             {
-                assert( horizontalSegments.size() == getNumberOfHorizontalSegments() &&
-                        verticalSegments.size() == getNumberOfVerticalSegments(),
-                        "Dimensions do not match" 
+                assert( 
+                    horizontalSegments.size() == getNumberOfHorizontalSegments() &&
+                    verticalSegments.size() == getNumberOfVerticalSegments(),
+                    "Dimensions do not match" 
                 );
                 this->horizontalSegments = horizontalSegments;
                 this->verticalSegments = verticalSegments;
+
+                this->numberOfWalls =
+                    std::count(
+                        this->horizontalSegments.begin(),
+                        this->horizontalSegments.end(), 
+                        true
+                    ) + 
+                    std::count(
+                        this->verticalSegments.begin(),
+                        this->verticalSegments.end(), 
+                        true
+                    );
             }
 
             void fill( bool value )
@@ -122,6 +141,8 @@
                     this->verticalSegments.end(),
                     value            
                 );
+
+                this->numberOfWalls = value ? getNumberOfWalls() : 0;
             }
 
             void resize( sf::Vector2i dimensions )
@@ -139,29 +160,39 @@
                 fill( true );
             }
 
-            void setHorizontal( sf::Vector2i position, bool value )
+            void setHorizontal( 
+                sf::Vector2i position, 
+                bool value 
+            )
             {
                 if ( getHorizontal(position) != value )
                 {
                     // If the value is true, we have just added a wall, therefore we need to add 1 to the number of walls
                     // Else the value is false, and we have just removed a wall, therefore we need to minus 1.
-                    numberOfWalls += value == true ? 1 : -1;
+                    this->numberOfWalls += value == true ? 1 : -1;
                     this->horizontalSegments[position.x+position.y*getDimensions().x] = value;
                 }
             }
 
-            void setVertical( sf::Vector2i position, bool value )
+            void setVertical( 
+                sf::Vector2i position, 
+                bool value 
+            )
             {
                 if ( getVertical(position) != value )
                 {
                     // If the value is true, we have just added a wall, therefore we need to add 1 to the number of walls
                     // Else the value is false, and we have just removed a wall, therefore we need to minus 1.
-                    numberOfWalls += value == true ? 1 : -1;
+                    this->numberOfWalls += value == true ? 1 : -1;
                     this->verticalSegments[position.x+position.y*(getDimensions().x+1)] = value;
                 }
             }
             
-            void setCell( sf::Vector2i position, Direction direction, bool value )
+            void setCell( 
+                sf::Vector2i position,
+                Direction direction, 
+                bool value 
+            )
             {
                 switch( direction )
                 {

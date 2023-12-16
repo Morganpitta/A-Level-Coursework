@@ -69,22 +69,40 @@
 
             void moveForward()
             {
-                setPosition( transposePosition( getPosition(), getDirection() ) );
+                setPosition( 
+                    transposePosition( 
+                        getPosition(), 
+                        getDirection() 
+                    )
+                );
             }
 
             void turnLeft()
             {
-                setDirection( Direction( ( getDirection() - 1 ) % NumberOfDirections ) );
+                setDirection( 
+                    Direction( 
+                        ( getDirection() - 1 ) % NumberOfDirections 
+                    ) 
+                );
             }
 
             void turnRight()
             {
-                setDirection( Direction( ( getDirection() + 1 ) % NumberOfDirections ) );
+                setDirection( 
+                    Direction( 
+                        ( getDirection() + 1 ) % NumberOfDirections 
+                    ) 
+                );
             }
 
             sf::Vector2i relativePositionOf( sf::Vector2i position )
             {
-                return sf::Vector2i( rotatePosition( sf::Vector2f( position - getPosition() ), getDirection() ) );
+                return sf::Vector2i( 
+                    rotatePosition( 
+                        sf::Vector2f( position - getPosition() ), 
+                        Direction( ( int(South) + getDirection() ) % 4 ) 
+                    )
+                );
             }
 
             void setHealth( int health )

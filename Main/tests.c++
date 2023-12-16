@@ -4,6 +4,7 @@
 #include "mazeGrid.h++"
 #include "mazeGenerator.h++"
 #include "renderer.h++"
+#include "string.h++"
 
 void directionTestFunction()
 {

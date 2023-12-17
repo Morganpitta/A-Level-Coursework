@@ -63,7 +63,10 @@
 
             sf::Vector2f relativePositionOf( sf::Vector2f position )
             {
-                return rotatePosition( position - sf::Vector2f( getPosition().x+0.5, getPosition().y+0.5 ), Direction( ( int(NumberOfDirections) - getDirection() ) % NumberOfDirections ) );
+                return rotatePosition( 
+                    position - sf::Vector2f( getPosition().x+0.5f, getPosition().y+0.5f ),
+                    Direction( ( int(NumberOfDirections) - getDirection() ) % NumberOfDirections )
+                );
             }
     };
     

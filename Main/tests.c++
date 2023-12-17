@@ -135,7 +135,7 @@ void rendererTestFunction()
 
         renderer.render( window, mazeGrid );
 
-        drawMaze( window, mazeGrid, {50,50}, {750,750}, renderer.getCamera().getPosition() );
+        //drawMaze( window, mazeGrid, {50,50}, {750,750}, renderer.getCamera().getPosition() );
 
         window.display();
     }

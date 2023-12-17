@@ -165,6 +165,27 @@
                 drawWallTop( window, wallStart, wallEnd );
             }
 
+            void drawWall( 
+                sf::RenderWindow& window,
+                MazeGrid &mazeGrid,
+                sf::Vector2i position,
+                Direction direction
+            )
+            {
+                if ( mazeGrid.getCell( position, direction ) )
+                {
+                    sf::Vector2f wallStart = sf::Vector2f(position.x + 0.5, position.y + 0.5 ) + 
+                                            rotatePosition({-0.5, 0.5}, direction);
+                    sf::Vector2f wallEnd = sf::Vector2f(position.x + 0.5, position.y + 0.5 ) +
+                                            rotatePosition({0.5, 0.5}, direction);
+
+                    if ( !projectWall( window, wallStart, wallEnd ) )
+                        return;
+
+                    drawWall( window, wallStart, wallEnd );
+                }
+            }
+
             void render( sf::RenderWindow& window, MazeGrid &mazeGrid )
             {
                 vertexArray.clear();
@@ -228,18 +249,7 @@
                     {
                         for ( int direction = North; direction < NumberOfDirections; direction++ )
                         {
-                            if ( mazeGrid.getCell( {xIndex, yIndex}, (Direction) direction ) )
-                            {
-                                sf::Vector2f wallStart = sf::Vector2f(xIndex + 0.5, yIndex + 0.5 ) + 
-                                                        rotatePosition({-0.5, 0.5}, (Direction) direction);
-                                sf::Vector2f wallEnd = sf::Vector2f(xIndex + 0.5, yIndex + 0.5 ) + 
-                                                        rotatePosition({0.5, 0.5}, (Direction) direction);
-
-                                if ( !projectWall( window, wallStart, wallEnd ) )
-                                    continue;
-
-                                drawWall( window, wallStart, wallEnd );
-                            }
+                            drawWall( window, mazeGrid, {xIndex, yIndex}, (Direction) direction );
                         }
                     }
                 }

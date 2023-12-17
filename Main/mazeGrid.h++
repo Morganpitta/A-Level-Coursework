@@ -114,6 +114,7 @@
                     "Dimensions do not match" 
                 );
 
+                // The passed in parameters will be inverted on the y axis, and thus needs to be reversed.
                 this->horizontalSegments.clear();
 
                 for ( int horizontalIndex = 0; horizontalIndex < ( getDimensions().y + 1 ); horizontalIndex++ )
@@ -237,13 +238,13 @@
 
     void drawMaze( sf::RenderWindow &window, MazeGrid &maze, sf::Vector2f topLeft, sf::Vector2f bottomRight, sf::Vector2i marker = {-1,-1} )
     {
-        // Create a vertex array with double the number of vertcies as the number of walls
+        // Create a vertex array with double the number of vertices as the number of walls
         // ( As each wall is comprised of two vertices )
         sf::VertexArray vertexArray( sf::PrimitiveType::Lines, maze.getNumberOfWalls()*2 );
         float xSegmentSize = ( bottomRight.x - topLeft.x ) / maze.getDimensions().x;
         float ySegmentSize = ( bottomRight.y - topLeft.y ) / maze.getDimensions().y;
 
-        // To keep track of the number of verticies that have been used yet.
+        // To keep track of the number of vertices that have been used yet.
         int vertexIndex = 0;
 
         // Loop through each horizontal wall
@@ -303,6 +304,7 @@
             }
         }
         window.draw( vertexArray );
+        
         if ( marker != sf::Vector2i(-1,-1) )
         {
             sf::RectangleShape markerRectangle = sf::RectangleShape({xSegmentSize/2.f,ySegmentSize/2.f});

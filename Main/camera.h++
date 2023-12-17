@@ -9,7 +9,7 @@
     {
         sf::Vector2i position = {0,0};
         Direction direction = North;
-        float fov = M_PI/2;
+        float fov = (2*M_PI)/3;
         
         public:
             Camera()

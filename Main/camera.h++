@@ -53,19 +53,19 @@
 
             void turnLeft()
             {
-                setDirection( Direction( ( getDirection() - 1 ) % NumberOfDirections ) );
+                setDirection( normaliseDirection( int(getDirection()) - 1 ) );
             }
 
             void turnRight()
             {
-                setDirection( Direction( ( getDirection() + 1 ) % NumberOfDirections ) );
+                setDirection( normaliseDirection( int(getDirection()) + 1 ) );
             }
 
             sf::Vector2f relativePositionOf( sf::Vector2f position )
             {
                 return rotatePosition( 
                     position - sf::Vector2f( getPosition().x+0.5f, getPosition().y+0.5f ),
-                    Direction( ( int(NumberOfDirections) - getDirection() ) % NumberOfDirections )
+                    normaliseDirection( -getDirection() )
                 );
             }
     };

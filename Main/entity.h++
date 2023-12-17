@@ -79,32 +79,21 @@
 
             void turnLeft()
             {
-                setDirection( 
-                    Direction( 
-                        ( getDirection() - 1 ) % NumberOfDirections 
-                    ) 
-                );
+                setDirection( normaliseDirection( int(getDirection()) - 1 ) );
             }
 
             void turnRight()
             {
-                setDirection( 
-                    Direction( 
-                        ( getDirection() + 1 ) % NumberOfDirections 
-                    )
-                );
+                setDirection( normaliseDirection( int(getDirection()) + 1 ) );
             }
 
             sf::Vector2i relativePositionOf( sf::Vector2i position )
             {
-                return sf::Vector2i(
-                    rotatePosition(
-                        sf::Vector2f( position - getPosition() ),
-                        Direction( ( int(NumberOfDirections) - getDirection() ) % NumberOfDirections )
-                    )
-                );
+                return sf::Vector2i( rotatePosition( 
+                    sf::Vector2f( position - getPosition() ),
+                    normaliseDirection( -getDirection() )
+                ) );
             }
-
             void setHealth( int health )
             {
                 this->health = health;

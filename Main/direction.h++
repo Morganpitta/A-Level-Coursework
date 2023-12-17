@@ -84,4 +84,9 @@
         };
     }
 
+    Direction normaliseDirection( int direction )
+    {
+        return static_cast<Direction>( ( NumberOfDirections + direction ) % NumberOfDirections );
+    }
+
 #endif /* DIRECTIONS_HPP */

@@ -103,12 +103,6 @@ void rendererTestFunction()
 
     renderer.getCamera().setPosition( {5,5} );
 
-    window.clear( sf::Color::Black );
-
-    drawMaze( window, mazeGrid, {50,50}, {750,750}, renderer.getCamera().getPosition() );
-
-    window.display();
-
     while (window.isOpen())
     {
         sf::Event event;
@@ -134,8 +128,6 @@ void rendererTestFunction()
         window.clear( sf::Color::Black );
 
         renderer.render( window, mazeGrid );
-
-        //drawMaze( window, mazeGrid, {50,50}, {750,750}, renderer.getCamera().getPosition() );
 
         window.display();
     }

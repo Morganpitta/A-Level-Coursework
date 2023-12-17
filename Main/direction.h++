@@ -46,7 +46,7 @@
         switch ( direction )
         {
             case North:
-                return { position.x, position.y-1 };
+                return { position.x, position.y+1 };
                 break;
 
             case East:
@@ -54,7 +54,7 @@
                 break;
 
             case South:
-                return { position.x, position.y+1 };
+                return { position.x, position.y-1 };
                 break;
 
             case West:
@@ -76,10 +76,10 @@
 
         return {
             static_cast<float>( 
-                position.x*cos( angle ) - position.y*sin( angle ) 
+                position.x*cos( angle ) + position.y*sin( angle ) 
             ),
             static_cast<float>( 
-                position.x*sin( angle ) + position.y*cos( angle )
+                - position.x*sin( angle ) + position.y*cos( angle )
             ) 
         };
     }

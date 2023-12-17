@@ -84,7 +84,7 @@
                 switch( direction )
                 {
                     case North:
-                        return getHorizontal( { position.x, position.y } );
+                        return getHorizontal( { position.x, position.y+1 } );
                         break;
                         
                     case East:
@@ -92,7 +92,7 @@
                         break;
                         
                     case South:
-                        return getHorizontal( { position.x, position.y+1 } );
+                        return getHorizontal( { position.x, position.y } );
                         break;
                         
                     case West:
@@ -113,8 +113,28 @@
                     verticalSegments.size() == getNumberOfVerticalSegments(),
                     "Dimensions do not match" 
                 );
-                this->horizontalSegments = horizontalSegments;
-                this->verticalSegments = verticalSegments;
+
+                this->horizontalSegments.clear();
+
+                for ( int horizontalIndex = 0; horizontalIndex < ( getDimensions().y + 1 ); horizontalIndex++ )
+                {
+                    this->horizontalSegments.insert(
+                        this->horizontalSegments.begin(), 
+                        horizontalSegments.begin() + ( horizontalIndex ) * getDimensions().x, 
+                        horizontalSegments.begin() + ( horizontalIndex + 1 ) * getDimensions().x
+                    );
+                }
+
+                this->verticalSegments.clear();
+
+                for ( int verticalIndex = 0; verticalIndex < getDimensions().y; verticalIndex++ )
+                {
+                    this->verticalSegments.insert(
+                        this->verticalSegments.begin(), 
+                        verticalSegments.begin() + verticalIndex * ( getDimensions().x + 1 ), 
+                        verticalSegments.begin() + ( verticalIndex + 1 ) * ( getDimensions().x + 1)
+                    );
+                }
 
                 this->numberOfWalls =
                     std::count(
@@ -197,7 +217,7 @@
                 switch( direction )
                 {
                     case North:
-                        setHorizontal( { position.x, position.y }, value );
+                        setHorizontal( { position.x, position.y+1 }, value );
                         break;
                         
                     case East:
@@ -205,7 +225,7 @@
                         break;
                         
                     case South:
-                        setHorizontal( { position.x, position.y+1 }, value );
+                        setHorizontal( { position.x, position.y }, value );
                         break;
                         
                     case West:
@@ -237,17 +257,17 @@
                     // incrementing the vertex index both times
                     vertexArray[vertexIndex++] = sf::Vertex( 
                         sf::Vector2f( 
-                            xIndex * xSegmentSize,
-                            yIndex * ySegmentSize
-                        ) + topLeft, 
+                            topLeft.x + xIndex * xSegmentSize,
+                            bottomRight.y - yIndex * ySegmentSize
+                        ), 
                         sf::Color::Green
                     
                     );
                     vertexArray[vertexIndex++] = sf::Vertex( 
                         sf::Vector2f( 
-                            ( xIndex + 1 ) * xSegmentSize,
-                            ( yIndex ) * ySegmentSize
-                        ) + topLeft, 
+                            topLeft.x + ( xIndex + 1 ) * xSegmentSize,
+                            bottomRight.y - ( yIndex ) * ySegmentSize
+                        ), 
                         sf::Color::Green
                     );
                 }
@@ -265,18 +285,18 @@
                     // incrementing the vertex index both times
                     vertexArray[vertexIndex++] = sf::Vertex( 
                         sf::Vector2f( 
-                            xIndex * xSegmentSize,
-                            yIndex * ySegmentSize
-                        ) + topLeft, 
+                            topLeft.x + xIndex * xSegmentSize,
+                            bottomRight.y - yIndex * ySegmentSize
+                        ), 
                         sf::Color::Green
                     
                     );
 
                     vertexArray[vertexIndex++] = sf::Vertex( 
                         sf::Vector2f( 
-                            ( xIndex ) * xSegmentSize,
-                            ( yIndex + 1 ) * ySegmentSize
-                        ) + topLeft, 
+                            topLeft.x + ( xIndex ) * xSegmentSize,
+                            bottomRight.y - ( yIndex + 1 ) * ySegmentSize
+                        ),
                         sf::Color::Green
                     );
                 }
@@ -287,7 +307,7 @@
         {
             sf::RectangleShape markerRectangle = sf::RectangleShape({xSegmentSize/2.f,ySegmentSize/2.f});
 
-            markerRectangle.setPosition( sf::Vector2f(marker.x*xSegmentSize,marker.y*ySegmentSize) + sf::Vector2f(50+xSegmentSize/4.f,50+ySegmentSize/4.f) );
+            markerRectangle.setPosition( sf::Vector2f(marker.x*xSegmentSize,-marker.y*ySegmentSize) + sf::Vector2f(50+xSegmentSize/4.f,750-(3*ySegmentSize)/4.f) );
 
             window.draw( markerRectangle );
         }

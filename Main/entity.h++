@@ -91,7 +91,7 @@
                 setDirection( 
                     Direction( 
                         ( getDirection() + 1 ) % NumberOfDirections 
-                    ) 
+                    )
                 );
             }
 
@@ -133,4 +133,5 @@
 
             }
     };
+
 #endif /* ENTITY_HPP */

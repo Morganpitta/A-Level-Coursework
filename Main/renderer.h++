@@ -67,8 +67,8 @@
                     std::swap( wallStart, wallEnd );
                 }
 
-                wallStart.x *= ( window.getSize().x / 2 ) * camera.getFov();
-                wallEnd.x *= ( window.getSize().x / 2 ) * camera.getFov();
+                wallStart.x *= ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 );
+                wallEnd.x *= ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 );
 
                 wallStart.x += window.getSize().x / 2.f;
                 wallEnd.x += window.getSize().x / 2.f;
@@ -169,6 +169,59 @@
             {
                 vertexArray.clear();
 
+                /*
+                std::queue<sf::Vector2i> cellsToVisitQueue;
+                cellsToVisitQueue.push( camera.getPosition() );
+
+                std::vector<std::vector<bool>> visitedCells;
+                visitedCells.assign(
+                    mazeGrid.getDimensions().x, 
+                    std::vector<bool>(
+                        mazeGrid.getDimensions().y, 
+                        false
+                    )
+                );
+
+                while ( !cellsToVisitQueue.empty() )
+                {
+                    sf::Vector2i currentCell = cellsToVisitQueue.back();
+                    cellsToVisitQueue.pop();
+                    visitedCells[currentCell.x][currentCell.y] = true;
+
+                    for ( int direction = North; direction < NumberOfDirections; direction++ )
+                    {
+                        bool isWallInDirection = mazeGrid.getCell( currentCell, (Direction) direction );
+
+                        sf::Vector2f wallStart = sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) + 
+                                                rotatePosition({-0.5, -0.5}, (Direction) direction);
+                        sf::Vector2f wallEnd = sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) + 
+                                                rotatePosition({0.5, -0.5}, (Direction) direction);
+
+                        if ( !projectWall( window, wallStart, wallEnd ) )
+                            continue;
+
+                        if ( isWallInDirection )
+                        {
+                            drawWall( window, wallStart, wallEnd );
+                        }
+                        else
+                        {
+                            sf::Vector2i connectedCell = 
+                                transposePosition( 
+                                    currentCell, 
+                                    (Direction) direction 
+                                );
+                            
+                            if ( mazeGrid.inBounds( connectedCell ) && 
+                                 !visitedCells[connectedCell.x][connectedCell.y] )
+                            {
+                                cellsToVisitQueue.push( connectedCell );
+                            }
+                        }
+                    }
+                }
+                */
+
                 for ( int xIndex = 0; xIndex < mazeGrid.getDimensions().x; xIndex++ )
                 {
                     for ( int yIndex = 0; yIndex < mazeGrid.getDimensions().y; yIndex++ )
@@ -178,9 +231,9 @@
                             if ( mazeGrid.getCell( {xIndex, yIndex}, (Direction) direction ) )
                             {
                                 sf::Vector2f wallStart = sf::Vector2f(xIndex + 0.5, yIndex + 0.5 ) + 
-                                                        rotatePosition({-0.5, -0.5}, (Direction) direction);
+                                                        rotatePosition({-0.5, 0.5}, (Direction) direction);
                                 sf::Vector2f wallEnd = sf::Vector2f(xIndex + 0.5, yIndex + 0.5 ) + 
-                                                        rotatePosition({0.5, -0.5}, (Direction) direction);
+                                                        rotatePosition({0.5, 0.5}, (Direction) direction);
 
                                 if ( !projectWall( window, wallStart, wallEnd ) )
                                     continue;

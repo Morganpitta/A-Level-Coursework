@@ -33,7 +33,7 @@ void mazeGridTestFunction()
 {
     sf::RenderWindow window( sf::VideoMode(800,800), "Mazewars" );
 
-    MazeGrid mazeGrid( { 10, 10 } );
+    MazeGrid mazeGrid( { 3, 3 } );
 
     generateMazeDepthFirst( window, mazeGrid, 1 );
 
@@ -48,6 +48,7 @@ void mazeGridTestFunction()
           1, 0, 0, 1 } 
     );
     */
+    
     
     /*
     mazeGrid.set( 
@@ -75,12 +76,12 @@ void mazeGridTestFunction()
             }
         }
 
-        /*
-        sf::Vector2i mousePosition = { (int) floor( ( sf::Mouse::getPosition( window ).x - 50 ) / ( 700.f / mazeGrid.getDimensions().x ) ), (int) floor( ( sf::Mouse::getPosition( window ).y - 50 ) / ( 700.f / mazeGrid.getDimensions().y ) ) };
+        
+        sf::Vector2i mousePosition = { (int) floor( ( sf::Mouse::getPosition( window ).x - 50 ) / ( 700.f / mazeGrid.getDimensions().x ) ), (int) floor( ( 750 - sf::Mouse::getPosition( window ).y ) / ( 700.f / mazeGrid.getDimensions().y ) ) };
         
         if ( mazeGrid.inBounds( mousePosition ) )
             std::cout << format( "(%d,%d) -> %d, %d, %d, %d\n", mousePosition.x, mousePosition.y, mazeGrid.getCell(mousePosition,North), mazeGrid.getCell(mousePosition,East), mazeGrid.getCell(mousePosition,South), mazeGrid.getCell(mousePosition,West) );
-        */
+        
 
         window.clear( sf::Color::Black );
 
@@ -102,6 +103,12 @@ void rendererTestFunction()
 
     renderer.getCamera().setPosition( {5,5} );
 
+    window.clear( sf::Color::Black );
+
+    drawMaze( window, mazeGrid, {50,50}, {750,750}, renderer.getCamera().getPosition() );
+
+    window.display();
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -114,6 +121,8 @@ void rendererTestFunction()
                     break;
                 
                 case sf::Event::KeyPressed:
+                    if ( event.key.code == sf::Keyboard::A )
+                        renderer.getCamera().turnLeft();
                     if ( event.key.code == sf::Keyboard::D )
                         renderer.getCamera().turnRight();
                     if ( event.key.code == sf::Keyboard::W )
@@ -125,6 +134,8 @@ void rendererTestFunction()
         window.clear( sf::Color::Black );
 
         renderer.render( window, mazeGrid );
+
+        drawMaze( window, mazeGrid, {50,50}, {750,750}, renderer.getCamera().getPosition() );
 
         window.display();
     }

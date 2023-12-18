@@ -188,9 +188,6 @@
 
             void render( sf::RenderWindow& window, MazeGrid &mazeGrid )
             {
-                vertexArray.clear();
-
-                /*
                 std::queue<sf::Vector2i> cellsToVisitQueue;
                 cellsToVisitQueue.push( camera.getPosition() );
 
@@ -203,9 +200,12 @@
                     )
                 );
 
+                vertexArray.clear();
+
+
                 while ( !cellsToVisitQueue.empty() )
                 {
-                    sf::Vector2i currentCell = cellsToVisitQueue.back();
+                    sf::Vector2i currentCell = cellsToVisitQueue.front();
                     cellsToVisitQueue.pop();
                     visitedCells[currentCell.x][currentCell.y] = true;
 
@@ -214,9 +214,9 @@
                         bool isWallInDirection = mazeGrid.getCell( currentCell, (Direction) direction );
 
                         sf::Vector2f wallStart = sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) + 
-                                                rotatePosition({-0.5, -0.5}, (Direction) direction);
-                        sf::Vector2f wallEnd = sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) + 
-                                                rotatePosition({0.5, -0.5}, (Direction) direction);
+                                            rotatePosition({-0.5, 0.5}, (Direction) direction);
+                        sf::Vector2f wallEnd = sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) +
+                                                rotatePosition({0.5, 0.5}, (Direction) direction);
 
                         if ( !projectWall( window, wallStart, wallEnd ) )
                             continue;
@@ -238,18 +238,6 @@
                             {
                                 cellsToVisitQueue.push( connectedCell );
                             }
-                        }
-                    }
-                }
-                */
-
-                for ( int xIndex = 0; xIndex < mazeGrid.getDimensions().x; xIndex++ )
-                {
-                    for ( int yIndex = 0; yIndex < mazeGrid.getDimensions().y; yIndex++ )
-                    {
-                        for ( int direction = North; direction < NumberOfDirections; direction++ )
-                        {
-                            drawWall( window, mazeGrid, {xIndex, yIndex}, (Direction) direction );
                         }
                     }
                 }

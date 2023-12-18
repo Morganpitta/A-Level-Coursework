@@ -119,7 +119,12 @@ void rendererTestFunction()
                         renderer.getCamera().turnLeft();
                     if ( event.key.code == sf::Keyboard::D )
                         renderer.getCamera().turnRight();
-                    if ( event.key.code == sf::Keyboard::W )
+                    if ( event.key.code == sf::Keyboard::W &&
+                         !mazeGrid.getCell( 
+                            renderer.getCamera().getPosition(), 
+                            renderer.getCamera().getDirection() 
+                         )
+                        )
                         renderer.getCamera().moveForward();
                     break;
             }

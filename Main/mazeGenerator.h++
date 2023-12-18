@@ -51,7 +51,6 @@
     }
 
     void generateMazeDepthFirst( 
-        sf::RenderWindow& window,
         MazeGrid &mazeGrid, 
         float randomness, 
         std::size_t seed = time(NULL)

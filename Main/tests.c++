@@ -35,7 +35,7 @@ void mazeGridTestFunction()
 
     MazeGrid mazeGrid( { 3, 3 } );
 
-    generateMazeDepthFirst( window, mazeGrid, 1 );
+    generateMazeDepthFirst( mazeGrid, 1 );
 
     /*
     mazeGrid.set( 
@@ -97,7 +97,7 @@ void rendererTestFunction()
 
     MazeGrid mazeGrid( { 10, 10 } );
 
-    generateMazeDepthFirst( window, mazeGrid, 0 );
+    generateMazeDepthFirst( mazeGrid, 0, 0 );
 
     Renderer renderer;
 
@@ -132,7 +132,7 @@ void rendererTestFunction()
 
         window.clear( sf::Color::Black );
 
-        renderer.render( window, mazeGrid );
+        renderer.render( window, mazeGrid, {} );
 
         window.display();
     }

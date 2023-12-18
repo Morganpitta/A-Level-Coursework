@@ -3,14 +3,51 @@
 
     #include "camera.h++"
     #include "mazeGrid.h++"
+    #include "entity.h++"
     #include <queue>
+    #include <map>
 
     class Renderer
     {
         const float yNear = 0.1;
         const float wallHeight = 100;
+        const float entityHeight = 25;
         Camera camera;
         sf::VertexArray vertexArray;
+        std::vector<bool> drawnOn;
+
+        bool hasBeenDrawnOn( int xIndex )
+        {
+            assert( 
+                xIndex >= 0 &&
+                xIndex < drawnOn.size(),
+                "Index out of range"
+            );
+
+            return this->drawnOn[xIndex];
+        }
+
+        bool canDrawInRange( sf::RenderWindow &window, float startIndex, float endIndex )
+        {
+            for ( int index = std::max( 0.f, std::floor( startIndex ) ); index <= std::min( std::floor( endIndex ), window.getSize().x - 1.f ); index++ )
+            {
+                if ( !hasBeenDrawnOn(index) )
+                    return true;
+            }
+
+            return false;
+        }
+
+        void setHasBeenDrawnOn( int xIndex, bool value )
+        {
+            assert( 
+                xIndex >= 0 &&
+                xIndex < drawnOn.size(),
+                "Index out of range"
+            );
+
+            this->drawnOn[xIndex] = value;
+        }
 
         public:
             Renderer(): camera(), vertexArray( sf::PrimitiveType::Lines )
@@ -82,70 +119,108 @@
 
             void drawWallEdge( sf::RenderWindow& window, sf::Vector2f edge )
             {
-                float wallHeight = std::floor( this->wallHeight / edge.y );
-                
-                vertexArray.append( 
-                    sf::Vertex( 
-                        sf::Vector2f( 
-                            std::floor(edge.x), 
-                            ( window.getSize().y + wallHeight ) / 2 
-                        ), 
-                        sf::Color::Green 
-                    ) 
-                );
-                vertexArray.append( 
-                    sf::Vertex( 
-                        sf::Vector2f( 
-                            std::floor(edge.x), 
-                            ( window.getSize().y - wallHeight ) / 2 
-                        ), 
-                        sf::Color::Green 
-                    ) 
-                );
+                if ( onScreen( window, edge.x ) && !hasBeenDrawnOn(edge.x) )
+                {
+                    float wallHeight = std::floor( this->wallHeight / edge.y );
+                    
+                    vertexArray.append( 
+                        sf::Vertex( 
+                            sf::Vector2f( 
+                                std::floor(edge.x), 
+                                ( window.getSize().y + wallHeight ) / 2 
+                            ), 
+                            sf::Color::Green 
+                        ) 
+                    );
+                    vertexArray.append( 
+                        sf::Vertex( 
+                            sf::Vector2f( 
+                                std::floor(edge.x), 
+                                ( window.getSize().y - wallHeight ) / 2 
+                            ), 
+                            sf::Color::Green 
+                        ) 
+                    );
+
+                    setHasBeenDrawnOn( edge.x, true );
+                }
             }
 
             void drawWallTop( sf::RenderWindow& window, sf::Vector2f &wallStart, sf::Vector2f &wallEnd )
             {
                 float wallStartHeight = std::floor( this->wallHeight / wallStart.y );
-                float wallEndHeight = std::floor( this->wallHeight / wallEnd.y );
 
-                vertexArray.append( 
-                    sf::Vertex( 
-                        sf::Vector2f( 
-                            wallStart.x,
-                            ( window.getSize().y + wallStartHeight ) / 2
-                        ), 
-                        sf::Color::Green 
-                    ) 
-                );
-                vertexArray.append( 
-                    sf::Vertex( 
-                        sf::Vector2f( 
-                            wallEnd.x, 
-                            ( window.getSize().y + wallEndHeight ) / 2
-                        ), 
-                        sf::Color::Green 
-                    ) 
-                );
+                int wallStartX = std::floor( wallStart.x );
+                int wallEndX = std::min<int>( std::floor( wallEnd.x ), window.getSize().x - 1 );
+                float heightDelta = ( std::floor( this->wallHeight / wallEnd.y ) - wallStartHeight ) / ( wallEnd.x - wallStart.x );
+                
+                if ( wallStartX < 0 )
+                {
+                    wallStartHeight += heightDelta * -( wallStartX );
+                    wallStartX = 0;
+                }
 
-                vertexArray.append( 
-                    sf::Vertex( 
-                        sf::Vector2f( 
-                            wallStart.x, 
-                            ( window.getSize().y - wallStartHeight ) / 2
-                        ), 
-                        sf::Color::Green
-                    ) 
-                );
-                vertexArray.append(
-                    sf::Vertex( 
-                        sf::Vector2f( 
-                            wallEnd.x, 
-                            ( window.getSize().y - wallEndHeight ) / 2
-                        ), 
-                        sf::Color::Green 
-                    )
-                );
+                float wallEndHeight = wallStartHeight;
+                bool wasInWall = false;
+
+
+                for ( int xIndex = wallStartX; xIndex <= wallEndX; xIndex++ )
+                {
+                    if ( hasBeenDrawnOn( xIndex ) || xIndex == wallEndX )
+                    {
+                        if ( !wasInWall )
+                        {
+                            vertexArray.append(
+                                sf::Vertex(
+                                    sf::Vector2f(
+                                        wallStartX,
+                                        ( window.getSize().y + wallStartHeight ) / 2
+                                    ),
+                                    sf::Color::Green
+                                )
+                            );
+                            vertexArray.append( 
+                                sf::Vertex( 
+                                    sf::Vector2f( 
+                                        xIndex, 
+                                        ( window.getSize().y + wallEndHeight ) / 2
+                                    ), 
+                                    sf::Color::Green 
+                                ) 
+                            );
+
+                            vertexArray.append( 
+                                sf::Vertex( 
+                                    sf::Vector2f( 
+                                        wallStartX, 
+                                        ( window.getSize().y - wallStartHeight ) / 2
+                                    ), 
+                                    sf::Color::Green
+                                ) 
+                            );
+                            vertexArray.append(
+                                sf::Vertex( 
+                                    sf::Vector2f( 
+                                        xIndex, 
+                                        ( window.getSize().y - wallEndHeight ) / 2
+                                    ), 
+                                    sf::Color::Green 
+                                )
+                            );
+                        }
+
+                        wallStartX = xIndex;
+                        wallStartHeight = wallEndHeight;
+                        wasInWall = true;
+                    }
+                    else
+                    {
+                        wasInWall = false;
+                    }
+
+                    wallEndHeight += heightDelta;
+                    setHasBeenDrawnOn( xIndex, true );
+                }
             }
 
             void drawWall( 
@@ -186,7 +261,24 @@
                 }
             }
 
-            void render( sf::RenderWindow& window, MazeGrid &mazeGrid )
+            void drawEntity( 
+                sf::RenderWindow &window, 
+                Entity *entity
+            )
+            {
+                sf::Vector2f relativePosition = getCamera().relativePositionOf( sf::Vector2f( entity->getPosition() ) );
+                relativePosition.x /= relativePosition.y;
+                relativePosition.x *= ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 );
+
+                sf::CircleShape entityCircle( entityHeight/relativePosition.y, 10 );
+                entityCircle.setPosition( relativePosition.x, window.getSize().x / 2 );
+            }
+
+            void render( 
+                sf::RenderWindow& window, 
+                MazeGrid &mazeGrid,
+                std::vector<std::vector<std::vector<Entity*>>> entityGrid
+            )
             {
                 std::queue<sf::Vector2i> cellsToVisitQueue;
                 cellsToVisitQueue.push( camera.getPosition() );
@@ -202,12 +294,29 @@
 
                 vertexArray.clear();
 
+                drawnOn.resize( window.getSize().x );
+                std::fill(
+                    drawnOn.begin(),
+                    drawnOn.end(),
+                    false
+                );
+
 
                 while ( !cellsToVisitQueue.empty() )
                 {
                     sf::Vector2i currentCell = cellsToVisitQueue.front();
                     cellsToVisitQueue.pop();
                     visitedCells[currentCell.x][currentCell.y] = true;
+
+                    if ( !entityGrid.empty() )
+                    {
+                        std::vector<Entity*> entitiesInCell = entityGrid[currentCell.x][currentCell.y];
+
+                        for ( Entity *entity: entitiesInCell )
+                        {
+                            drawEntity( window, entity );
+                        }
+                    }
 
                     for ( int direction = North; direction < NumberOfDirections; direction++ )
                     {
@@ -219,6 +328,10 @@
                                                 rotatePosition({0.5, 0.5}, (Direction) direction);
 
                         if ( !projectWall( window, wallStart, wallEnd ) )
+                            continue;
+
+                        // If theres no space to draw anything why are we going to bother with any other checks
+                        if ( !canDrawInRange( window, wallStart.x, wallEnd.x ) )
                             continue;
 
                         if ( isWallInDirection )

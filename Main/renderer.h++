@@ -322,10 +322,12 @@
                     {
                         bool isWallInDirection = mazeGrid.getCell( currentCell, (Direction) direction );
 
-                        sf::Vector2f wallStart = sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) + 
-                                            rotatePosition({-0.5, 0.5}, (Direction) direction);
-                        sf::Vector2f wallEnd = sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) +
-                                                rotatePosition({0.5, 0.5}, (Direction) direction);
+                        sf::Vector2f wallStart = 
+                            sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) + 
+                            rotatePosition({-0.5, 0.5}, (Direction) direction);
+                        sf::Vector2f wallEnd = 
+                            sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) +
+                            rotatePosition({0.5, 0.5}, (Direction) direction);
 
                         if ( !projectWall( window, wallStart, wallEnd ) )
                             continue;

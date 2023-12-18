@@ -94,6 +94,7 @@
                     normaliseDirection( -getDirection() )
                 ) );
             }
+            
             void setHealth( int health )
             {
                 this->health = health;

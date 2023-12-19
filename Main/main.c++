@@ -5,14 +5,16 @@
 int main()
 {
     sf::RenderWindow window( sf::VideoMode(1600,800), "Mazewars" );
-    std::cout << "started\n";
 
     FpsLimiter fps( 60 );
 
-    MazeGrid mazeGrid( { 1000, 1000 } );
-    
+    MazeWars game( { 10, 10 } );
+
+    game.addEntity( new Entity() );
+
     while (window.isOpen())
     {
+        game.update();
         sf::Event event;
         while ( window.pollEvent(event) )
         {
@@ -23,14 +25,24 @@ int main()
                     break;
 
                 case sf::Event::KeyPressed:
-                
+                    if ( event.key.code == sf::Keyboard::A )
+                        game.getCamera().turnLeft();
+                    if ( event.key.code == sf::Keyboard::D )
+                        game.getCamera().turnRight();
+                    if ( event.key.code == sf::Keyboard::W &&
+                         !game.getMaze().getCell( 
+                            game.getCamera().getPosition(), 
+                            game.getCamera().getDirection() 
+                         )
+                        )
+                        game.getCamera().moveForward();
                     break;
             }
         }
 
         window.clear( sf::Color::Black );
 
-        drawMaze( window, mazeGrid, {10,10}, {790,790} );
+        game.render( window );
 
         window.display();
         fps.restartAndSleep();

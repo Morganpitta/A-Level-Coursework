@@ -10,8 +10,8 @@
     class Renderer
     {
         const float yNear = 0.1;
-        const float wallHeight = 150;
-        const float entityHeight = 25;
+        const float wallHeight = 200;
+        const float entityHeight = 75;
         Camera camera;
         sf::VertexArray vertexArray;
         std::vector<bool> drawnOn;
@@ -119,7 +119,7 @@
 
             void drawWallEdge( sf::RenderWindow& window, sf::Vector2f edge )
             {
-                if ( onScreen( window, edge.x ) && !hasBeenDrawnOn(edge.x) )
+                if ( onScreen( window, edge.x ) && !hasBeenDrawnOn( std::floor( edge.x ) ) )
                 {
                     float wallHeight = std::floor( this->wallHeight / edge.y );
                     
@@ -148,78 +148,86 @@
 
             void drawWallTop( sf::RenderWindow& window, sf::Vector2f &wallStart, sf::Vector2f &wallEnd )
             {
+                int wallStartX = std::floor( wallStart.x + 1 );
                 float wallStartHeight = std::floor( this->wallHeight / wallStart.y );
 
-                int wallStartX = std::floor( wallStart.x );
-                int wallEndX = std::min<int>( std::floor( wallEnd.x ), window.getSize().x - 1 );
-                float heightDelta = ( std::floor( this->wallHeight / wallEnd.y ) - wallStartHeight ) / ( wallEnd.x - wallStart.x );
+                float wallHeightDelta = ( std::floor( this->wallHeight / wallEnd.y ) - wallStartHeight ) / ( wallEnd.x - wallStart.x );
                 
                 if ( wallStartX < 0 )
                 {
-                    wallStartHeight += heightDelta * -( wallStartX );
+                    wallStartHeight += wallHeightDelta * -( wallStartX );
                     wallStartX = 0;
                 }
 
-                float wallEndHeight = wallStartHeight;
-                bool wasInWall = false;
+                int wallEndX = std::min<int>( std::floor( wallEnd.x - 1 ), this->drawnOn.size() - 1 );
 
-
-                for ( int xIndex = wallStartX; xIndex <= wallEndX; xIndex++ )
+                while ( true )
                 {
-                    if ( hasBeenDrawnOn( xIndex ) || xIndex == wallEndX )
-                    {
-                        if ( !wasInWall )
-                        {
-                            vertexArray.append(
-                                sf::Vertex(
-                                    sf::Vector2f(
-                                        wallStartX,
-                                        ( window.getSize().y + wallStartHeight ) / 2
-                                    ),
-                                    sf::Color::Green
-                                )
-                            );
-                            vertexArray.append( 
-                                sf::Vertex( 
-                                    sf::Vector2f( 
-                                        xIndex, 
-                                        ( window.getSize().y + wallEndHeight ) / 2
-                                    ), 
-                                    sf::Color::Green 
+                    bool previousWallState = hasBeenDrawnOn( wallStartX );
+                    int index = 
+                        std::min<int>(
+                            std::distance( 
+                                drawnOn.begin(), 
+                                std::find( 
+                                    drawnOn.begin() + wallStartX, 
+                                    drawnOn.end() + wallEndX, 
+                                    !previousWallState 
                                 ) 
-                            );
+                            ) - 1,
+                            wallEndX
+                        );
 
-                            vertexArray.append( 
-                                sf::Vertex( 
-                                    sf::Vector2f( 
-                                        wallStartX, 
-                                        ( window.getSize().y - wallStartHeight ) / 2
-                                    ), 
-                                    sf::Color::Green
-                                ) 
-                            );
-                            vertexArray.append(
-                                sf::Vertex( 
-                                    sf::Vector2f( 
-                                        xIndex, 
-                                        ( window.getSize().y - wallEndHeight ) / 2
-                                    ), 
-                                    sf::Color::Green 
-                                )
-                            );
-                        }
+                    float wallHeight = wallStartHeight + wallHeightDelta * ( index - wallStartX );
 
-                        wallStartX = xIndex;
-                        wallStartHeight = wallEndHeight;
-                        wasInWall = true;
-                    }
-                    else
+                    //aka its hit a section where its turned into a wall
+                    if ( previousWallState == false )
                     {
-                        wasInWall = false;
+                        vertexArray.append(
+                            sf::Vertex(
+                                sf::Vector2f(
+                                    wallStartX,
+                                    ( window.getSize().y + wallStartHeight ) / 2
+                                ),
+                                sf::Color::Green
+                            )
+                        );
+                        vertexArray.append( 
+                            sf::Vertex( 
+                                sf::Vector2f( 
+                                    index, 
+                                    ( window.getSize().y + wallHeight ) / 2
+                                ), 
+                                sf::Color::Green 
+                            ) 
+                        );
+
+                        vertexArray.append( 
+                            sf::Vertex( 
+                                sf::Vector2f(
+                                    wallStartX, 
+                                    ( window.getSize().y - wallStartHeight ) / 2
+                                ), 
+                                sf::Color::Green
+                            ) 
+                        );
+                        vertexArray.append(
+                            sf::Vertex( 
+                                sf::Vector2f( 
+                                    index, 
+                                    ( window.getSize().y - wallHeight ) / 2
+                                ), 
+                                sf::Color::Green 
+                            )
+                        );
+
+                        std::fill( drawnOn.begin() + wallStartX, drawnOn.begin() + index, true );
                     }
 
-                    wallEndHeight += heightDelta;
-                    setHasBeenDrawnOn( xIndex, true );
+                    if ( index >= wallEndX )
+                        return;
+
+                    wallStartX = index;
+                    wallStartHeight = wallHeight;
                 }
             }
 
@@ -240,38 +248,22 @@
                 drawWallTop( window, wallStart, wallEnd );
             }
 
-            void drawWall( 
-                sf::RenderWindow& window,
-                MazeGrid &mazeGrid,
-                sf::Vector2i position,
-                Direction direction
-            )
-            {
-                if ( mazeGrid.getCell( position, direction ) )
-                {
-                    sf::Vector2f wallStart = sf::Vector2f(position.x + 0.5, position.y + 0.5 ) + 
-                                            rotatePosition({-0.5, 0.5}, direction);
-                    sf::Vector2f wallEnd = sf::Vector2f(position.x + 0.5, position.y + 0.5 ) +
-                                            rotatePosition({0.5, 0.5}, direction);
-
-                    if ( !projectWall( window, wallStart, wallEnd ) )
-                        return;
-
-                    drawWall( window, wallStart, wallEnd );
-                }
-            }
-
-            void drawEntity( 
+            void drawEntity(
                 sf::RenderWindow &window, 
                 Entity *entity
             )
             {
-                sf::Vector2f relativePosition = getCamera().relativePositionOf( sf::Vector2f( entity->getPosition() ) );
-                relativePosition.x /= relativePosition.y;
-                relativePosition.x *= ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 );
+                sf::Vector2f relativePosition = getCamera().relativePositionOf( sf::Vector2f( entity->getPosition() ) + sf::Vector2f(0.5,0.5) );
+                
+                if ( relativePosition.y > this->yNear )
+                {
+                    relativePosition.x /= relativePosition.y;
+                    relativePosition.x *= ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 );
+                    relativePosition.x += window.getSize().x / 2.f;
 
-                sf::CircleShape entityCircle( entityHeight/relativePosition.y, 10 );
-                entityCircle.setPosition( relativePosition.x, window.getSize().x / 2 );
+                    float radius = entityHeight/relativePosition.y;
+                }
+
             }
 
             void render( 

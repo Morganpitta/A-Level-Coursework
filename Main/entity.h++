@@ -21,6 +21,7 @@
         Id id = NullId;
         bool dead = false;
         EntityType type = NoType;
+        sf::Texture *texture = nullptr;
         
         public:
             Entity()
@@ -55,6 +56,11 @@
             EntityType getType()
             {
                 return this->type;
+            }
+
+            sf::Texture *getTexture()
+            {
+                return this->texture;
             }
 
             void setPosition( sf::Vector2i position )

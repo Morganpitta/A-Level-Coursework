@@ -59,9 +59,9 @@
 
         for ( std::string string : directories )
         {
-            if ( string == "A-level-Coursework-Testing" )
+            if ( string == "A-Level-Coursework" )
             {
-                tmp += "A-level-Coursework-Testing/Assets";
+                tmp += "A-Level-Coursework/Assets";
                 
                 #if defined( OS_Windows )
                     std::filesystem::current_path( tmp );

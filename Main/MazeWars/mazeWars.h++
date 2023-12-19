@@ -16,7 +16,7 @@
         public:
             MazeWars( sf::Vector2i dimensions ): mazeGrid( dimensions )
             {
-                generateMazeDepthFirst( mazeGrid, 1, 0.2 );
+                generateMazeDepthFirst( mazeGrid, 1 );
                 entityGrid.resize( 
                     dimensions.x, 
                     std::vector<std::vector<Entity*>>(

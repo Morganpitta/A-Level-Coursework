@@ -6,6 +6,9 @@ int main()
 {
     sf::RenderWindow window( sf::VideoMode(1600,800), "Mazewars" );
 
+    if ( !loadEntityAssets() )
+        return 1;
+
     FpsLimiter fps( 60 );
 
     MazeWars game( { 10, 10 } );

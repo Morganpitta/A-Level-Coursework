@@ -4,6 +4,7 @@
     #include "direction.h++"
     #include "assert.h++"
     #include "SFML/Graphics.hpp"
+    #include "file.h++"
 
     typedef int Id;
     const Id NullId = -1;
@@ -13,6 +14,18 @@
         NoType
     };
 
+    sf::Texture EntityTexture;
+
+    bool loadEntityAssets()
+    {
+        setWorkingDirectoryToDefault();
+
+        if ( !EntityTexture.loadFromFile( "MazeWars/triangle.png" ) )
+            return false;
+
+        return true;
+    }
+
     class Entity
     {
         sf::Vector2i position = {0,0};
@@ -21,7 +34,7 @@
         Id id = NullId;
         bool dead = false;
         EntityType type = NoType;
-        sf::Texture *texture = nullptr;
+        sf::Texture *texture = &EntityTexture;
         
         public:
             Entity()

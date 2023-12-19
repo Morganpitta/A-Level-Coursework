@@ -10,7 +10,7 @@
     class Renderer
     {
         const float yNear = 0.1;
-        const float wallHeight = 100;
+        const float wallHeight = 150;
         const float entityHeight = 25;
         Camera camera;
         sf::VertexArray vertexArray;

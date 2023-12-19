@@ -1,6 +1,6 @@
 #include <SFML/Window.hpp>
 #include "time.h++"
-#include "mazeGrid.h++"
+#include "mazeWars.h++"
 
 int main()
 {

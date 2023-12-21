@@ -9,6 +9,7 @@
     {
         Renderer renderer;
         MazeGrid mazeGrid;
+        Id playerId;
         std::map<Id,Entity*> entities;
         std::vector<std::vector<std::vector<Entity*>>> entityGrid;
         Id nextId = 0;
@@ -41,6 +42,18 @@
                 return this->entities[id];
             }
 
+            std::vector<Id> getEntitiesAtLocation( sf::Vector2i position ) const
+            {
+                std::vector<Id> entities;
+
+                for ( const Entity* entity: entityGrid[position.x][position.y] )
+                {
+                    entities.push_back( entity->getId() );
+                }
+
+                return entities;
+            }
+
             Id addEntity( Entity* entity )
             {
                 Id entityId = nextId++;
@@ -49,8 +62,33 @@
                 return entityId;
             }
 
-            void update()
+            void update( sf::RenderWindow &window )
             {
+                sf::Event event;
+                while ( window.pollEvent(event) )
+                {
+                    switch ( event.type )
+                    {
+                        case sf::Event::Closed:
+                            window.close();
+                            break;
+
+                        case sf::Event::KeyPressed:
+                            if ( event.key.code == sf::Keyboard::A )
+                                getCamera().turnLeft();
+                            if ( event.key.code == sf::Keyboard::D )
+                                getCamera().turnRight();
+                            if ( event.key.code == sf::Keyboard::W &&
+                                !getMaze().getCell( 
+                                    getCamera().getPosition(), 
+                                    getCamera().getDirection() 
+                                )
+                                )
+                                getCamera().moveForward();
+                            break;
+                    }
+                }
+                
                 for ( std::vector<std::vector<Entity*>> &column: entityGrid )
                 {
                     for ( std::vector<Entity*> &cellEntities: column )
@@ -62,7 +100,8 @@
                 for ( std::pair<Id, Entity*> idEntityPair: entities )
                 {
                     idEntityPair.second->update();
-                    entityGrid[idEntityPair.second->getPosition().x][idEntityPair.second->getPosition().y].push_back( idEntityPair.second );
+                    sf::Vector2i position = idEntityPair.second->getPosition();
+                    entityGrid[position.x][position.y].push_back( idEntityPair.second );
                 }
             }
 

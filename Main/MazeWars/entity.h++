@@ -41,37 +41,37 @@
             {
             }
 
-            sf::Vector2i getPosition()
+            sf::Vector2i getPosition() const
             {
                 return this->position;
             }
 
-            Direction getDirection()
+            Direction getDirection() const
             {
                 return this->direction;
             }
 
-            int getHealth()
+            int getHealth() const
             {
                 return this->health;
             }
 
-            Id getId()
+            Id getId() const
             {
                 return this->id;
             }
 
-            bool isDead()
+            bool isDead() const
             {
                 return this->dead;
             }
 
-            EntityType getType()
+            EntityType getType() const
             {
                 return this->type;
             }
 
-            sf::Texture *getTexture()
+            sf::Texture *getTexture() const
             {
                 return this->texture;
             }

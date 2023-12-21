@@ -17,7 +17,7 @@
         sf::VertexArray entityVertices;
         std::vector<bool> drawnOn;
 
-        bool hasBeenDrawnOn( int xIndex )
+        bool hasBeenDrawnOn( int xIndex ) const
         {
             assert( 
                 xIndex >= 0 &&
@@ -28,7 +28,11 @@
             return this->drawnOn[xIndex];
         }
 
-        bool canDrawInRange( sf::RenderWindow &window, float startIndex, float endIndex )
+        bool canDrawInRange( 
+            sf::RenderWindow &window, 
+            float startIndex, 
+            float endIndex 
+        ) const
         {
             for ( int index = std::max( 0.f, std::floor( startIndex ) ); index <= std::min( std::floor( endIndex ), window.getSize().x - 1.f ); index++ )
             {
@@ -61,12 +65,12 @@
                 return this->camera;
             }
 
-            float getYNear()
+            float getYNear() const
             {
                 return this->yNear;
             }
 
-            bool onScreen( sf::RenderWindow& window, float xValue )
+            bool onScreen( sf::RenderWindow& window, float xValue ) const
             {
                 return 0 <= xValue && xValue < window.getSize().x;
             }
@@ -118,9 +122,13 @@
                 return true;
             }
 
-            void drawWallEdge( sf::RenderWindow& window, sf::Vector2f edge )
+            void drawWallEdge( 
+                sf::RenderWindow& window, 
+                sf::Vector2f edge 
+            )
             {
-                if ( onScreen( window, edge.x ) && !hasBeenDrawnOn( std::floor( edge.x ) ) )
+                if ( onScreen( window, edge.x ) && 
+                     !hasBeenDrawnOn( std::floor( edge.x ) ) )
                 {
                     float wallHeight = std::floor( this->wallHeight / edge.y );
                     
@@ -147,7 +155,11 @@
                 }
             }
 
-            void drawWallTop( sf::RenderWindow& window, sf::Vector2f &wallStart, sf::Vector2f &wallEnd )
+            void drawWallTop( 
+                sf::RenderWindow& window, 
+                sf::Vector2f &wallStart, 
+                sf::Vector2f &wallEnd 
+            )
             {
                 int wallStartX = std::floor( wallStart.x + 1 );
                 float wallStartHeight = std::floor( this->wallHeight / wallStart.y );
@@ -254,7 +266,11 @@
                 Entity *entity
             )
             {
-                sf::Vector2f relativePosition = getCamera().relativePositionOf( sf::Vector2f( entity->getPosition() ) + sf::Vector2f(0.5,0.5) );
+                sf::Vector2f relativePosition = 
+                    getCamera().relativePositionOf( 
+                        sf::Vector2f( entity->getPosition() ) + 
+                        sf::Vector2f(0.5,0.5) 
+                    );
                 
                 if ( relativePosition.y > this->yNear )
                 {
@@ -287,13 +303,33 @@
                             );
                         float entityTextureEndX = entityTextureStartX + (index - entityImageStartX) * entityTextureDelta;
 
-                        //aka its hit a section where its turned into a wall
                         if ( wasDrawnOn == false )
                         {
-                            sf::RectangleShape entityRectangle( {index - entityImageStartX, radius} );
-                            entityRectangle.setPosition( { entityImageStartX, ( window.getSize().y - radius ) / 2} );
+                            sf::RectangleShape entityRectangle(
+                                {
+                                    float( index -  entityImageStartX ),
+                                    radius
+                                }
+                            );
+                            entityRectangle.setPosition( 
+                                { 
+                                    float( entityImageStartX ), 
+                                    ( window.getSize().y - radius ) / 2
+                                } 
+                            );
                             entityRectangle.setTexture( entity->getTexture() );
-                            entityRectangle.setTextureRect( sf::IntRect( {entityTextureStartX,0}, {entityTextureEndX - entityTextureStartX,entity->getTexture()->getSize().y} ) );
+                            entityRectangle.setTextureRect( 
+                                sf::IntRect( 
+                                    { 
+                                        int( entityTextureStartX ), 
+                                        0 
+                                    }, 
+                                    { 
+                                        int( entityTextureEndX - entityTextureStartX ),
+                                        int( entity->getTexture()->getSize().y )
+                                    } 
+                                ) 
+                            );
                             window.draw(entityRectangle);
                         }
 
@@ -307,8 +343,8 @@
 
             }
 
-            void render( 
-                sf::RenderWindow& window, 
+            void render(
+                sf::RenderWindow& window,
                 MazeGrid &mazeGrid,
                 std::vector<std::vector<std::vector<Entity*>>> entityGrid
             )
@@ -341,14 +377,11 @@
                     cellsToVisitQueue.pop();
                     visitedCells[currentCell.x][currentCell.y] = true;
 
-                    if ( !entityGrid.empty() )
-                    {
-                        std::vector<Entity*> entitiesInCell = entityGrid[currentCell.x][currentCell.y];
+                    std::vector<Entity*> entitiesInCell = entityGrid[currentCell.x][currentCell.y];
 
-                        for ( Entity *entity: entitiesInCell )
-                        {
-                            drawEntity( window, entity );
-                        }
+                    for ( Entity *entity: entitiesInCell )
+                    {
+                        drawEntity( window, entity );
                     }
 
                     for ( int direction = North; direction < NumberOfDirections; direction++ )

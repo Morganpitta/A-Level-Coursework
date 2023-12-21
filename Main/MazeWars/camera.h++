@@ -16,17 +16,17 @@
             {
             }
 
-            sf::Vector2i getPosition()
+            sf::Vector2i getPosition() const
             {
                 return this->position;
             }
 
-            Direction getDirection()
+            Direction getDirection() const
             {
                 return this->direction;
             }
 
-            float getFov()
+            float getFov() const
             {
                 return this->fov;
             }

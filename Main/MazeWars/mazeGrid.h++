@@ -25,38 +25,38 @@
                 verticalSegments.clear();
             }
 
-            sf::Vector2i getDimensions()
+            sf::Vector2i getDimensions() const
             {
                 return this->dimensions;
             }
 
-            bool inBounds( sf::Vector2i position ) 
+            bool inBounds( sf::Vector2i position )  const
             {
                 return 0 <= position.x && position.x < getDimensions().x &&
                        0 <= position.y && position.y < getDimensions().y;
             }
 
-            int getNumberOfWalls()
+            int getNumberOfWalls() const
             {
                 return this->numberOfWalls;
             }
 
-            int getNumberOfHorizontalSegments()
+            int getNumberOfHorizontalSegments() const
             {
                 return getDimensions().x * (getDimensions().y+1);
             }
 
-            int getNumberOfVerticalSegments()
+            int getNumberOfVerticalSegments() const
             {
                 return (getDimensions().x+1) * getDimensions().y;
             }
 
-            int getNumberOfWallSegments()
+            int getNumberOfWallSegments() const
             {
                 return getNumberOfHorizontalSegments() + getNumberOfVerticalSegments();
             }
 
-            bool getHorizontal( sf::Vector2i position )
+            bool getHorizontal( sf::Vector2i position ) const
             {
                 assert( 
                     position.x+position.y*getDimensions().x < getNumberOfHorizontalSegments(),
@@ -66,7 +66,7 @@
                 return this->horizontalSegments[position.x+position.y*getDimensions().x];
             }
 
-            bool getVertical( sf::Vector2i position )
+            bool getVertical( sf::Vector2i position ) const
             {
                 assert( 
                     position.x+position.y*getDimensions().x < getNumberOfVerticalSegments(),
@@ -79,7 +79,7 @@
             bool getCell( 
                 sf::Vector2i position, 
                 Direction direction 
-            )
+            ) const
             {
                 switch( direction )
                 {

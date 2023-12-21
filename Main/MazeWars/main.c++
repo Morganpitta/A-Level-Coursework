@@ -17,31 +17,7 @@ int main()
 
     while (window.isOpen())
     {
-        game.update();
-        sf::Event event;
-        while ( window.pollEvent(event) )
-        {
-            switch ( event.type )
-            {
-                case sf::Event::Closed:
-                    window.close();
-                    break;
-
-                case sf::Event::KeyPressed:
-                    if ( event.key.code == sf::Keyboard::A )
-                        game.getCamera().turnLeft();
-                    if ( event.key.code == sf::Keyboard::D )
-                        game.getCamera().turnRight();
-                    if ( event.key.code == sf::Keyboard::W &&
-                         !game.getMaze().getCell( 
-                            game.getCamera().getPosition(), 
-                            game.getCamera().getDirection() 
-                         )
-                        )
-                        game.getCamera().moveForward();
-                    break;
-            }
-        }
+        game.update( window );
 
         window.clear( sf::Color::Black );
 

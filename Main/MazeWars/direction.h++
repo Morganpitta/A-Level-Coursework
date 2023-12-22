@@ -67,6 +67,26 @@
         }
     }
 
+    Direction getDirectionOf( 
+        sf::Vector2i position1, 
+        sf::Vector2i position2 
+    )
+    {
+        if ( position2 == sf::Vector2i( position1.x, position1.y+1 ) )
+            return North;
+
+        if ( position2 == sf::Vector2i( position1.x+1, position1.y ) )
+            return East;
+
+        if ( position2 == sf::Vector2i( position1.x, position1.y-1 ) )
+            return South;
+
+        if ( position2 == sf::Vector2i( position1.x-1, position1.y ) )
+            return West;
+
+        return NoDirection;
+    }
+
     sf::Vector2f rotatePosition( 
         sf::Vector2f position, 
         Direction direction 

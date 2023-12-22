@@ -1,6 +1,8 @@
 #if !defined( ENTITY_HPP )
 #define ENTITY_HPP
 
+    class MazeWars;
+    #include "mazeWars.h++"
     #include "direction.h++"
     #include "assert.h++"
     #include "SFML/Graphics.hpp"
@@ -11,16 +13,21 @@
 
     enum EntityType
     {
-        NoType
+        NoType,
+        EnemyType
     };
 
-    sf::Texture EntityTexture;
+    sf::Texture TriangleTexture;
+    sf::Texture CircleTexture;
 
     bool loadEntityAssets()
     {
         setWorkingDirectoryToDefault();
 
-        if ( !EntityTexture.loadFromFile( "MazeWars/triangle.png" ) )
+        if ( !TriangleTexture.loadFromFile( "MazeWars/triangle.png" ) )
+            return false;
+
+        if ( !CircleTexture.loadFromFile( "MazeWars/circle.png" ) )
             return false;
 
         return true;
@@ -28,16 +35,18 @@
 
     class Entity
     {
-        sf::Vector2i position = {0,0};
-        Direction direction = North;
-        int health = 0;
-        Id id = NullId;
-        bool dead = false;
-        EntityType type = NoType;
-        sf::Texture *texture = &EntityTexture;
+        protected:
+            sf::Vector2i position = {0,0};
+            Direction direction = North;
+            int health = 0;
+            Id id = NullId;
+            bool dead = false;
+            EntityType type = NoType;
+            sf::Texture *texture = nullptr;
+            float size = 75;
         
         public:
-            Entity()
+            Entity( sf::Vector2i position = {0,0} ): position( position )
             {
             }
 
@@ -74,6 +83,11 @@
             sf::Texture *getTexture() const
             {
                 return this->texture;
+            }
+
+            float getSize() const
+            {
+                return this->size;
             }
 
             void setPosition( sf::Vector2i position )
@@ -137,7 +151,7 @@
                 this->dead = true;
             }
 
-            virtual void update()
+            virtual void update( MazeWars &game )
             {
 
             }

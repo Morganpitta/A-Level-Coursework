@@ -3,7 +3,7 @@
 
     #include "camera.h++"
     #include "mazeGrid.h++"
-    #include "entity.h++"
+    #include "Entity/entity.h++"
     #include <queue>
     #include <map>
 
@@ -11,7 +11,6 @@
     {
         const float yNear = 0.1;
         const float wallHeight = 200;
-        const float entityHeight = 75;
         Camera camera;
         sf::VertexArray wallVertices;
         sf::VertexArray entityVertices;
@@ -82,7 +81,11 @@
                 return { wallStart.x + ( wallEnd.x - wallStart.x ) * delta, getYNear() };
             }
 
-            bool projectWall( sf::RenderWindow& window, sf::Vector2f &wallStart, sf::Vector2f &wallEnd )
+            bool projectWall( 
+                sf::RenderWindow& window, 
+                sf::Vector2f &wallStart, 
+                sf::Vector2f &wallEnd 
+            )
             {
                 //Getting relative position
                 wallStart = getCamera().relativePositionOf( wallStart );
@@ -117,6 +120,33 @@
 
                 // Test if offscreen
                 if ( wallEnd.x < 0  || wallStart.x > window.getSize().x )
+                    return false;
+
+                return true;
+            }
+
+            bool projectPoint( 
+                sf::RenderWindow& window, 
+                sf::Vector2f &position, 
+                float &size 
+            )
+            {
+                //Getting relative position
+                position = getCamera().relativePositionOf( position );
+
+                if ( position.y < getYNear() )
+                    return false;
+                
+                position.x /= position.y;
+
+                position.x *= ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 );
+
+                position.x += window.getSize().x / 2.f;
+
+                size /= position.y * 2;
+
+                // Test if offscreen
+                if ( position.x + size < 0  || position.x - size > window.getSize().x )
                     return false;
 
                 return true;
@@ -266,25 +296,25 @@
                 Entity *entity
             )
             {
-                sf::Vector2f relativePosition = 
-                    getCamera().relativePositionOf( 
-                        sf::Vector2f( entity->getPosition() ) + 
-                        sf::Vector2f(0.5,0.5) 
-                    );
-                
-                if ( relativePosition.y > this->yNear )
+                sf::Vector2f position = 
+                    sf::Vector2f( entity->getPosition() ) + 
+                    sf::Vector2f(0.5,0.5);
+
+                float size = entity->getSize();
+
+                if ( projectPoint( window, position, size ) )
                 {
-                    relativePosition.x /= relativePosition.y;
-                    relativePosition.x *= ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 );
-                    relativePosition.x += window.getSize().x / 2.f;
-
-                    float radius = entityHeight/relativePosition.y;
-
-                    int entityImageStartX = std::max<int>( 0, std::floor( relativePosition.x - radius/2 ) );
+                    int entityImageStartX = std::floor( position.x - size );
                     float entityTextureStartX = 0;
-                    float entityTextureDelta = entity->getTexture()->getSize().x / radius;
+                    float entityTextureDelta = entity->getTexture()->getSize().x / ( size * 2 );
+
+                    if ( entityImageStartX < 0 )
+                    {
+                        entityTextureStartX += -( entityImageStartX ) * entityTextureDelta;
+                        entityImageStartX = 0;
+                    }
                 
-                    int entityImageEndX = std::min<int>( std::floor( relativePosition.x + radius/2 ), this->drawnOn.size() - 1 );
+                    int entityImageEndX = std::min<int>( std::floor( position.x + size ), this->drawnOn.size() - 1 );
 
                     while ( true )
                     {
@@ -308,13 +338,13 @@
                             sf::RectangleShape entityRectangle(
                                 {
                                     float( index -  entityImageStartX ),
-                                    radius
+                                    size * 2
                                 }
                             );
                             entityRectangle.setPosition( 
                                 { 
                                     float( entityImageStartX ), 
-                                    ( window.getSize().y - radius ) / 2
+                                    ( window.getSize().y ) / 2 - size
                                 } 
                             );
                             entityRectangle.setTexture( entity->getTexture() );
@@ -340,13 +370,13 @@
                         entityTextureStartX = entityTextureEndX;
                     }
                 }
-
             }
 
             void render(
                 sf::RenderWindow& window,
                 MazeGrid &mazeGrid,
-                std::vector<std::vector<std::vector<Entity*>>> entityGrid
+                std::vector<std::vector<std::vector<Entity*>>> entityGrid,
+                Id playerId
             )
             {
                 std::queue<sf::Vector2i> cellsToVisitQueue;
@@ -381,7 +411,8 @@
 
                     for ( Entity *entity: entitiesInCell )
                     {
-                        drawEntity( window, entity );
+                        if ( entity->getId() != playerId )
+                            drawEntity( window, entity );
                     }
 
                     for ( int direction = North; direction < NumberOfDirections; direction++ )

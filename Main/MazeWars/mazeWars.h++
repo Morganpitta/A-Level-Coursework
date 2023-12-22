@@ -1,8 +1,9 @@
 #if !defined( MAZE_WARS_HPP )
 #define MAZE_WARS_HPP
 
+    class Entity;
     #include "renderer.h++"
-    #include "entity.h++"
+    #include "Entity/entity.h++"
     #include "mazeGenerator.h++"
 
     class MazeWars
@@ -25,6 +26,8 @@
                         std::vector<Entity*>()
                     )
                 );
+
+                this->playerId = addEntity( new Entity() );
             }
 
             Camera &getCamera()
@@ -40,6 +43,11 @@
             Entity *getEntity( Id id )
             {
                 return this->entities[id];
+            }
+
+            Entity *getPlayer()
+            {
+                return getEntity( this->playerId );
             }
 
             std::vector<Id> getEntitiesAtLocation( sf::Vector2i position ) const
@@ -75,19 +83,22 @@
 
                         case sf::Event::KeyPressed:
                             if ( event.key.code == sf::Keyboard::A )
-                                getCamera().turnLeft();
+                                getPlayer()->turnLeft();
                             if ( event.key.code == sf::Keyboard::D )
-                                getCamera().turnRight();
+                                getPlayer()->turnRight();
                             if ( event.key.code == sf::Keyboard::W &&
                                 !getMaze().getCell( 
-                                    getCamera().getPosition(), 
-                                    getCamera().getDirection() 
+                                    getPlayer()->getPosition(), 
+                                    getPlayer()->getDirection() 
                                 )
                                 )
-                                getCamera().moveForward();
+                                getPlayer()->moveForward();
                             break;
                     }
                 }
+
+                getCamera().setPosition( getPlayer()->getPosition() );
+                getCamera().setDirection( getPlayer()->getDirection() );
                 
                 for ( std::vector<std::vector<Entity*>> &column: entityGrid )
                 {
@@ -99,7 +110,7 @@
 
                 for ( std::pair<Id, Entity*> idEntityPair: entities )
                 {
-                    idEntityPair.second->update();
+                    idEntityPair.second->update( *this );
                     sf::Vector2i position = idEntityPair.second->getPosition();
                     entityGrid[position.x][position.y].push_back( idEntityPair.second );
                 }
@@ -107,7 +118,7 @@
 
             void render( sf::RenderWindow &window )
             {
-                renderer.render( window, mazeGrid, entityGrid );
+                renderer.render( window, mazeGrid, entityGrid, playerId );
             }
     };
 

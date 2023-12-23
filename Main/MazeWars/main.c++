@@ -12,7 +12,7 @@ int main()
 
     FpsLimiter fps( 60 );
 
-    MazeWars game( { 10, 10 } );
+    MazeWars game( { 100, 100 } );
 
     game.addEntity( new Enemy() );
 

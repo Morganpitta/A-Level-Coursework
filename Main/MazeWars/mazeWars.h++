@@ -93,6 +93,8 @@
                                 )
                                 )
                                 getPlayer()->moveForward();
+                            if ( event.key.code == sf::Keyboard::P )
+                                std::cout<<"REEEE";
                             break;
                     }
                 }
@@ -119,6 +121,14 @@
             void render( sf::RenderWindow &window )
             {
                 renderer.render( window, mazeGrid, entityGrid, playerId );
+
+                std::vector<sf::Vector2i> entityLocations;
+                for ( std::pair<Id,Entity*> idEntityPair: entities )
+                {
+                    entityLocations.push_back( idEntityPair.second->getPosition() );
+                }
+
+                drawMaze( window, getMaze(), {50,50}, {750,750}, entityLocations );
             }
     };
 

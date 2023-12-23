@@ -375,7 +375,7 @@
             void render(
                 sf::RenderWindow& window,
                 MazeGrid &mazeGrid,
-                std::vector<std::vector<std::vector<Entity*>>> entityGrid,
+                const std::vector<std::vector<std::vector<Entity*>>> &entityGrid,
                 Id playerId
             )
             {

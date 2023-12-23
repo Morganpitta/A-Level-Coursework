@@ -40,7 +40,7 @@
                     else 
                     { 
                         moveForward();
-                        movementCoolDown = 60;
+                        movementCoolDown = 60/path.size();
                     }
                 }
             }

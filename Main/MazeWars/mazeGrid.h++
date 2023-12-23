@@ -236,7 +236,7 @@
             }
     };
 
-    void drawMaze( sf::RenderWindow &window, MazeGrid &maze, sf::Vector2f topLeft, sf::Vector2f bottomRight, sf::Vector2i marker = {-1,-1} )
+    void drawMaze( sf::RenderWindow &window, MazeGrid &maze, sf::Vector2f topLeft, sf::Vector2f bottomRight, std::vector<sf::Vector2i> markers = {} )
     {
         // Create a vertex array with double the number of vertices as the number of walls
         // ( As each wall is comprised of two vertices )
@@ -305,7 +305,7 @@
         }
         window.draw( vertexArray );
         
-        if ( marker != sf::Vector2i(-1,-1) )
+        for ( sf::Vector2i marker: markers )
         {
             sf::RectangleShape markerRectangle = sf::RectangleShape({xSegmentSize/2.f,ySegmentSize/2.f});
 

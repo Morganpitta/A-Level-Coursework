@@ -2,6 +2,7 @@
 #define PATH_FINDING_HPP
 
     #include "entity.h++"
+    #include <set>
 
     const sf::Vector2i NullPosition = {-1,-1};
 
@@ -29,19 +30,29 @@
         return abs( startPosition.x - finalPosition.x ) + abs( startPosition.y - finalPosition.y );
     }
 
-    std::vector<sf::Vector2i> AStarPath( MazeGrid mazeGrid, sf::Vector2i startPosition, sf::Vector2i finalPosition )
+    struct CellData
     {
-        // A 2d array of tuples representing specific graph data about each cell. 
-        // The first value represents the previous connected cell, the second value represents the distance to the start 
-        // and the final value represents the minimum predicted distance to the end
-        struct CellData
+        sf::Vector2i previousCell = NullPosition;
+        int distanceToStart = 0;
+        int minDistanceToEnd = 0;
+    };
+    std::vector<std::vector<CellData>> graphData;
+    struct SortBy
+    {
+        bool operator()(sf::Vector2i position1, sf::Vector2i position2) const
         {
-            sf::Vector2i previousCell = NullPosition;
-            int distanceToStart = 0;
-            int minDistanceToEnd = 0;
-        };
+            if ( graphData[position1.x][position1.y].minDistanceToEnd ==
+                 graphData[position2.x][position2.y].minDistanceToEnd )
+            {
+                return std::tie( position1.x, position1.y ) < std::tie( position2.x, position2.y );
+            }
 
-        std::vector<std::vector<CellData>> graphData;
+            return graphData[position1.x][position1.y].minDistanceToEnd <
+                    graphData[position2.x][position2.y].minDistanceToEnd;
+        }
+    };
+    std::vector<sf::Vector2i> AStarPath( MazeGrid &mazeGrid, sf::Vector2i startPosition, sf::Vector2i finalPosition )
+    {
         graphData.resize(
             mazeGrid.getDimensions().x,
             std::vector<CellData>(
@@ -49,12 +60,20 @@
             )
         );
 
-        std::vector<sf::Vector2i> cellsToVisit;
-        cellsToVisit.push_back( startPosition );
+        for ( int xIndex = 0; xIndex < mazeGrid.getDimensions().x; xIndex++ )
+        {
+            for ( int yIndex = 0; yIndex < mazeGrid.getDimensions().x; yIndex++ )
+            {
+                graphData[xIndex][yIndex].previousCell = NullPosition;
+            }
+        }
+
+        std::set<sf::Vector2i,SortBy> cellsToVisit;
+        cellsToVisit.insert( startPosition );
 
         while ( cellsToVisit.size() > 0 ) 
         {
-            sf::Vector2i currentCell = cellsToVisit.front();
+            sf::Vector2i currentCell = *cellsToVisit.begin();
             cellsToVisit.erase(cellsToVisit.begin());
 
             if ( currentCell == finalPosition )
@@ -64,7 +83,7 @@
             {
                 bool isWall = mazeGrid.getCell( currentCell, (Direction) direction );
 
-                if ( !isWall ) 
+                if ( !isWall )
                 {
                     sf::Vector2i nextCell = transposePosition( currentCell, (Direction) direction );
                     if ( nextCell == startPosition || !mazeGrid.inBounds( nextCell ) )
@@ -79,21 +98,10 @@
                         graphData[nextCell.x][nextCell.y].minDistanceToEnd = graphData[nextCell.x][nextCell.y].distanceToStart + 
                                                                             manhattanDistance(nextCell, finalPosition);
                         
-                        if ( std::count( cellsToVisit.begin(), cellsToVisit.end(), nextCell ) == 0 )
-                            cellsToVisit.push_back( nextCell );
+                        cellsToVisit.insert( nextCell );
                     }
                 }
             }
-
-            std::sort( 
-                cellsToVisit.begin(), 
-                cellsToVisit.end(), 
-                [graphData](sf::Vector2i position1, sf::Vector2i position2)
-                {
-                    return graphData[position1.x][position1.y].minDistanceToEnd <
-                            graphData[position2.x][position2.y].minDistanceToEnd;
-                } 
-            );
         }
 
         if ( graphData[finalPosition.x][finalPosition.y].previousCell == NullPosition )
@@ -101,7 +109,7 @@
         
         std::vector<sf::Vector2i> path = {};
         sf::Vector2i cell = finalPosition;
-        while ( cell != NullPosition ) 
+        while ( cell != NullPosition )
         {
             path.insert( path.begin(), cell );
             cell = graphData[cell.x][cell.y].previousCell;

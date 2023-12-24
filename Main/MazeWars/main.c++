@@ -12,9 +12,11 @@ int main()
 
     FpsLimiter fps( 60 );
 
-    MazeWars game( { 100, 100 } );
+    MazeWars game( { 500, 500 } );
 
     game.addEntity( new Enemy() );
+
+    game.getPlayer()->setPosition({499,499});
 
     while (window.isOpen())
     {

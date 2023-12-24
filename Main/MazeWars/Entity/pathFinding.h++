@@ -3,8 +3,7 @@
 
     #include "entity.h++"
     #include <set>
-
-    const sf::Vector2i NullPosition = {-1,-1};
+    #include <functional>
 
     bool isDirectlyInFront( MazeGrid &mazeGrid, Entity entity1, sf::Vector2i entity2Position )
     {
@@ -30,93 +29,132 @@
         return abs( startPosition.x - finalPosition.x ) + abs( startPosition.y - finalPosition.y );
     }
 
-    struct CellData
+    class AStarSolver
     {
-        sf::Vector2i previousCell = NullPosition;
-        int distanceToStart = 0;
-        int minDistanceToEnd = 0;
-    };
-    std::vector<std::vector<CellData>> graphData;
-    struct SortBy
-    {
-        bool operator()(sf::Vector2i position1, sf::Vector2i position2) const
+        struct CellData
         {
-            if ( graphData[position1.x][position1.y].minDistanceToEnd ==
-                 graphData[position2.x][position2.y].minDistanceToEnd )
+            sf::Vector2i previousCell = NullPosition;
+            int distanceToStart = 0;
+            int minDistanceToEnd = 0;
+        };
+        std::vector<std::vector<CellData>> graphData;
+        
+        bool comparisonFunction( const sf::Vector2i &position1, const sf::Vector2i &position2) const
+        {
+            if ( this->graphData[position1.x][position1.y].minDistanceToEnd ==
+                 this->graphData[position2.x][position2.y].minDistanceToEnd )
             {
                 return std::tie( position1.x, position1.y ) < std::tie( position2.x, position2.y );
             }
 
-            return graphData[position1.x][position1.y].minDistanceToEnd <
-                    graphData[position2.x][position2.y].minDistanceToEnd;
+            return this->graphData[position1.x][position1.y].minDistanceToEnd <
+                   this->graphData[position2.x][position2.y].minDistanceToEnd;
         }
-    };
-    std::vector<sf::Vector2i> AStarPath( MazeGrid &mazeGrid, sf::Vector2i startPosition, sf::Vector2i finalPosition )
-    {
-        graphData.resize(
-            mazeGrid.getDimensions().x,
-            std::vector<CellData>(
-                mazeGrid.getDimensions().y
-            )
-        );
+        std::set<sf::Vector2i,std::function<bool(const sf::Vector2i&, const sf::Vector2i&)>> cellsToVisit;
 
-        for ( int xIndex = 0; xIndex < mazeGrid.getDimensions().x; xIndex++ )
+
+        void reset( sf::Vector2i dimensions )
         {
-            for ( int yIndex = 0; yIndex < mazeGrid.getDimensions().x; yIndex++ )
+            this->graphData.resize(
+                dimensions.x,
+                std::vector<CellData>(
+                    dimensions.y
+                )
+            );
+            
+            for ( int xIndex = 0; xIndex < dimensions.x; xIndex++ )
             {
-                graphData[xIndex][yIndex].previousCell = NullPosition;
-            }
-        }
-
-        std::set<sf::Vector2i,SortBy> cellsToVisit;
-        cellsToVisit.insert( startPosition );
-
-        while ( cellsToVisit.size() > 0 ) 
-        {
-            sf::Vector2i currentCell = *cellsToVisit.begin();
-            cellsToVisit.erase(cellsToVisit.begin());
-
-            if ( currentCell == finalPosition )
-                break;
-
-            for ( int direction = North; direction < NumberOfDirections; direction++ )
-            {
-                bool isWall = mazeGrid.getCell( currentCell, (Direction) direction );
-
-                if ( !isWall )
+                for ( int yIndex = 0; yIndex < dimensions.y; yIndex++ )
                 {
-                    sf::Vector2i nextCell = transposePosition( currentCell, (Direction) direction );
-                    if ( nextCell == startPosition || !mazeGrid.inBounds( nextCell ) )
-                        continue;
-
-                    if ( graphData[nextCell.x][nextCell.y].previousCell == NullPosition || 
-                         graphData[nextCell.x][nextCell.y].distanceToStart > graphData[currentCell.x][currentCell.y].distanceToStart + 1 )
-                    { 
-
-                        graphData[nextCell.x][nextCell.y].previousCell = currentCell;
-                        graphData[nextCell.x][nextCell.y].distanceToStart = graphData[currentCell.x][currentCell.y].distanceToStart + 1;
-                        graphData[nextCell.x][nextCell.y].minDistanceToEnd = graphData[nextCell.x][nextCell.y].distanceToStart + 
-                                                                            manhattanDistance(nextCell, finalPosition);
-                        
-                        cellsToVisit.insert( nextCell );
-                    }
+                    this->graphData[xIndex][yIndex].previousCell = NullPosition;
                 }
             }
+
+            this->cellsToVisit.clear();
         }
 
-        if ( graphData[finalPosition.x][finalPosition.y].previousCell == NullPosition )
-            return {};
-        
-        std::vector<sf::Vector2i> path = {};
-        sf::Vector2i cell = finalPosition;
-        while ( cell != NullPosition )
+        CellData &getCellData( sf::Vector2i position )
         {
-            path.insert( path.begin(), cell );
-            cell = graphData[cell.x][cell.y].previousCell;
+            return this->graphData[position.x][position.y];
         }
 
-        return path;
-    }
+        void addCellToVisit( sf::Vector2i currentCell, sf::Vector2i nextCell, sf::Vector2i finalPosition )
+        {
+            if ( 
+                getCellData(nextCell).previousCell == NullPosition || 
+                getCellData(nextCell).distanceToStart > 
+                getCellData(currentCell).distanceToStart + 1 
+            )
+            { 
 
+                getCellData(nextCell).previousCell = currentCell;
+                getCellData(nextCell).distanceToStart = 
+                    getCellData(currentCell).distanceToStart + 1;
+
+                getCellData(nextCell).minDistanceToEnd = 
+                    getCellData(nextCell).distanceToStart +
+                    manhattanDistance(nextCell, finalPosition);
+                
+                cellsToVisit.insert( nextCell );
+            }
+        }
+
+        std::vector<sf::Vector2i> getReturnPath( sf::Vector2i startPosition, sf::Vector2i finalPosition )
+        {
+            std::vector<sf::Vector2i> path = {};
+            sf::Vector2i cell = finalPosition;
+            while ( cell != startPosition )
+            {
+                // Somethings gone very wrong if this is true ( or theres just no path back )
+                if ( getCellData(cell).previousCell == NullPosition )
+                    return {};
+
+                path.insert( path.begin(), cell );
+                cell = getCellData(cell).previousCell;
+            }
+
+            path.insert( path.begin(), startPosition );
+
+            return path;
+        }
+
+        public:
+            AStarSolver(): cellsToVisit(std::bind(&comparisonFunction,this, std::placeholders::_1, std::placeholders::_2))
+            {
+                
+            }
+
+            std::vector<sf::Vector2i> solve( MazeGrid &mazeGrid, sf::Vector2i startPosition, sf::Vector2i finalPosition )
+            {
+                reset( mazeGrid.getDimensions() );
+
+                cellsToVisit.insert( startPosition );
+
+                while ( cellsToVisit.size() > 0 ) 
+                {
+                    sf::Vector2i currentCell = *cellsToVisit.begin();
+                    cellsToVisit.erase(cellsToVisit.begin());
+
+                    if ( currentCell == finalPosition )
+                        break;
+
+                    for ( int direction = North; direction < NumberOfDirections; direction++ )
+                    {
+                        bool isWall = mazeGrid.getCell( currentCell, (Direction) direction );
+
+                        if ( !isWall )
+                        {
+                            sf::Vector2i nextCell = transposePosition( currentCell, (Direction) direction );
+                            if ( nextCell == startPosition || !mazeGrid.inBounds( nextCell ) )
+                                continue;
+
+                            addCellToVisit( currentCell, nextCell, finalPosition );
+                        }
+                    }
+                }
+
+                return getReturnPath( startPosition, finalPosition );
+            }
+    } PathSolver;
 
 #endif /* PATH_FINDING_HPP */

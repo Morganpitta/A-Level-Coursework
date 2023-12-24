@@ -23,7 +23,7 @@
                     return;
                 }
 
-                std::vector<sf::Vector2i> path = AStarPath( game.getMaze(), getPosition(), game.getPlayer()->getPosition() );
+                std::vector<sf::Vector2i> path = PathSolver.solve( game.getMaze(), getPosition(), game.getPlayer()->getPosition() );
 
                 if ( !path.empty() )
                 {

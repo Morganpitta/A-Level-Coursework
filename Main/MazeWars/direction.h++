@@ -6,6 +6,8 @@
     #define _USE_MATH_DEFINES
     #include <cmath>
 
+    const sf::Vector2i NullPosition = {-1,-1};
+
     enum Direction
     {
         North,

@@ -168,6 +168,12 @@
 
             void resize( sf::Vector2i dimensions )
             {
+                assert( 
+                    dimensions.x > 0 &&
+                    dimensions.y > 0,
+                    "Dimensions must be positive" 
+                );
+
                 this->dimensions = dimensions;
                 this->numberOfWalls = getNumberOfWallSegments();
 

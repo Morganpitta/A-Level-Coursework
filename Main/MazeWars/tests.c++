@@ -10,20 +10,20 @@ void directionTestFunction()
 {
     sf::Vector2i position = {0,0};
 
-    for ( int index = North; index < NumberOfDirections; index++ )
+    forEachDirection( index )
     {
         std::cout << format( "(%d, %d)\n", position.x, position.y );
-        position = transposePosition( position, Direction( index ) );
+        position = transposePosition( position,index );
     }
 
     std::cout << format( "(%d, %d)\n", position.x, position.y );
 
     position = {1,0};
 
-    for ( int index = North; index < NumberOfDirections; index++ )
+    forEachDirection( index )
     {
         std::cout << format( "(%d, %d)\n", position.x, position.y );
-        position = sf::Vector2i( rotatePosition( sf::Vector2f( position ), Direction( index ) ) );
+        position = sf::Vector2i( rotatePosition( sf::Vector2f( position ),index ) );
     }
 
     std::cout << format( "(%d, %d)\n", position.x, position.y );

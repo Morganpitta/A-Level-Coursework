@@ -1,7 +1,7 @@
 #include <SFML/Window.hpp>
 #include "time.h++"
 #include "mazeWars.h++"
-#include "Entity\enemy.h++"
+#include "Entity/enemy.h++"
 
 int main()
 {
@@ -12,11 +12,11 @@ int main()
 
     FpsLimiter fps( 60 );
 
-    MazeWars game( { 500, 500 } );
+    MazeWars game( { 50, 50 } );
 
     game.addEntity( new Enemy() );
 
-    game.getPlayer()->setPosition({499,499});
+    game.getPlayer()->setPosition({0,0});
 
     while (window.isOpen())
     {

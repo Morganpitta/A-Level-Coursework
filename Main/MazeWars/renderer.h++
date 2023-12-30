@@ -33,6 +33,10 @@
             float endIndex 
         ) const
         {
+            assert( 
+                startIndex <= endIndex,
+                "Start index must be less than the end index"
+            );
             for ( int index = std::max( 0.f, std::floor( startIndex ) ); index <= std::min( std::floor( endIndex ), window.getSize().x - 1.f ); index++ )
             {
                 if ( !hasBeenDrawnOn(index) )
@@ -42,7 +46,10 @@
             return false;
         }
 
-        void setHasBeenDrawnOn( int xIndex, bool value )
+        void setHasBeenDrawnOn( 
+            int xIndex, 
+            bool value
+        )
         {
             assert( 
                 xIndex >= 0 &&
@@ -152,40 +159,40 @@
                 return true;
             }
 
-            void drawWallEdge( 
+            void drawWallVertical( 
                 sf::RenderWindow& window, 
-                sf::Vector2f edge 
+                sf::Vector2f position 
             )
             {
-                if ( onScreen( window, edge.x ) && 
-                     !hasBeenDrawnOn( std::floor( edge.x ) ) )
+                if ( onScreen( window, position.x ) && 
+                     !hasBeenDrawnOn( std::floor( position.x ) ) )
                 {
-                    float wallHeight = std::floor( this->wallHeight / edge.y );
+                    float wallHeight = std::floor( this->wallHeight / position.y );
                     
                     wallVertices.append( 
                         sf::Vertex( 
                             sf::Vector2f( 
-                                std::floor(edge.x), 
+                                std::floor(position.x), 
                                 ( window.getSize().y + wallHeight ) / 2 
-                            ), 
-                            sf::Color::Green 
+                            ),
+                            sf::Color::Green
                         ) 
                     );
                     wallVertices.append( 
                         sf::Vertex( 
                             sf::Vector2f( 
-                                std::floor(edge.x), 
+                                std::floor(position.x), 
                                 ( window.getSize().y - wallHeight ) / 2 
                             ), 
                             sf::Color::Green 
                         ) 
                     );
 
-                    setHasBeenDrawnOn( edge.x, true );
+                    setHasBeenDrawnOn( position.x, true );
                 }
             }
 
-            void drawWallTop( 
+            void drawWallHorizontals(
                 sf::RenderWindow& window, 
                 sf::Vector2f &wallStart, 
                 sf::Vector2f &wallEnd 
@@ -280,15 +287,15 @@
                 sf::Vector2f &wallEnd 
             )
             {
-                drawWallEdge( window, wallStart );
+                drawWallVertical( window, wallStart );
 
-                drawWallEdge( window, wallEnd );
+                drawWallVertical( window, wallEnd );
 
                 // If it's one or two pixels thin we can stop
                 if ( std::floor( wallEnd.x ) - std::floor( wallStart.x ) <= 1 )
                     return;
 
-                drawWallTop( window, wallStart, wallEnd );
+                drawWallHorizontals( window, wallStart, wallEnd );
             }
 
             void drawEntity(
@@ -415,16 +422,16 @@
                             drawEntity( window, entity );
                     }
 
-                    for ( int direction = North; direction < NumberOfDirections; direction++ )
+                    forEachDirection( direction )
                     {
-                        bool isWallInDirection = mazeGrid.getCell( currentCell, (Direction) direction );
+                        bool isWallInDirection = mazeGrid.getCell( currentCell, direction );
 
                         sf::Vector2f wallStart = 
                             sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) + 
-                            rotatePosition({-0.5, 0.5}, (Direction) direction);
+                            rotatePosition({-0.5, 0.5}, direction);
                         sf::Vector2f wallEnd = 
                             sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) +
-                            rotatePosition({0.5, 0.5}, (Direction) direction);
+                            rotatePosition({0.5, 0.5}, direction);
 
                         if ( !projectWall( window, wallStart, wallEnd ) )
                             continue;
@@ -442,7 +449,7 @@
                             sf::Vector2i connectedCell = 
                                 transposePosition( 
                                     currentCell, 
-                                    (Direction) direction 
+                                    direction 
                                 );
                             
                             if ( mazeGrid.inBounds( connectedCell ) && 

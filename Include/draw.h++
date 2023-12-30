@@ -37,4 +37,25 @@
         text.setPosition( std::round( topLeft.x ), std::round( topLeft.y ) );
     }
 
+    void drawLine( 
+        sf::VertexArray &vertices, 
+        sf::Vector2f startPosition, 
+        sf::Vector2f endPosition, 
+        sf::Color colour
+    )
+    {
+        vertices.append( 
+            sf::Vertex( 
+                startPosition,
+                colour
+            ) 
+        );
+        vertices.append( 
+            sf::Vertex( 
+                endPosition, 
+                colour
+            ) 
+        );
+    }
+
 #endif /* DRAW_HPP */

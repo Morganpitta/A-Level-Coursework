@@ -111,4 +111,7 @@
         return static_cast<Direction>( ( NumberOfDirections + direction ) % NumberOfDirections );
     }
 
+    #define forEachDirection( direction )   \
+        for ( Direction direction = North; direction < NumberOfDirections; direction = Direction( direction + 1 ) )
+
 #endif /* DIRECTIONS_HPP */

@@ -119,7 +119,7 @@
         }
 
         public:
-            AStarSolver(): cellsToVisit(std::bind(&comparisonFunction,this, std::placeholders::_1, std::placeholders::_2))
+            AStarSolver(): cellsToVisit(std::bind(&AStarSolver::comparisonFunction,this, std::placeholders::_1, std::placeholders::_2))
             {
                 
             }
@@ -138,7 +138,7 @@
                     if ( currentCell == finalPosition )
                         break;
 
-                    for ( int direction = North; direction < NumberOfDirections; direction++ )
+                    forEachDirection( direction )
                     {
                         bool isWall = mazeGrid.getCell( currentCell, (Direction) direction );
 

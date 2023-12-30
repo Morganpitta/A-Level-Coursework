@@ -14,6 +14,7 @@
         std::map<Id,Entity*> entities;
         std::vector<std::vector<std::vector<Entity*>>> entityGrid;
         Id nextId = 0;
+        const int MiniMapRadius = 3;
 
         public:
             MazeWars( sf::Vector2i dimensions ): mazeGrid( dimensions )
@@ -118,6 +119,48 @@
                 }
             }
 
+            void drawMiniMapEntities( sf::RenderWindow &window, sf::Vector2f topLeft, sf::Vector2f bottomRight )
+            {
+                sf::VertexArray vertexArray( sf::PrimitiveType::Lines );
+                float xSegmentSize = ( bottomRight.x - topLeft.x ) / ( 1 + MiniMapRadius * 2 );
+                float ySegmentSize = ( bottomRight.y - topLeft.y ) / ( 1 + MiniMapRadius * 2 );
+
+                for ( int relativeXIndex = 0; 
+                      relativeXIndex <= 1 + MiniMapRadius * 2; 
+                      relativeXIndex++ 
+                )
+                {
+                    for ( int relativeYIndex = 0; 
+                          relativeYIndex <= 1 + MiniMapRadius * 2; 
+                          relativeYIndex++
+                    )
+                    {
+                        int xIndex = getPlayer()->getPosition().x + relativeXIndex - ( 1 + MiniMapRadius );
+                        int yIndex = getPlayer()->getPosition().y + relativeYIndex - ( 1 + MiniMapRadius );
+
+                        if ( getMaze().inBounds( { xIndex, yIndex } ) )
+                        {
+                            for ( Id id: getEntitiesAtLocation( { xIndex, yIndex } ) )
+                            {
+                                sf::RectangleShape markerRectangle = 
+                                    sf::RectangleShape( {xSegmentSize/2.f, ySegmentSize/2.f} );
+
+                                markerRectangle.setPosition( 
+                                    sf::Vector2f(
+                                        relativeXIndex*xSegmentSize,
+                                        -relativeYIndex*ySegmentSize
+                                    ) + sf::Vector2f(50+xSegmentSize/4.f,750-(3*ySegmentSize)/4.f) 
+                                );
+
+                                window.draw( markerRectangle );
+                            }
+                        }
+                    }
+                }
+
+                window.draw( vertexArray );
+            }
+
             void render( sf::RenderWindow &window )
             {
                 renderer.render( window, mazeGrid, entityGrid, playerId );
@@ -128,7 +171,7 @@
                     entityLocations.push_back( idEntityPair.second->getPosition() );
                 }
 
-                drawMaze( window, getMaze(), {50,50}, {750,750}, entityLocations );
+                drawMiniMapEntities( window, {50,50}, {750,750} );
             }
     };
 

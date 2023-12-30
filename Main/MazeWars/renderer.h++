@@ -169,23 +169,17 @@
                 {
                     float wallHeight = std::floor( this->wallHeight / position.y );
                     
-                    wallVertices.append( 
-                        sf::Vertex( 
-                            sf::Vector2f( 
-                                std::floor(position.x), 
-                                ( window.getSize().y + wallHeight ) / 2 
-                            ),
-                            sf::Color::Green
-                        ) 
-                    );
-                    wallVertices.append( 
-                        sf::Vertex( 
-                            sf::Vector2f( 
-                                std::floor(position.x), 
-                                ( window.getSize().y - wallHeight ) / 2 
-                            ), 
-                            sf::Color::Green 
-                        ) 
+                    drawLine( 
+                        wallVertices,
+                        sf::Vector2f( 
+                            std::floor(position.x), 
+                            ( window.getSize().y + wallHeight ) / 2 
+                        ),
+                        sf::Vector2f( 
+                            std::floor(position.x), 
+                            ( window.getSize().y - wallHeight ) / 2 
+                        ), 
+                        sf::Color::Green
                     );
 
                     setHasBeenDrawnOn( position.x, true );
@@ -232,44 +226,32 @@
                     //aka its hit a section where its turned into a wall
                     if ( wasDrawnOn == false )
                     {
-                        wallVertices.append(
-                            sf::Vertex(
-                                sf::Vector2f(
-                                    wallStartX - 1,
-                                    ( window.getSize().y + wallStartHeight ) / 2
-                                ),
-                                sf::Color::Green
-                            )
-                        );
-                        wallVertices.append( 
-                            sf::Vertex( 
-                                sf::Vector2f( 
-                                    index, 
-                                    ( window.getSize().y + wallHeight ) / 2
-                                ), 
-                                sf::Color::Green 
-                            ) 
+                        drawLine( 
+                            wallVertices,
+                            sf::Vector2f(
+                                wallStartX - 1,
+                                ( window.getSize().y + wallStartHeight ) / 2
+                            ),
+                            sf::Vector2f( 
+                                index, 
+                                ( window.getSize().y + wallHeight ) / 2
+                            ), 
+                            sf::Color::Green
                         );
 
-                        wallVertices.append( 
-                            sf::Vertex( 
-                                sf::Vector2f(
-                                    wallStartX - 1, 
-                                    ( window.getSize().y - wallStartHeight ) / 2
-                                ), 
-                                sf::Color::Green
-                            )
+                        drawLine( 
+                            wallVertices,
+                            sf::Vector2f(
+                                wallStartX - 1, 
+                                ( window.getSize().y - wallStartHeight ) / 2
+                            ),
+                            sf::Vector2f( 
+                                index, 
+                                ( window.getSize().y - wallHeight ) / 2
+                            ), 
+                            sf::Color::Green
                         );
-                        wallVertices.append(
-                            sf::Vertex( 
-                                sf::Vector2f( 
-                                    index, 
-                                    ( window.getSize().y - wallHeight ) / 2
-                                ), 
-                                sf::Color::Green 
-                            )
-                        );
-
+                        
                         std::fill( drawnOn.begin() + wallStartX, drawnOn.begin() + index, true );
                     }
 

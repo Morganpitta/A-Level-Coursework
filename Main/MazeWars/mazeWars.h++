@@ -122,21 +122,25 @@
             void drawMiniMapEntities( sf::RenderWindow &window, sf::Vector2f topLeft, sf::Vector2f bottomRight )
             {
                 sf::VertexArray vertexArray( sf::PrimitiveType::Lines );
-                float xSegmentSize = ( bottomRight.x - topLeft.x ) / ( 1 + MiniMapRadius * 2 );
-                float ySegmentSize = ( bottomRight.y - topLeft.y ) / ( 1 + MiniMapRadius * 2 );
+                float width = ( bottomRight.x - topLeft.x );
+                float height = ( bottomRight.y - topLeft.y );
+                float xSegmentSize = width / ( 1 + MiniMapRadius * 2 );
+                float ySegmentSize = height / ( 1 + MiniMapRadius * 2 );
+                sf::RenderStates states;
+                states.transform.rotate( 90*getPlayer()->getDirection(), topLeft.x + width/2.f, topLeft.y + height/2.f );
 
                 for ( int relativeXIndex = 0; 
-                      relativeXIndex <= 1 + MiniMapRadius * 2; 
+                      relativeXIndex <= MiniMapRadius * 2; 
                       relativeXIndex++ 
                 )
                 {
                     for ( int relativeYIndex = 0; 
-                          relativeYIndex <= 1 + MiniMapRadius * 2; 
+                          relativeYIndex <= MiniMapRadius * 2; 
                           relativeYIndex++
                     )
                     {
-                        int xIndex = getPlayer()->getPosition().x + relativeXIndex - ( 1 + MiniMapRadius );
-                        int yIndex = getPlayer()->getPosition().y + relativeYIndex - ( 1 + MiniMapRadius );
+                        int xIndex = getPlayer()->getPosition().x + relativeXIndex - MiniMapRadius;
+                        int yIndex = getPlayer()->getPosition().y + relativeYIndex - MiniMapRadius;
 
                         if ( getMaze().inBounds( { xIndex, yIndex } ) )
                         {
@@ -152,7 +156,7 @@
                                     ) + sf::Vector2f(50+xSegmentSize/4.f,750-(3*ySegmentSize)/4.f) 
                                 );
 
-                                window.draw( markerRectangle );
+                                window.draw( markerRectangle, states );
                             }
                         }
                     }

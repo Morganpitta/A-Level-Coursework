@@ -119,6 +119,7 @@
                 }
             }
 
+            // Not going to use this
             void drawMiniMapEntities( sf::RenderWindow &window, sf::Vector2f topLeft, sf::Vector2f bottomRight )
             {
                 sf::VertexArray vertexArray( sf::PrimitiveType::Lines );
@@ -174,8 +175,6 @@
                 {
                     entityLocations.push_back( idEntityPair.second->getPosition() );
                 }
-
-                drawMiniMapEntities( window, {50,50}, {750,750} );
             }
     };
 

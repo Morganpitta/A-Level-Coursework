@@ -349,7 +349,7 @@
                                     }
                                 )
                             );
-                            window.draw(entityRectangle);
+                            this->entityRectangles.push_back(entityRectangle);
                         }
 
                         if ( index >= entityImageEndX )
@@ -381,6 +381,7 @@
                 );
 
                 wallVertices.clear();
+                this->entityRectangles.clear();
 
                 drawnOn.resize( window.getSize().x );
                 std::fill(
@@ -444,6 +445,10 @@
                 }
 
                 window.draw( wallVertices );
+                for ( sf::RectangleShape &entityRectangle: this->entityRectangles )
+                {
+                    window.draw( entityRectangle );
+                }
             }
     };
 

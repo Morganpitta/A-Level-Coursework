@@ -94,8 +94,13 @@
         Direction direction 
     )
     {
+        // Converting the direction into an angle 
+        // North -> 0 degrees, East -> 90 degrees, 
+        // South -> 180 degrees, West -> 270 degrees.
         float angle = (M_PI / 2) * ( ( direction ) % NumberOfDirections );
 
+        
+        // The 2D rotation matrix
         return {
             static_cast<float>( 
                 position.x*cos( angle ) + position.y*sin( angle ) 

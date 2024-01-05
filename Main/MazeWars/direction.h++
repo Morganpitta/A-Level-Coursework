@@ -42,7 +42,7 @@
 
     sf::Vector2i transposePosition( 
         sf::Vector2i position,
-        Direction direction 
+        Direction direction
     )
     {
         switch ( direction )
@@ -114,6 +114,11 @@
     Direction normaliseDirection( int direction )
     {
         return static_cast<Direction>( ( NumberOfDirections + direction ) % NumberOfDirections );
+    }
+
+    Direction reverseDirection( int direction )
+    {
+        return normaliseDirection( direction + South );
     }
 
     #define forEachDirection( direction )   \

@@ -92,8 +92,15 @@
                                     getPlayer()->getPosition(), 
                                     getPlayer()->getDirection() 
                                 )
-                                )
+                            )
                                 getPlayer()->moveForward();
+                            if ( event.key.code == sf::Keyboard::S &&
+                                !getMaze().getCell( 
+                                    getPlayer()->getPosition(), 
+                                    reverseDirection( getPlayer()->getDirection() ) 
+                                )
+                            )
+                                getPlayer()->moveBackward();
                             if ( event.key.code == sf::Keyboard::P )
                                 std::cout<<"REEEE";
                             break;
@@ -169,12 +176,6 @@
             void render( sf::RenderWindow &window )
             {
                 renderer.render( window, mazeGrid, entityGrid, playerId );
-
-                std::vector<sf::Vector2i> entityLocations;
-                for ( std::pair<Id,Entity*> idEntityPair: entities )
-                {
-                    entityLocations.push_back( idEntityPair.second->getPosition() );
-                }
             }
     };
 

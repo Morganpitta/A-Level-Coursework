@@ -110,6 +110,16 @@
                 );
             }
 
+            void moveBackward()
+            {
+                setPosition( 
+                    transposePosition( 
+                        getPosition(), 
+                        reverseDirection( getDirection() ) 
+                    )
+                );
+            }
+
             void turnLeft()
             {
                 setDirection( normaliseDirection( int(getDirection()) - 1 ) );

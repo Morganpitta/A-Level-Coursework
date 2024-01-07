@@ -179,7 +179,7 @@ void Renderer::drawWallHorizontals(
     int wallStartX = std::floor( wallStart.x + 1 );
     float wallStartHeight = std::floor( this->wallHeight / wallStart.y );
 
-    float wallHeightDelta = ( std::floor( this->wallHeight / wallEnd.y ) - wallStartHeight ) / ( wallEnd.x - wallStart.x );
+    float wallHeightDelta = ( std::floor( this->wallHeight / wallEnd.y ) - wallStartHeight ) / ( std::floor( wallEnd.x ) - std::floor( wallStart.x ) );
     
     if ( wallStartX < 0 )
     {
@@ -205,7 +205,7 @@ void Renderer::drawWallHorizontals(
                 wallEndX
             );
 
-        float wallHeight = wallStartHeight + wallHeightDelta * ( index - wallStartX );
+        float wallHeight = wallStartHeight + wallHeightDelta * ( index - wallStartX + 1 );
 
         //aka its hit a section where its turned into a wall
         if ( wasDrawnOn == false )
@@ -214,11 +214,11 @@ void Renderer::drawWallHorizontals(
                 wallVertices,
                 sf::Vector2f(
                     wallStartX - 1,
-                    ( window.getSize().y + wallStartHeight ) / 2
+                    ( window.getSize().y + std::floor( wallStartHeight ) ) / 2
                 ),
                 sf::Vector2f(
                     index,
-                    ( window.getSize().y + wallHeight ) / 2
+                    ( window.getSize().y + std::floor( wallHeight ) ) / 2
                 ),
                 sf::Color::Green
             );
@@ -227,11 +227,11 @@ void Renderer::drawWallHorizontals(
                 wallVertices,
                 sf::Vector2f(
                     wallStartX - 1,
-                    ( window.getSize().y - wallStartHeight ) / 2
+                    ( window.getSize().y - std::floor( wallStartHeight ) ) / 2
                 ),
                 sf::Vector2f(
                     index,
-                    ( window.getSize().y - wallHeight ) / 2
+                    ( window.getSize().y - std::floor( wallHeight ) ) / 2
                 ),
                 sf::Color::Green
             );
@@ -385,7 +385,7 @@ void Renderer::render(
 
         for ( Entity *entity: entitiesInCell )
         {
-            if ( entity->getId() != playerId )
+            if ( entity->getId() != playerId && !entity->isDead() )
                 drawEntity( window, entity );
         }
 

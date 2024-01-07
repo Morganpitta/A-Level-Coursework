@@ -57,6 +57,17 @@ Id MazeWars::addEntity( Entity* entity )
     return entityId;
 }
 
+void MazeWars::cleanUpEntities()
+{
+    for ( auto iterator = this->entities.begin(); iterator != this->entities.end(); )
+    {
+        if ( (*iterator).second->isDead() )
+            iterator = this->entities.erase( iterator );
+        else
+            iterator++;
+    }
+}
+
 void MazeWars::update( sf::RenderWindow &window )
 {
     sf::Event event;
@@ -108,10 +119,15 @@ void MazeWars::update( sf::RenderWindow &window )
 
     for ( std::pair<Id, Entity*> idEntityPair: entities )
     {
-        idEntityPair.second->update( *this );
-        sf::Vector2i position = idEntityPair.second->getPosition();
-        entityGrid[position.x][position.y].push_back( idEntityPair.second );
+        if ( !idEntityPair.second->isDead() )
+        {
+            idEntityPair.second->update( *this );
+            sf::Vector2i position = idEntityPair.second->getPosition();
+            entityGrid[position.x][position.y].push_back( idEntityPair.second );
+        }
     }
+
+    cleanUpEntities();
 }
 
 // Not going to use this

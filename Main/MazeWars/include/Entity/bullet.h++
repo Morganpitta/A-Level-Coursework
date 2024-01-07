@@ -5,7 +5,6 @@
 
     class Bullet: public Entity
     {
-        int movementCoolDown;
         Id ownerId;
 
         public:

@@ -30,6 +30,8 @@
 
             Id addEntity( Entity* entity );
 
+            void cleanUpEntities();
+
             void update( sf::RenderWindow &window );
 
             // Not going to use this

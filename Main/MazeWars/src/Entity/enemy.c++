@@ -1,4 +1,4 @@
-#include "Entity\enemy.h++"
+#include "Entity/enemy.h++"
 #include "mazeWars.h++"
 
 Enemy::Enemy( sf::Vector2i position ): Entity( position )

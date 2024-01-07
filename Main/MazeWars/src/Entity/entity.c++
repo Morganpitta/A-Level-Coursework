@@ -1,4 +1,4 @@
-#include "Entity\entity.h++"
+#include "Entity/entity.h++"
 #include "mazeWars.h++"
 
 const Id NullId = -1;

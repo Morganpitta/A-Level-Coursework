@@ -1,4 +1,4 @@
-#include "Entity\bullet.h++"
+#include "Entity/bullet.h++"
 #include "mazeWars.h++"
 
 Bullet::Bullet( Id ownerId, sf::Vector2i position, Direction direction ): Entity( position )

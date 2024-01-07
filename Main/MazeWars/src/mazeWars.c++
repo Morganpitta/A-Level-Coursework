@@ -17,7 +17,7 @@ MazeWars::MazeWars( sf::Vector2i dimensions ): mazeGrid( dimensions ), MiniMapRa
     );
 
     this->playerId = 
-        addEntity( 
+        addEntity(
             new Player( 
                 {
                     std::floor( dimensions.x/2 ),

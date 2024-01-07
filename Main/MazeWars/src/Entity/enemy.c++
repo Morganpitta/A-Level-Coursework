@@ -29,8 +29,6 @@ void Enemy::update( MazeWars &game )
         return;
     }
 
-    this->reactionCooldown = 60;
-
     if ( this->movementCooldown > 0 )
     {
         this->movementCooldown--;
@@ -57,8 +55,17 @@ void Enemy::update( MazeWars &game )
         }
         else 
         {
-            moveForward();
-            this->movementCooldown = 120/path.size();
+            if ( game.getEntitiesAtLocation( transposePosition( getPosition(), direction ) ).size() == 0 )
+            {
+                moveForward();
+                this->movementCooldown = 120/path.size();
+            }
+            else
+            {
+                this->movementCooldown = 10;
+            }
+
+            this->reactionCooldown = 60;
         }
     }
 }

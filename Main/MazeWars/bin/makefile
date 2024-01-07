@@ -18,7 +18,7 @@ else
 endif
 
 
-CFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -g -I$(ROOT_DIR)/Include -I$(INCLUDE)
+CFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -I$(ROOT_DIR)/Include -I$(INCLUDE)
 
 render = camera.o renderer.o
 entities = pathFinding.o entity.o enemy.o bullet.o
@@ -36,10 +36,10 @@ clean:
 	rm *.o ${ROOT_DIR}/.vscode/a.exe ${ROOT_DIR}/.vscode/a.out
 
 static_compile:
-	$(eval CFLAGS += $(SFMLSTATICFLAGS) )
+	$(eval CFLAGS += $(SFMLSTATICFLAGS) -O )
 
 default_compile:
-	$(eval CFLAGS += $(SFMLFLAGS) )
+	$(eval CFLAGS += $(SFMLFLAGS) -g )
 
 main.o: ${SRC}/main.c++ mazeWars.o
 	$(CC) $(CFLAGS) -c ${SRC}/main.c++

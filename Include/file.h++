@@ -11,7 +11,7 @@
         #include <windows.h>
     #endif
 
-    std::string getWorkingDirectory()
+    inline std::string getWorkingDirectory()
     {
         #if defined( OS_Windows )
 
@@ -26,7 +26,7 @@
         #endif 
     }
 
-    bool setWorkingDirectoryToDefault()
+    inline bool setWorkingDirectoryToDefault()
     {
         std::string directoryString = getWorkingDirectory();
 

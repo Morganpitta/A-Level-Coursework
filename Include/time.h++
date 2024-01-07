@@ -12,7 +12,7 @@
     typedef std::chrono::_V2::system_clock::time_point timePoint;
     typedef std::chrono::microseconds microseconds;
 
-    timePoint timeNow()
+    inline timePoint timeNow()
     {
         return std::chrono::high_resolution_clock::now();
     }
@@ -107,6 +107,6 @@
 
                 window.draw(text);
             }
-    } timeDebugger;
+    };
 
 #endif /* FPS_HPP */

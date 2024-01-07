@@ -11,7 +11,7 @@
     #   define assert(expression, message)
     #endif
 
-    void AssertMacro(const char* expressionString, bool expressionValue, const char* file, int line, const std::string message)
+    inline void AssertMacro(const char* expressionString, bool expressionValue, const char* file, int line, const std::string message)
     {
         if (!expressionValue)
         {

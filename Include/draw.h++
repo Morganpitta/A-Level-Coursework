@@ -5,9 +5,9 @@
     #include "math.h"
     #include "file.h++"
 
-    sf::Font defaultFont;
+    inline sf::Font defaultFont;
 
-    bool loadBaseAssets()
+    inline bool loadBaseAssets()
     {
         setWorkingDirectoryToDefault();
 
@@ -19,7 +19,7 @@
         return true;
     }
 
-    void restrictText( sf::Text &text, sf::Vector2f topLeft, sf::Vector2f bottomRight )
+    inline void restrictText( sf::Text &text, sf::Vector2f topLeft, sf::Vector2f bottomRight )
     {
         text.setCharacterSize( 100 );
 
@@ -37,7 +37,7 @@
         text.setPosition( std::round( topLeft.x ), std::round( topLeft.y ) );
     }
 
-    void drawLine( 
+    inline void drawLine( 
         sf::VertexArray &vertices, 
         sf::Vector2f startPosition, 
         sf::Vector2f endPosition, 

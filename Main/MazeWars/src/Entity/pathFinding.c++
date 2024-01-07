@@ -2,17 +2,17 @@
 
 AStarSolver PathSolver;
 
-bool isDirectlyInFront( MazeGrid &mazeGrid, Entity entity1, sf::Vector2i entity2Position )
+bool isDirectlyInFront( MazeGrid &mazeGrid, Entity *entity1, sf::Vector2i entity2Position )
 {
-    sf::Vector2i relativePosition = entity1.relativePositionOf( entity2Position );
+    sf::Vector2i relativePosition = entity1->relativePositionOf( entity2Position );
     if ( relativePosition.x == 0 and relativePosition.y > 0 )
     {
-        sf::Vector2i position = entity1.getPosition();
+        sf::Vector2i position = entity1->getPosition();
         while ( position != entity2Position )
         {
-            if ( mazeGrid.getCell( position, entity1.getDirection() ) )
+            if ( mazeGrid.getCell( position, entity1->getDirection() ) )
                 return false;
-            position = transposePosition( position, entity1.getDirection() );
+            position = transposePosition( position, entity1->getDirection() );
         }
 
         return true;

@@ -6,7 +6,7 @@
     #include <set>
     #include <functional>
 
-    extern bool isDirectlyInFront( MazeGrid &mazeGrid, Entity entity1, sf::Vector2i entity2Position );
+    extern bool isDirectlyInFront( MazeGrid &mazeGrid, Entity *entity1, sf::Vector2i entity2Position );
 
     extern float manhattanDistance( sf::Vector2i startPosition, sf::Vector2i finalPosition );
 

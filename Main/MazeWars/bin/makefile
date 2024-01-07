@@ -21,7 +21,7 @@ endif
 CFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -I$(ROOT_DIR)/Include -I$(INCLUDE)
 
 render = camera.o renderer.o
-entities = pathFinding.o entity.o enemy.o bullet.o
+entities = pathFinding.o entity.o enemy.o bullet.o player.o
 
 # ****************************************************
 # Targets needed to bring the executable up to date
@@ -63,6 +63,9 @@ camera.o: ${SRC}/camera.c++ ${INCLUDE}/camera.h++ direction.o
 renderer.o: ${SRC}/renderer.c++ ${INCLUDE}/renderer.h++ camera.o
 	$(CC) $(CFLAGS) -c ${SRC}/renderer.c++
  
+player.o: ${SRC}/Entity/player.c++ ${INCLUDE}/Entity/player.h++ entity.o
+	$(CC) $(CFLAGS) -c ${SRC}/Entity/player.c++
+
 bullet.o: ${SRC}/Entity/bullet.c++ ${INCLUDE}/Entity/bullet.h++ entity.o
 	$(CC) $(CFLAGS) -c ${SRC}/Entity/bullet.c++
 

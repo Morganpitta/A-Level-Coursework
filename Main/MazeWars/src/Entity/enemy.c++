@@ -1,22 +1,45 @@
 #include "Entity/enemy.h++"
 #include "mazeWars.h++"
+#include "Entity/bullet.h++"
 
 Enemy::Enemy( sf::Vector2i position ): Entity( position )
 {
     this->type = EnemyType;
     this->texture = &TriangleTexture;
-    this->movementCoolDown = 0;
+    this->movementCooldown = 0;
+    this->reactionCooldown = 60;
 }
 
 void Enemy::update( MazeWars &game )
 {
-    if ( this->movementCoolDown > 0 )
+    if ( isDirectlyInFront( game.getMaze(), this, game.getPlayer()->getPosition() ) )
     {
-        this->movementCoolDown--;
+        if ( this->reactionCooldown > 0 )
+        {
+            this->reactionCooldown--;
+            this->movementCooldown = 10;
+        }
+        else
+        {
+            game.addEntity( new Bullet( getId(), getPosition(), getDirection() ) );
+            this->reactionCooldown = 60;
+            this->movementCooldown = 60;
+        }
+
+        return;
+    }
+
+    this->reactionCooldown = 60;
+
+    if ( this->movementCooldown > 0 )
+    {
+        this->movementCooldown--;
         return;
     }
 
     std::vector<sf::Vector2i> path = PathSolver.solve( game.getMaze(), getPosition(), game.getPlayer()->getPosition() );
+    
+    this->movementCooldown = 60;
 
     if ( !path.empty() )
     {
@@ -29,11 +52,13 @@ void Enemy::update( MazeWars &game )
                 turnLeft();
             else
                 turnRight();
+
+            this->movementCooldown = 0;
         }
         else 
-        { 
+        {
             moveForward();
-            this->movementCoolDown = 120/path.size();
+            this->movementCooldown = 120/path.size();
         }
     }
 }

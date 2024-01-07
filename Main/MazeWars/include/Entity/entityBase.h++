@@ -13,7 +13,8 @@
     {
         NoType,
         EnemyType,
-        BulletType
+        BulletType,
+        PlayerType
     };
 
     extern sf::Texture TriangleTexture;

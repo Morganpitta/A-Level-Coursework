@@ -5,7 +5,8 @@
 
     class Enemy: public Entity
     {
-        int movementCoolDown;
+        int movementCooldown;
+        int reactionCooldown;
 
         public:
             Enemy( sf::Vector2i position = {0,0} );

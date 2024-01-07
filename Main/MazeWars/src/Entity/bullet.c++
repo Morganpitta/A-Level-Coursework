@@ -7,7 +7,6 @@ Bullet::Bullet( Id ownerId, sf::Vector2i position, Direction direction ): Entity
     this->type = BulletType;
     this->texture = &CircleTexture;
     this->size = 20;
-    this->ownerId = NullId;
     this->direction = direction;
 }
 

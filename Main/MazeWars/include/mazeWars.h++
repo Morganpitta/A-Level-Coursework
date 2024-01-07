@@ -32,6 +32,8 @@
 
             void cleanUpEntities();
 
+            void attemptToSpawnEntities();
+
             void update( sf::RenderWindow &window );
 
             // Not going to use this

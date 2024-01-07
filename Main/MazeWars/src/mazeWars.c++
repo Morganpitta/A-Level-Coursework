@@ -1,6 +1,7 @@
 #include "mazeWars.h++"
 #include "Entity/entity.h++"
 #include "Entity/bullet.h++"
+#include "Entity/player.h++"
 
 MazeWars::MazeWars( sf::Vector2i dimensions ): mazeGrid( dimensions ), MiniMapRadius(3)
 {
@@ -14,7 +15,7 @@ MazeWars::MazeWars( sf::Vector2i dimensions ): mazeGrid( dimensions ), MiniMapRa
         )
     );
 
-    this->playerId = addEntity( new Entity() );
+    this->playerId = addEntity( new Player() );
 }
 
 Camera &MazeWars::getCamera()
@@ -61,11 +62,17 @@ void MazeWars::cleanUpEntities()
 {
     for ( auto iterator = this->entities.begin(); iterator != this->entities.end(); )
     {
-        if ( (*iterator).second->isDead() )
+        Entity *entity = (*iterator).second; 
+        if ( entity->isDead() && entity->getType() != PlayerType )
             iterator = this->entities.erase( iterator );
         else
             iterator++;
     }
+}
+
+void MazeWars::attemptToSpawnEntities()
+{
+
 }
 
 void MazeWars::update( sf::RenderWindow &window )
@@ -128,6 +135,7 @@ void MazeWars::update( sf::RenderWindow &window )
     }
 
     cleanUpEntities();
+    attemptToSpawnEntities();
 }
 
 // Not going to use this

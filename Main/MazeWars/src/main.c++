@@ -12,11 +12,7 @@ int main()
 
     MazeWars game( { 50, 50 } );
 
-    game.addEntity( new Enemy() );
-
-    game.getPlayer()->setPosition({0,0});
-
-    while (window.isOpen())
+    while (window.isOpen() && !game.getPlayer()->isDead())
     {
         game.update( window );
 

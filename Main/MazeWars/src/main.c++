@@ -1,5 +1,5 @@
 #include "mazeWars.h++"
-#include "Entity/enemy.h++"
+#include "Entity/entity.h++"
 
 int main()
 {

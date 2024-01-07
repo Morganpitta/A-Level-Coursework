@@ -2,6 +2,7 @@
 #include "Entity/entity.h++"
 #include "Entity/bullet.h++"
 #include "Entity/player.h++"
+#include "Entity/enemy.h++"
 
 MazeWars::MazeWars( sf::Vector2i dimensions ): mazeGrid( dimensions ), MiniMapRadius(3)
 {
@@ -15,7 +16,15 @@ MazeWars::MazeWars( sf::Vector2i dimensions ): mazeGrid( dimensions ), MiniMapRa
         )
     );
 
-    this->playerId = addEntity( new Player() );
+    this->playerId = 
+        addEntity( 
+            new Player( 
+                {
+                    std::floor( dimensions.x/2 ),
+                    std::floor( dimensions.y/2 )
+                }
+            ) 
+        );
 }
 
 Camera &MazeWars::getCamera()
@@ -72,7 +81,37 @@ void MazeWars::cleanUpEntities()
 
 void MazeWars::attemptToSpawnEntities()
 {
+    int numberOfEnemies = 
+        std::count_if(
+            this->entities.begin(),
+            this->entities.end(),
+            []( const std::pair<Id, Entity*> idEntityPair )
+            {
+                return idEntityPair.second->getType() == EnemyType;
+            }
+        );
 
+    int spawnDistance = 10;
+
+    while ( numberOfEnemies < 5 )
+    {
+        float spawnAngle = ( std::rand() / float(RAND_MAX) ) * 2 * M_PI;
+        sf::Vector2i spawnLocation = getPlayer()->getPosition() + 
+            sf::Vector2i(
+                std::floor( spawnDistance * cos( spawnAngle ) ),
+                std::floor( spawnDistance * sin( spawnAngle ) )
+            );
+        if ( getMaze().inBounds( spawnLocation ) )
+        {
+            addEntity( new Enemy( spawnLocation ) );
+            spawnDistance = 10;
+            numberOfEnemies++;
+        }
+        else 
+        {
+            spawnDistance--;
+        }
+    }
 }
 
 void MazeWars::update( sf::RenderWindow &window )

@@ -1,6 +1,7 @@
 #include "SFML/Graphics.hpp"
 #include "time.h++"
-#include "camera.h++"
+#include "render/camera.h++"
+#include "render/model3D.h++"
 
 int main()
 {

@@ -94,7 +94,7 @@ void MazeWars::attemptToSpawnEntities()
 
     int spawnDistance = 10;
 
-    while ( numberOfEnemies < 5 )
+    while ( numberOfEnemies < 30 )
     {
         float spawnAngle = randomFloat( 0, 2 * M_PI );
         sf::Vector2i spawnLocation = getPlayer()->getPosition() + 

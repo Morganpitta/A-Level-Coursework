@@ -9,6 +9,8 @@ int main()
 
     FpsLimiter fps( 60 );
 
+    Model3D model( "BattleZone/tank.obj" );
+
     while (window.isOpen())
     {
         window.clear( sf::Color::Black );

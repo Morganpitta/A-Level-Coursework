@@ -5,6 +5,11 @@ Model3D::Model3D()
 
 }
 
+Model3D::Model3D( std::string path )
+{
+    importFromFile( path );
+}
+
 const Triangle& Model3D::getTriangle( int index ) const
 {
     return this->triangles[index];

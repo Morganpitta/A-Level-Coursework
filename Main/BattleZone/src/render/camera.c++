@@ -2,12 +2,12 @@
 
 Camera::Camera()
 {
-    this->position = {0,0};
+    this->position = {0,0,0};
     this->rotation = 0;
     this->fov = 2;
 }
 
-sf::Vector2f Camera::getPosition() const
+sf::Vector3f Camera::getPosition() const
 {
     return this->position;
 }
@@ -22,7 +22,7 @@ float Camera::getFov() const
     return this->fov;
 }
 
-void Camera::setPosition( sf::Vector2f position )
+void Camera::setPosition( sf::Vector3f position )
 {
     this->position = position;
 }
@@ -52,7 +52,7 @@ void Camera::turnRight( float angle )
     setRotation( getRotation() + angle );
 }
 
-sf::Vector2f Camera::relativePositionOf( sf::Vector2f position )
+sf::Vector3f Camera::relativePositionOf( sf::Vector3f position )
 {
     return rotatePosition( 
         position,

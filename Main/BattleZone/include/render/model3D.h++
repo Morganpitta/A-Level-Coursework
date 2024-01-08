@@ -22,6 +22,8 @@
             };
             
             Model3D();
+            
+            Model3D( std::string path );
 
             const Triangle& getTriangle( int index ) const;
 

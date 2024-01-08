@@ -10,7 +10,7 @@ float normaliseAngle( float angle )
     return angle;
 }
 
-sf::Vector2f rotatePosition( sf::Vector2f position, float angle )
+sf::Vector3f rotatePosition( sf::Vector3f position, float angle )
 {
     // The 2D rotation matrix
     return {
@@ -19,16 +19,17 @@ sf::Vector2f rotatePosition( sf::Vector2f position, float angle )
         ),
         static_cast<float>( 
             - position.x*sin( angle ) + position.y*cos( angle )
-        ) 
+        ),
+        0
     };
 }
 
-sf::Vector2f getUnitVector( float angle )
+sf::Vector3f getUnitVector( float angle )
 {
-    return { cos( angle ), sin( angle ) };
+    return { cos( angle ), sin( angle ), 0 };
 }
 
-sf::Vector2f getRandomUnitVector()
+sf::Vector3f getRandomUnitVector()
 {
     return getUnitVector( randomFloat( 0, M_PI * 2 ) );
 }

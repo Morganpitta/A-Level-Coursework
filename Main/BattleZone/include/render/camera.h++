@@ -5,20 +5,20 @@
 
     class Camera
     {
-        sf::Vector2f position;
+        sf::Vector3f position;
         float rotation;
         float fov;
         
         public:
             Camera();
 
-            sf::Vector2f getPosition() const;
+            sf::Vector3f getPosition() const;
 
             float getRotation() const;
 
             float getFov() const;
 
-            void setPosition( sf::Vector2f position );
+            void setPosition( sf::Vector3f position );
 
             void setRotation( float rotation );
 
@@ -30,7 +30,7 @@
 
             void turnRight( float angle );
 
-            sf::Vector2f relativePositionOf( sf::Vector2f position );
+            sf::Vector3f relativePositionOf( sf::Vector3f position );
     };
     
 #endif /* CAMERA_HPP */

@@ -153,7 +153,7 @@ void Renderer::drawWallVertical(
     {
         float wallHeight = std::floor( this->wallHeight / position.y );
         
-        drawLine(
+        appendLineToArray(
             wallVertices,
             sf::Vector2f(
                 std::floor(position.x),
@@ -210,7 +210,7 @@ void Renderer::drawWallHorizontals(
         //aka its hit a section where its turned into a wall
         if ( wasDrawnOn == false )
         {
-            drawLine(
+            appendLineToArray(
                 wallVertices,
                 sf::Vector2f(
                     wallStartX - 1,
@@ -223,7 +223,7 @@ void Renderer::drawWallHorizontals(
                 sf::Color::Green
             );
 
-            drawLine(
+            appendLineToArray(
                 wallVertices,
                 sf::Vector2f(
                     wallStartX - 1,

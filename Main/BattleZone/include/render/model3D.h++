@@ -8,6 +8,7 @@
     #include "file.h++"
     #include "render/triangle.h++"
     #include "render/line.h++"
+    #include "vector.h++"
 
     class Model3D
     {
@@ -16,9 +17,12 @@
         public:
             struct Transformations 
             {
-                float rotation;
-                sf::Vector3f position;
+                float rotation = 0;
+                sf::Vector3f position = {0,0,0};
                 sf::Vector3f rotationOrigin = {0,0,0};
+
+                public:
+                    sf::Vector3f apply( sf::Vector3f position ) const;
             };
             
             Model3D();

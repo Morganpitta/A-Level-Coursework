@@ -37,7 +37,7 @@
         text.setPosition( std::round( topLeft.x ), std::round( topLeft.y ) );
     }
 
-    inline void drawLine( 
+    inline void appendLineToArray(
         sf::VertexArray &vertices, 
         sf::Vector2f startPosition, 
         sf::Vector2f endPosition, 

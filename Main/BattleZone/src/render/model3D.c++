@@ -1,5 +1,14 @@
 #include "render/model3D.h++"
 
+sf::Vector3f Model3D::Transformations::apply( sf::Vector3f position ) const
+{
+    return 
+        rotatePosition( 
+            position - this->rotationOrigin, 
+            this->rotation
+        ) + this->rotationOrigin + this->position;
+};
+
 Model3D::Model3D()
 {
 

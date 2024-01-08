@@ -14,4 +14,4 @@
 
     sf::Vector2f getRandomUnitVector();
 
-#endif /* VECTOR_HPP */
+#endif /* VECTOR_HPP */ 

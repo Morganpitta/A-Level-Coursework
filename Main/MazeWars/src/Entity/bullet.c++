@@ -8,10 +8,19 @@ Bullet::Bullet( Id ownerId, sf::Vector2i position, Direction direction ): Entity
     this->texture = &CircleTexture;
     this->size = 20;
     this->direction = direction;
+    this->movementCooldown = 5;
 }
 
 void Bullet::update( MazeWars &game )
 {
+    if ( this->movementCooldown > 0 )
+    {    
+        this->movementCooldown--;
+        return;
+    }
+
+    this->movementCooldown = 5;
+
     if ( game.getMaze().getCell( getPosition(), getDirection() ) ) 
         kill();
     else

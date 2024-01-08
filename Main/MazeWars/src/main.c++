@@ -1,5 +1,6 @@
 #include "mazeWars.h++"
 #include "Entity/entity.h++"
+#include "random.h++"
 
 int main()
 {
@@ -9,6 +10,8 @@ int main()
         return 1;
 
     FpsLimiter fps( 60 );
+
+    setRandomNumberSeed( timeNow().time_since_epoch().count() );
 
     MazeWars game( { 50, 50 } );
 

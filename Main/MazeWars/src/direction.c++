@@ -97,7 +97,10 @@ sf::Vector2f rotatePosition(
 
 Direction normaliseDirection( int direction )
 {
-    return static_cast<Direction>( ( NumberOfDirections + direction ) % NumberOfDirections );
+    direction = ( direction ) % NumberOfDirections;
+    if ( direction < 0 )
+        direction += NumberOfDirections;
+    return Direction( direction );
 }
 
 Direction reverseDirection( int direction )

@@ -20,8 +20,6 @@ endif
 
 CFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -I$(ROOT_DIR)/Include -I$(INCLUDE)
 
-render = camera.o renderer.o
-entities = pathFinding.o entity.o enemy.o bullet.o player.o
 
 # ****************************************************
 # Targets needed to bring the executable up to date
@@ -41,38 +39,11 @@ static_compile:
 default_compile:
 	$(eval CFLAGS += $(SFMLFLAGS) -g )
 
-main.o: ${SRC}/main.c++ mazeWars.o
+main.o: ${SRC}/main.c++ camera.o
 	$(CC) $(CFLAGS) -c ${SRC}/main.c++
 
-mazeWars.o: ${SRC}/mazeWars.c++ ${INCLUDE}/mazeWars.h++ mazeGenerator.o ${render} ${entities}
-	$(CC) $(CFLAGS) -c ${SRC}/mazeWars.c++
-
-mazeGrid.o: ${SRC}/mazeGrid.c++ ${INCLUDE}/mazeGrid.h++ direction.o
-	$(CC) $(CFLAGS) -c ${SRC}/mazeGrid.c++
-
-mazeGenerator.o: ${SRC}/mazeGenerator.c++ ${INCLUDE}/mazeGenerator.h++ mazeGrid.o
-	$(CC) $(CFLAGS) -c ${SRC}/mazeGenerator.c++
-
-direction.o: ${SRC}/direction.c++ ${INCLUDE}/direction.h++
-	$(CC) $(CFLAGS) -c ${SRC}/direction.c++
-
-camera.o: ${SRC}/camera.c++ ${INCLUDE}/camera.h++ direction.o
+camera.o: ${SRC}/camera.c++ ${INCLUDE}/camera.h++ vector.o
 	$(CC) $(CFLAGS) -c ${SRC}/camera.c++
-	
-renderer.o: ${SRC}/renderer.c++ ${INCLUDE}/renderer.h++ camera.o
-	$(CC) $(CFLAGS) -c ${SRC}/renderer.c++
- 
-player.o: ${SRC}/Entity/player.c++ ${INCLUDE}/Entity/player.h++ entity.o
-	$(CC) $(CFLAGS) -c ${SRC}/Entity/player.c++
 
-bullet.o: ${SRC}/Entity/bullet.c++ ${INCLUDE}/Entity/bullet.h++ entity.o
-	$(CC) $(CFLAGS) -c ${SRC}/Entity/bullet.c++
-
-enemy.o: ${SRC}/Entity/enemy.c++ ${INCLUDE}/Entity/enemy.h++ entity.o
-	$(CC) $(CFLAGS) -c ${SRC}/Entity/enemy.c++
-
-entity.o: ${SRC}/Entity/entity.c++ ${INCLUDE}/Entity/entity.h++
-	$(CC) $(CFLAGS) -c ${SRC}/Entity/entity.c++
-
-pathFinding.o: ${SRC}/Entity/pathFinding.c++ ${INCLUDE}/Entity/pathFinding.h++ direction.o entity.o
-	$(CC) $(CFLAGS) -c ${SRC}/Entity/pathFinding.c++
+vector.o: ${SRC}/vector.c++ ${INCLUDE}/vector.h++
+	$(CC) $(CFLAGS) -c ${SRC}/vector.c++

@@ -1,4 +1,5 @@
 #include "mazeGenerator.h++"
+#include "random.h++"
 
 void randomlyRemoveWall( 
     sf::Vector2i position,
@@ -6,9 +7,9 @@ void randomlyRemoveWall(
     float randomness
 )
 {
-    if ( ( std::rand() / float(RAND_MAX) ) < randomness )
+    if ( randomFloat(0,1) < randomness )
     {
-        Direction direction = Direction( std::rand() % NumberOfDirections );
+        Direction direction = Direction( randomInt( North, West ) );
 
         if ( mazeGrid.inBounds( transposePosition( position, direction ) ) )
         {
@@ -42,7 +43,7 @@ Direction getRandomValidDirection(
     if ( directions.size() == 0 )
         return NoDirection;
     
-    return directions[ std::rand() % ( directions.size() ) ];
+    return directions[ randomInt( 0, directions.size() - 1 ) ];
 }
 
 void generateMazeDepthFirst( 
@@ -51,8 +52,6 @@ void generateMazeDepthFirst(
     std::size_t seed
 )
 {
-    std::srand( seed );
-
     sf::Vector2i position = {0,0};
     std::vector<sf::Vector2i> positionStack = {{0,0}};
     std::vector<std::vector<bool>> isSearched;

@@ -3,6 +3,7 @@
 #include "Entity/bullet.h++"
 #include "Entity/player.h++"
 #include "Entity/enemy.h++"
+#include "random.h++"
 
 MazeWars::MazeWars( sf::Vector2i dimensions ): mazeGrid( dimensions ), MiniMapRadius(3)
 {
@@ -95,7 +96,7 @@ void MazeWars::attemptToSpawnEntities()
 
     while ( numberOfEnemies < 5 )
     {
-        float spawnAngle = ( std::rand() / float(RAND_MAX) ) * 2 * M_PI;
+        float spawnAngle = randomFloat( 0, 2 * M_PI );
         sf::Vector2i spawnLocation = getPlayer()->getPosition() + 
             sf::Vector2i(
                 std::floor( spawnDistance * cos( spawnAngle ) ),

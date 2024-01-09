@@ -83,7 +83,7 @@ void Renderer::drawTriangle(
     for ( int index = 0; index < 3; index++ )
     {
         lineStart = transformations.apply( triangle.getVertexPosition( index ) );
-        lineStart = transformations.apply( triangle.getVertexPosition( index + 1 ) );
+        lineEnd = transformations.apply( triangle.getVertexPosition( index + 1 ) );
         if ( projectLine( window,  lineStart, lineEnd ) )
         {
             appendLineToArray( lineVertices, { lineStart.x, lineStart.y }, { lineEnd.x, lineEnd.y }, sf::Color::Green );
@@ -94,15 +94,11 @@ void Renderer::drawTriangle(
 void Renderer::drawLine(
     sf::RenderWindow& window, const Line& line, const Model3D::Transformations& transformations )
 {
-    sf::Vector3f lineStart, lineEnd;
-    for ( int index = 0; index < 3; index++ )
+    sf::Vector3f lineStart = transformations.apply( line.getVertexPosition( 0 ) );
+    sf::Vector3f lineEnd = transformations.apply( line.getVertexPosition( 1 ) );
+    if ( projectLine( window, lineStart, lineEnd ) )
     {
-        lineStart = transformations.apply( line.getVertexPosition( index ) );
-        lineStart = transformations.apply( line.getVertexPosition( index + 1 ) );
-        if ( projectLine( window, lineStart, lineEnd ) )
-        {
-            appendLineToArray( lineVertices, { lineStart.x, lineStart.y }, { lineEnd.x, lineEnd.y }, sf::Color::Green );
-        }
+        appendLineToArray( lineVertices, { lineStart.x, lineStart.y }, { lineEnd.x, lineEnd.y }, sf::Color::Green );
     }
 }
 

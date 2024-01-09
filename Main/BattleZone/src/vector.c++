@@ -20,7 +20,7 @@ sf::Vector3f rotatePosition( sf::Vector3f position, float angle )
         static_cast<float>( 
             - position.x*sin( angle ) + position.y*cos( angle )
         ),
-        0
+        position.z
     };
 }
 

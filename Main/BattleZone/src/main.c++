@@ -2,6 +2,7 @@
 #include "time.h++"
 #include "render/camera.h++"
 #include "render/model3D.h++"
+#include "render/renderer.h++"
 
 int main()
 {
@@ -11,9 +12,19 @@ int main()
 
     Model3D model( "BattleZone/tank.obj" );
 
+    Renderer renderer;
+
+    renderer.getCamera().setPosition( {0,0,-10} );
+
     while (window.isOpen())
     {
         window.clear( sf::Color::Black );
+
+        renderer.clear();
+        
+        renderer.draw( window, model );
+
+        renderer.display( window );
 
         fps.draw(window, {0,0}, 30, sf::Color::White);
 

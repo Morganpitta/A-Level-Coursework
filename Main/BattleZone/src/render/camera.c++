@@ -55,7 +55,7 @@ void Camera::turnRight( float angle )
 sf::Vector3f Camera::relativePositionOf( sf::Vector3f position )
 {
     return rotatePosition( 
-        position,
+        position - getPosition(),
         getRotation()
     );
 }

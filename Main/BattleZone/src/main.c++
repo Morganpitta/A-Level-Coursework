@@ -14,7 +14,7 @@ int main()
 
     Renderer renderer;
 
-    renderer.getCamera().setPosition( {0,0,-10} );
+    renderer.getCamera().setPosition( {0,0,-2} );
 
     while (window.isOpen())
     {

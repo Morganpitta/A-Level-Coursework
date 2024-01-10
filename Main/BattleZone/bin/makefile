@@ -20,6 +20,7 @@ endif
 
 CFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -I$(ROOT_DIR)/Include -I$(INCLUDE)
 
+entities = entity.o
 
 # ****************************************************
 # Targets needed to bring the executable up to date
@@ -42,23 +43,26 @@ default_compile:
 main.o: ${SRC}/main.c++ battleZone.o
 	$(CC) $(CFLAGS) -c ${SRC}/main.c++
 
-battleZone.o: ${SRC}/battleZone.c++ ${INCLUDE}/battleZone.h++ renderer.o
+battleZone.o: ${SRC}/battleZone.c++ ${INCLUDE}/battleZone.h++ renderer.o ${entities}
 	$(CC) $(CFLAGS) -c ${SRC}/battleZone.c++
 
-renderer.o: ${SRC}/render/renderer.c++ ${INCLUDE}/render/renderer.h++ model3D.o camera.o
-	$(CC) $(CFLAGS) -c ${SRC}/render/renderer.c++
+entity.o: ${SRC}/Entity/entity.c++ ${INCLUDE}/Entity/entity.h++ battleZone.o
+	$(CC) $(CFLAGS) -c ${SRC}/Entity/entity.c++
 
-model3D.o: ${SRC}/render/model3D.c++ ${INCLUDE}/render/model3D.h++ triangle.o line.o
-	$(CC) $(CFLAGS) -c ${SRC}/render/model3D.c++
+renderer.o: ${SRC}/Render/renderer.c++ ${INCLUDE}/Render/renderer.h++ model3D.o camera.o
+	$(CC) $(CFLAGS) -c ${SRC}/Render/renderer.c++
 
-triangle.o: ${SRC}/render/triangle.c++ ${INCLUDE}/render/triangle.h++
-	$(CC) $(CFLAGS) -c ${SRC}/render/triangle.c++
+model3D.o: ${SRC}/Render/model3D.c++ ${INCLUDE}/Render/model3D.h++ triangle.o line.o
+	$(CC) $(CFLAGS) -c ${SRC}/Render/model3D.c++
 
-line.o: ${SRC}/render/line.c++ ${INCLUDE}/render/line.h++
-	$(CC) $(CFLAGS) -c ${SRC}/render/line.c++
+triangle.o: ${SRC}/Render/triangle.c++ ${INCLUDE}/Render/triangle.h++
+	$(CC) $(CFLAGS) -c ${SRC}/Render/triangle.c++
 
-camera.o: ${SRC}/render/camera.c++ ${INCLUDE}/render/camera.h++ vector.o
-	$(CC) $(CFLAGS) -c ${SRC}/render/camera.c++
+line.o: ${SRC}/Render/line.c++ ${INCLUDE}/Render/line.h++
+	$(CC) $(CFLAGS) -c ${SRC}/Render/line.c++
+
+camera.o: ${SRC}/Render/camera.c++ ${INCLUDE}/Render/camera.h++ vector.o
+	$(CC) $(CFLAGS) -c ${SRC}/Render/camera.c++
 
 vector.o: ${SRC}/vector.c++ ${INCLUDE}/vector.h++
 	$(CC) $(CFLAGS) -c ${SRC}/vector.c++

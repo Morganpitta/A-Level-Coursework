@@ -1,4 +1,4 @@
-#include "render/triangle.h++"
+#include "Render/triangle.h++"
 
 TriangleVertex Triangle::getVertex( int index ) const
 {

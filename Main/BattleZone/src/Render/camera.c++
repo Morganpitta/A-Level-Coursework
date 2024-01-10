@@ -1,4 +1,4 @@
-#include "render/camera.h++"
+#include "Render/camera.h++"
 
 Camera::Camera()
 {
@@ -39,7 +39,7 @@ void Camera::setFov( float fov )
 
 void Camera::moveForward( float distance )
 {
-    setPosition( getPosition() + distance * getUnitVector( getRotation() ) );
+    setPosition( getPosition() + distance * get3DUnitVector( getRotation() ) );
 }
 
 void Camera::turnLeft( float angle )

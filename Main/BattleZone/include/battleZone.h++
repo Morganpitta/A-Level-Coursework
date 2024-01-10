@@ -1,7 +1,7 @@
 #if !defined( BATTLE_ZONE_HPP )
 #define BATTLE_ZONE_HPP
 
-    #include "render/renderer.h++"
+    #include "Render/renderer.h++"
 
     class BattleZone
     {

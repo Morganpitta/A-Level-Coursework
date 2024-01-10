@@ -18,8 +18,9 @@ bool loadEntityAssets()
     return true;
 }
 
-Entity::Entity( sf::Vector2i position ): position( position )
+Entity::Entity( sf::Vector2i position )
 {
+    this->position = position;
     this->direction = North;
     this->health = 1;
     this->id = NullId;

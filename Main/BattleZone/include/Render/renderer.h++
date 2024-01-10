@@ -1,8 +1,8 @@
 #if !defined( RENDERER_HPP )
 #define RENDERER_HPP
 
-    #include "render/camera.h++"
-    #include "render/model3D.h++"
+    #include "Render/camera.h++"
+    #include "Render/model3D.h++"
     #include "draw.h++"
     #include <SFML/Graphics.hpp>
 

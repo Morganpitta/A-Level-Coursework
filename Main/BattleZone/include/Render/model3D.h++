@@ -6,8 +6,8 @@
     #include <string>
     #include "assert.h++"
     #include "file.h++"
-    #include "render/triangle.h++"
-    #include "render/line.h++"
+    #include "Render/triangle.h++"
+    #include "Render/line.h++"
     #include "vector.h++"
 
     class Model3D

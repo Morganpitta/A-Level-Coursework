@@ -68,7 +68,7 @@ sf::Vector3f rotatePosition( sf::Vector3f position, float yaw, float pitch, floa
 
 sf::Vector2f get2DUnitVector( float angle )
 {
-    return { cos( angle ), sin( angle ) };
+    return { sin( angle ), cos( angle ) };
 }
 
 sf::Vector2f getRandom2DUnitVector()
@@ -78,7 +78,7 @@ sf::Vector2f getRandom2DUnitVector()
 
 sf::Vector3f get3DUnitVector( float angle )
 {
-    return { cos( angle ), 0, sin( angle ) };
+    return { sin( angle ), 0, cos( angle ) };
 }
 
 sf::Vector3f getRandom3DUnitVector()

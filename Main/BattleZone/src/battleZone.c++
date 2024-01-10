@@ -48,20 +48,20 @@ void BattleZone::update( sf::RenderWindow &window )
             
             case sf::Event::KeyPressed:
                 if ( event.key.code == sf::Keyboard::A )
-                    getPlayer()->turnLeft(M_PI/100);
+                    getPlayer()->turnLeft(M_PI/50);
                 if ( event.key.code == sf::Keyboard::D )
-                    getPlayer()->turnRight( M_PI/100 );
+                    getPlayer()->turnRight( M_PI/50 );
                 if ( event.key.code == sf::Keyboard::W )
-                    getPlayer()->moveForward( 0.01 );
+                    getPlayer()->moveForward( 0.1 );
                 if ( event.key.code == sf::Keyboard::S )
-                    getPlayer()->moveForward( -0.01 );
+                    getPlayer()->moveForward( -0.1 );
                 if ( event.key.code == sf::Keyboard::P )
                     std::cout<<"REEEE";
                 break;
         }
     }
 
-    getCamera().setPosition( { getPlayer()->getPosition().x, 0, getPlayer()->getPosition().y } );
+    getCamera().setPosition( { getPlayer()->getPosition().x, 0.83, getPlayer()->getPosition().y } );
     getCamera().setYaw( getPlayer()->getRotation() );
 
     for ( std::pair<Id, Entity*> idEntityPair: entities )

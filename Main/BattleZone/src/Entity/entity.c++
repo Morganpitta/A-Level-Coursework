@@ -1,11 +1,16 @@
 #include "Entity/entity.h++"
 #include "battleZone.h++"
+#include "file.h++"
 
 const Id NullId = -1;
+
+Model3D model;
 
 bool loadEntityAssets()
 {
     setWorkingDirectoryToDefault();
+
+    model.importFromFile( "BattleZones/tank.obj" );
 
     return true;
 }

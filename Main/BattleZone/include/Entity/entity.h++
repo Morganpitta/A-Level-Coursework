@@ -3,7 +3,6 @@
 
     class BattleZone;
     #include "entityBase.h++"
-    #include "Render/model3D.h++"
 
     class Entity
     {

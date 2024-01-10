@@ -3,10 +3,12 @@
 
     class BattleZone;
     #include "SFML/Graphics.hpp"
-    #include "file.h++"
+    #include "Render/model3D.h++"
 
     typedef int Id;
     extern const Id NullId;
+
+    extern Model3D model;
 
     enum EntityType
     {

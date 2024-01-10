@@ -1,4 +1,5 @@
 #include "vector.h++"
+#include "random.h++"
 
 float normaliseAngle( float angle )
 {

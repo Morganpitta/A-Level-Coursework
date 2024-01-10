@@ -1,4 +1,6 @@
 #include "Render/model3D.h++"
+#include "file.h++"
+#include "assert.h++"
 
 sf::Vector3f Model3D::Transformations::apply( sf::Vector3f position ) const
 {

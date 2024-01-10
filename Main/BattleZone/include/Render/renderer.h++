@@ -3,7 +3,6 @@
 
     #include "Render/camera.h++"
     #include "Render/model3D.h++"
-    #include "draw.h++"
     #include <SFML/Graphics.hpp>
 
     extern sf::Texture mountains;

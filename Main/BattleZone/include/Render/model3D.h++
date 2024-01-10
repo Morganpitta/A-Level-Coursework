@@ -4,8 +4,6 @@
     #include <fstream>
     #include <vector>
     #include <string>
-    #include "assert.h++"
-    #include "file.h++"
     #include "Render/triangle.h++"
     #include "Render/line.h++"
     #include "vector.h++"

@@ -46,7 +46,7 @@ main.o: ${SRC}/main.c++ battleZone.o
 battleZone.o: ${SRC}/battleZone.c++ ${INCLUDE}/battleZone.h++ renderer.o ${entities}
 	$(CC) $(CFLAGS) -c ${SRC}/battleZone.c++
 
-entity.o: ${SRC}/Entity/entity.c++ ${INCLUDE}/Entity/entity.h++ battleZone.o
+entity.o: ${SRC}/Entity/entity.c++ ${INCLUDE}/Entity/entity.h++ battleZone.o model3D.o
 	$(CC) $(CFLAGS) -c ${SRC}/Entity/entity.c++
 
 renderer.o: ${SRC}/Render/renderer.c++ ${INCLUDE}/Render/renderer.h++ model3D.o camera.o

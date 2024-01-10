@@ -4,7 +4,6 @@
     #include <SFML/System.hpp>
     #define _USE_MATH_DEFINES
     #include <cmath>
-    #include "random.h++"
 
     float normaliseAngle( float angle );
     

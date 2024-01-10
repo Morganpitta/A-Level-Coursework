@@ -9,9 +9,9 @@
     {
         Renderer renderer;
         MazeGrid mazeGrid;
-        Id playerId;
         std::map<Id,Entity*> entities;
         std::vector<std::vector<std::vector<Entity*>>> entityGrid;
+        Id playerId;
         Id nextId;
         const int MiniMapRadius;
 

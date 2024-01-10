@@ -6,6 +6,9 @@ int main()
 {
     sf::RenderWindow window( sf::VideoMode(800,800), "Mazewars" );
 
+    if ( !loadEntityAssets() || !loadBaseAssets() )
+        return 1;
+
     FpsLimiter fps( 60 );
 
     Model3D model( "BattleZone/tank.obj" );

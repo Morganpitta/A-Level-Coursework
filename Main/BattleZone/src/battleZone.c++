@@ -79,7 +79,11 @@ void BattleZone::render( sf::RenderWindow &window )
     
     // Things will be renderered at a later date
 
-    renderer.draw( window, model );
+    for ( std::pair<Id, Entity*> idEntityPair: entities )
+    {
+        if ( idEntityPair.first != getPlayer()->getId() )
+            renderer.drawEntity( window, idEntityPair.second );
+    }
 
     renderer.display( window );
 }

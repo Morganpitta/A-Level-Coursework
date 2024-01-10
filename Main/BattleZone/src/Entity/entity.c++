@@ -4,13 +4,13 @@
 
 const Id NullId = -1;
 
-Model3D model;
+Model3D tankModel;
 
 bool loadEntityAssets()
 {
     setWorkingDirectoryToDefault();
 
-    model.importFromFile( "BattleZone/tank.obj" );
+    tankModel.importFromFile( "BattleZone/tank.obj" );
 
     return true;
 }
@@ -23,7 +23,7 @@ Entity::Entity( sf::Vector2f position )
     this->id = NullId;
     this->dead = false;
     this->type = NoType;
-    this->model = nullptr;
+    this->model = &tankModel;
 }
 
 sf::Vector2f Entity::getPosition() const

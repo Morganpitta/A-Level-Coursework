@@ -3,6 +3,7 @@
 
     #include "Render/camera.h++"
     #include "Render/model3D.h++"
+    #include "Entity/entityBase.h++"
     #include <SFML/Graphics.hpp>
 
     extern sf::Texture mountains;
@@ -34,7 +35,9 @@
 
             void drawLine( sf::RenderWindow& window, const Line& line, const Model3D::Transformations& transformations = {} );
 
-            void draw( sf::RenderWindow& window, Model3D &model, Model3D::Transformations transformations = {} );
+            void draw( sf::RenderWindow& window, Model3D *model, Model3D::Transformations transformations = {} );
+
+            void drawEntity( sf::RenderWindow& window, Entity *entity );
 
             void drawSkybox( sf::RenderWindow& window );
 

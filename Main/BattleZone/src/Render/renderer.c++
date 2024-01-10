@@ -1,4 +1,5 @@
 #include "Render/renderer.h++"
+#include "Entity/entity.h++"
 #include "draw.h++"
 
 sf::Texture mountains;
@@ -104,16 +105,25 @@ void Renderer::drawLine(
 }
 
 void Renderer::draw(
-    sf::RenderWindow& window, Model3D &model, Model3D::Transformations transformations )
+    sf::RenderWindow& window, Model3D *model, Model3D::Transformations transformations )
 {
-    for ( int index = 0; index < model.getTriangleCount(); index++ )
+    for ( int index = 0; index < model->getTriangleCount(); index++ )
     {
-        drawTriangle( window, model.getTriangle(index), transformations );
+        drawTriangle( window, model->getTriangle(index), transformations );
     }
 
-    for ( int index = 0; index < model.getLineCount(); index++ )
+    for ( int index = 0; index < model->getLineCount(); index++ )
     {
-        drawLine( window, model.getLine(index), transformations );
+        drawLine( window, model->getLine(index), transformations );
+    }
+}
+
+void Renderer::drawEntity( sf::RenderWindow& window, Entity *entity )
+{
+    if ( !entity->isDead() )
+    {
+        sf::Vector3f position = { entity->getPosition().x, 0, entity->getPosition().y };
+        draw( window, entity->getModel(), { entity->getRotation(), 0, 0,  } );
     }
 }
 

@@ -8,7 +8,7 @@
     typedef int Id;
     extern const Id NullId;
 
-    extern Model3D model;
+    extern Model3D tankModel;
 
     enum EntityType
     {

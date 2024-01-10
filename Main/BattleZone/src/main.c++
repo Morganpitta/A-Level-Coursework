@@ -1,8 +1,6 @@
 #include "SFML/Graphics.hpp"
 #include "time.h++"
-#include "render/camera.h++"
-#include "render/model3D.h++"
-#include "render/renderer.h++"
+#include "battleZone.h++"
 
 int main()
 {
@@ -12,19 +10,15 @@ int main()
 
     Model3D model( "BattleZone/tank.obj" );
 
-    Renderer renderer;
-
-    renderer.getCamera().setPosition( {0,0,-10} );
+    BattleZone game;
 
     while (window.isOpen())
     {
+        game.update( window );
+
         window.clear( sf::Color::Black );
 
-        renderer.clear();
-        
-        renderer.draw( window, model );
-
-        renderer.display( window );
+        game.render( window );
 
         fps.draw(window, {0,0}, 30, sf::Color::White);
 

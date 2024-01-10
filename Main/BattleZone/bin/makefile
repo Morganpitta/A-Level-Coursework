@@ -39,8 +39,11 @@ static_compile:
 default_compile:
 	$(eval CFLAGS += $(SFMLFLAGS) -g )
 
-main.o: ${SRC}/main.c++ camera.o renderer.o
+main.o: ${SRC}/main.c++ battleZone.o
 	$(CC) $(CFLAGS) -c ${SRC}/main.c++
+
+battleZone.o: ${SRC}/battleZone.c++ ${INCLUDE}/battleZone.h++ renderer.o
+	$(CC) $(CFLAGS) -c ${SRC}/battleZone.c++
 
 renderer.o: ${SRC}/render/renderer.c++ ${INCLUDE}/render/renderer.h++ model3D.o camera.o
 	$(CC) $(CFLAGS) -c ${SRC}/render/renderer.c++

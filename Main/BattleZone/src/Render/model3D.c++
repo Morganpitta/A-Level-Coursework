@@ -5,7 +5,9 @@ sf::Vector3f Model3D::Transformations::apply( sf::Vector3f position ) const
     return 
         rotatePosition( 
             position - this->rotationOrigin, 
-            this->rotation
+            this->yaw,
+            this->pitch,
+            this->roll
         ) + this->rotationOrigin + this->position;
 };
 

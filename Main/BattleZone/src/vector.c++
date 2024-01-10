@@ -23,18 +23,46 @@ sf::Vector2f rotatePosition( sf::Vector2f position, float angle )
     };
 }
 
-sf::Vector3f rotatePosition( sf::Vector3f position, float angle )
+sf::Vector3f xRotationMatrix( sf::Vector3f position, float angle )
 {
-    // The 2D rotation matrix
     return {
-        static_cast<float>( 
-            position.x*cos( angle ) + position.y*sin( angle ) 
-        ),
-        static_cast<float>( 
-            - position.x*sin( angle ) + position.y*cos( angle )
-        ),
+        position.x,
+        position.y * cos( angle ) + position.z * sin( angle ),
+        - position.y * sin( angle ) + position.z * cos( angle ) 
+    };
+}
+
+sf::Vector3f yRotationMatrix( sf::Vector3f position, float angle )
+{
+    return { 
+        position.x * cos( angle ) - position.z * sin( angle ),
+        position.y,
+        position.x * sin( angle ) + position.z * cos( angle )
+    };  
+}
+
+sf::Vector3f zRotationMatrix( sf::Vector3f position, float angle )
+{
+    return {
+        position.x * cos( angle ) + position.y * sin ( angle ),
+        - position.x * sin( angle ) + position.y * cos( angle ),
         position.z
     };
+}
+
+sf::Vector3f rotatePosition( sf::Vector3f position, float yaw, float pitch, float roll )
+{
+    return 
+    xRotationMatrix(
+        yRotationMatrix( 
+            zRotationMatrix( 
+                position,
+                roll
+            ),
+            yaw
+        ),
+        pitch 
+    );
 }
 
 sf::Vector2f get2DUnitVector( float angle )
@@ -49,7 +77,7 @@ sf::Vector2f getRandom2DUnitVector()
 
 sf::Vector3f get3DUnitVector( float angle )
 {
-    return { cos( angle ), sin( angle ), 0 };
+    return { cos( angle ), 0, sin( angle ) };
 }
 
 sf::Vector3f getRandom3DUnitVector()

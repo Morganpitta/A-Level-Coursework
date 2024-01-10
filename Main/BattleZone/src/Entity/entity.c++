@@ -69,7 +69,7 @@ void Entity::setRotation( float rotation )
 void Entity::moveForward( float distance )
 {
     setPosition(
-        getPosition()
+        getPosition() + get2DUnitVector( getRotation() )
     );
 }
 

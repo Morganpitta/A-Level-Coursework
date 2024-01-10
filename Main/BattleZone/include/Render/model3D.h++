@@ -17,7 +17,9 @@
         public:
             struct Transformations 
             {
-                float rotation = 0;
+                float yaw = 0;
+                float pitch = 0;
+                float roll = 0;
                 sf::Vector3f position = {0,0,0};
                 sf::Vector3f rotationOrigin = {0,0,0};
 

@@ -3,7 +3,9 @@
 Camera::Camera()
 {
     this->position = {0,0,0};
-    this->rotation = 0;
+    this->yaw = 0;
+    this->pitch = 0;
+    this->roll = 0;
     this->fov = 2;
 }
 
@@ -12,9 +14,20 @@ sf::Vector3f Camera::getPosition() const
     return this->position;
 }
 
-float Camera::getRotation() const
+
+float Camera::getYaw() const
 {
-    return this->rotation;
+    return this->yaw;
+}
+
+float Camera::getPitch() const
+{
+    return this->pitch;
+}
+
+float Camera::getRoll() const
+{
+    return this->roll;
 }
 
 float Camera::getFov() const
@@ -27,9 +40,19 @@ void Camera::setPosition( sf::Vector3f position )
     this->position = position;
 }
 
-void Camera::setRotation( float rotation )
+void Camera::setYaw( float yaw )
 {
-    this->rotation = normaliseAngle( rotation );
+    this->yaw = normaliseAngle( yaw );
+}
+
+void Camera::setPitch( float pitch )
+{
+    this->pitch = normaliseAngle( pitch );
+}
+
+void Camera::setRoll( float roll )
+{
+    this->roll = normaliseAngle( roll );
 }
 
 void Camera::setFov( float fov )
@@ -39,23 +62,15 @@ void Camera::setFov( float fov )
 
 void Camera::moveForward( float distance )
 {
-    setPosition( getPosition() + distance * get3DUnitVector( getRotation() ) );
-}
-
-void Camera::turnLeft( float angle )
-{
-    setRotation( getRotation() - angle );
-}
-
-void Camera::turnRight( float angle )
-{
-    setRotation( getRotation() + angle );
+    setPosition( getPosition() + distance * get3DUnitVector( getYaw() ) );
 }
 
 sf::Vector3f Camera::relativePositionOf( sf::Vector3f position )
 {
     return rotatePosition( 
         position - getPosition(),
-        getRotation()
+        getYaw(),
+        getPitch(),
+        getRoll()
     );
 }

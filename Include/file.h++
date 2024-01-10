@@ -13,17 +13,7 @@
 
     inline std::string getWorkingDirectory()
     {
-        #if defined( OS_Windows )
-
-            TCHAR buffer[MAX_PATH]; 
-            GetModuleFileName( NULL, buffer, MAX_PATH );
-            return std::string( buffer );
-
-        #else
-
-            return std::filesystem::current_path().string();
-
-        #endif 
+        return std::filesystem::current_path().string();
     }
 
     inline bool setWorkingDirectoryToDefault()

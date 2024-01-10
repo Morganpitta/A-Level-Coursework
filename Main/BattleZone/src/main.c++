@@ -11,8 +11,6 @@ int main()
 
     FpsLimiter fps( 60 );
 
-    Model3D model( "BattleZone/tank.obj" );
-
     BattleZone game;
 
     while (window.isOpen())

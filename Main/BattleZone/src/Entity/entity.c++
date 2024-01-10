@@ -10,7 +10,7 @@ bool loadEntityAssets()
 {
     setWorkingDirectoryToDefault();
 
-    model.importFromFile( "BattleZones/tank.obj" );
+    model.importFromFile( "BattleZone/tank.obj" );
 
     return true;
 }

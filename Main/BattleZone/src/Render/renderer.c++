@@ -118,7 +118,7 @@ void Renderer::draw(
 
 void Renderer::drawSkybox( sf::RenderWindow& window )
 {
-    float percentOffset = std::fmod( 2 * M_PI + camera.getRotation(), 2* M_PI ) / ( 2*M_PI );
+    float percentOffset = std::fmod( 2 * M_PI + camera.getYaw(), 2* M_PI ) / ( 2*M_PI );
     float percentWidth = camera.getFov() / ( 2*M_PI );
 
     sf::RectangleShape skyBox( {1600,150} );

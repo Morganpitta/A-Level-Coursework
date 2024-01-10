@@ -35,7 +35,7 @@
 
             void drawLine( sf::RenderWindow& window, const Line& line, const Model3D::Transformations& transformations = {} );
 
-            void draw( sf::RenderWindow& window, Model3D &model, Model3D::Transformations transformations = { 0, {0,0,0} } );
+            void draw( sf::RenderWindow& window, Model3D &model, Model3D::Transformations transformations = {} );
 
             void drawSkybox( sf::RenderWindow& window );
 

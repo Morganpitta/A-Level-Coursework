@@ -1,10 +1,11 @@
 #include "SFML/Graphics.hpp"
 #include "time.h++"
 #include "battleZone.h++"
+#include "Entity/tank.h++"
 
 int main()
 {
-    sf::RenderWindow window( sf::VideoMode(800,800), "Mazewars" );
+    sf::RenderWindow window( sf::VideoMode(1600,800), "Mazewars" );
 
     if ( !loadEntityAssets() || !loadBaseAssets() )
         return 1;
@@ -12,6 +13,8 @@ int main()
     FpsLimiter fps( 60 );
 
     BattleZone game;
+
+    game.addEntity( new Tank() );
 
     while (window.isOpen())
     {

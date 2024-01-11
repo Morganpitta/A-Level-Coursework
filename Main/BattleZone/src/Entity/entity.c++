@@ -23,7 +23,7 @@ Entity::Entity( sf::Vector2f position )
     this->id = NullId;
     this->dead = false;
     this->type = NoType;
-    this->model = &tankModel;
+    this->model = nullptr;
 }
 
 sf::Vector2f Entity::getPosition() const
@@ -92,7 +92,7 @@ sf::Vector2f Entity::relativePositionOf( sf::Vector2f position )
 {
     return rotatePosition( 
         position - getPosition(),
-        getRotation()
+        normaliseAngle( -getRotation() )
     );
 }
 

@@ -48,7 +48,7 @@ void BattleZone::update( sf::RenderWindow &window )
             
             case sf::Event::KeyPressed:
                 if ( event.key.code == sf::Keyboard::A )
-                    getPlayer()->turnLeft(M_PI/50);
+                    getPlayer()->turnLeft( M_PI/50 );
                 if ( event.key.code == sf::Keyboard::D )
                     getPlayer()->turnRight( M_PI/50 );
                 if ( event.key.code == sf::Keyboard::W )

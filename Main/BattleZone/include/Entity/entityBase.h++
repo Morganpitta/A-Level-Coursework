@@ -12,7 +12,8 @@
 
     enum EntityType
     {
-        NoType
+        NoType,
+        TankType
     };
 
     extern bool loadEntityAssets();

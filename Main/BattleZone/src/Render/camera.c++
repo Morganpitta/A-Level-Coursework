@@ -69,8 +69,8 @@ sf::Vector3f Camera::relativePositionOf( sf::Vector3f position )
 {
     return rotatePosition( 
         position - getPosition(),
-        getYaw(),
-        getPitch(),
-        getRoll()
+        normaliseAngle( -getYaw() ),
+        normaliseAngle( -getPitch() ),
+        normaliseAngle( -getRoll() )
     );
 }

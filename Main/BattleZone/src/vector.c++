@@ -36,17 +36,17 @@ sf::Vector3f xRotationMatrix( sf::Vector3f position, float angle )
 sf::Vector3f yRotationMatrix( sf::Vector3f position, float angle )
 {
     return { 
-        position.x * cos( angle ) - position.z * sin( angle ),
+        position.x * cos( angle ) + position.z * sin( angle ),
         position.y,
-        position.x * sin( angle ) + position.z * cos( angle )
+        - position.x * sin( angle ) + position.z * cos( angle )
     };  
 }
 
 sf::Vector3f zRotationMatrix( sf::Vector3f position, float angle )
 {
     return {
-        position.x * cos( angle ) + position.y * sin ( angle ),
-        - position.x * sin( angle ) + position.y * cos( angle ),
+        position.x * cos( angle ) - position.y * sin ( angle ),
+        position.x * sin( angle ) + position.y * cos( angle ),
         position.z
     };
 }

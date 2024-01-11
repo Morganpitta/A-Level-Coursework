@@ -16,12 +16,14 @@ void Tank::update( BattleZone &game )
     float angleOffset = atan2( relativePosition.x, relativePosition.y );
 
     // To the right 
-    if ( angleOffset > M_PI/50.f )
+    if ( angleOffset > M_PI/100.f )
     {
-        turnLeft( M_PI/50.f );
+        turnRight( M_PI/100.f );
     }
-    else if ( angleOffset < -M_PI/50.f )
+    else if ( angleOffset < -M_PI/100.f )
     {
-        turnRight( M_PI/50.f );
+        turnLeft( M_PI/100.f );
     }
+
+    moveForward( 0.1 );
 }

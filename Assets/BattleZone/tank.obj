@@ -1,6 +1,5 @@
 # Blender 4.0.2
 # www.blender.org
-mtllib tank.mtl
 o tank
 v 0.333333 0.000000 0.997499
 v 0.333333 0.000000 -0.997499

@@ -9,11 +9,14 @@
     extern const Id NullId;
 
     extern Model3D tankModel;
+    extern Model3D obstacleModel;
 
     enum EntityType
     {
         NoType,
-        TankType
+        TankType,
+        ObstacleType,
+        BulletType
     };
 
     extern bool loadEntityAssets();

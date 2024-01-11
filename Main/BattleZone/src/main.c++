@@ -2,6 +2,7 @@
 #include "time.h++"
 #include "battleZone.h++"
 #include "Entity/tank.h++"
+#include "Entity/obstacle.h++"
 
 int main()
 {
@@ -15,6 +16,8 @@ int main()
     BattleZone game;
 
     game.addEntity( new Tank() );
+
+    game.addEntity( new Obstacle( {2, 2} ) );
 
     while (window.isOpen())
     {

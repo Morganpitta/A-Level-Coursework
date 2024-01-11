@@ -2,7 +2,7 @@
 #include "battleZone.h++"
 #include <iostream>
 
-Tank::Tank( sf::Vector2f position )
+Tank::Tank( sf::Vector2f position ): Entity( position )
 {
     this->type = TankType;
     this->model = &tankModel;

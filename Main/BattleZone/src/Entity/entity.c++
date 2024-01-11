@@ -5,12 +5,14 @@
 const Id NullId = -1;
 
 Model3D tankModel;
+Model3D obstacleModel;
 
 bool loadEntityAssets()
 {
     setWorkingDirectoryToDefault();
 
     tankModel.importFromFile( "BattleZone/tank.obj" );
+    obstacleModel.importFromFile( "BattleZone/obstacle.obj" );
 
     return true;
 }

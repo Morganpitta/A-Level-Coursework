@@ -23,6 +23,8 @@
 
             Id addEntity( Entity* entity );
 
+            void cleanUpEntities();
+
             void update( sf::RenderWindow &window );
 
             void render( sf::RenderWindow &window );

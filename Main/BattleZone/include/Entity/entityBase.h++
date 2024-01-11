@@ -10,13 +10,15 @@
 
     extern Model3D tankModel;
     extern Model3D obstacleModel;
+    extern Model3D bulletModel;
 
     enum EntityType
     {
         NoType,
         TankType,
         ObstacleType,
-        BulletType
+        BulletType,
+        PlayerType
     };
 
     extern bool loadEntityAssets();

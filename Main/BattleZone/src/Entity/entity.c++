@@ -6,6 +6,7 @@ const Id NullId = -1;
 
 Model3D tankModel;
 Model3D obstacleModel;
+Model3D bulletModel;
 
 bool loadEntityAssets()
 {
@@ -13,6 +14,7 @@ bool loadEntityAssets()
 
     tankModel.importFromFile( "BattleZone/tank.obj" );
     obstacleModel.importFromFile( "BattleZone/obstacle.obj" );
+    bulletModel.importFromFile( "BattleZone/bullet.obj" );
 
     return true;
 }

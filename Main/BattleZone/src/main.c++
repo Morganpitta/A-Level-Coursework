@@ -3,6 +3,7 @@
 #include "battleZone.h++"
 #include "Entity/tank.h++"
 #include "Entity/obstacle.h++"
+#include "Entity/bullet.h++"
 
 int main()
 {
@@ -18,6 +19,8 @@ int main()
     game.addEntity( new Tank() );
 
     game.addEntity( new Obstacle( {2, 2} ) );
+
+    game.addEntity( new Bullet( {-2, 2} ) );
 
     while (window.isOpen())
     {

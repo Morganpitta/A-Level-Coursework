@@ -35,6 +35,18 @@ Id BattleZone::addEntity( Entity* entity )
     return entityId;
 }
 
+void BattleZone::cleanUpEntities()
+{
+    for ( auto iterator = this->entities.begin(); iterator != this->entities.end(); )
+    {
+        Entity *entity = (*iterator).second; 
+        if ( entity->isDead() && entity->getType() != PlayerType )
+            iterator = this->entities.erase( iterator );
+        else
+            iterator++;
+    }
+}
+
 void BattleZone::update( sf::RenderWindow &window )
 {
     sf::Event event;
@@ -62,7 +74,7 @@ void BattleZone::update( sf::RenderWindow &window )
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::S ) )
         getPlayer()->moveForward( -0.1 );
 
-    getCamera().setPosition( { getPlayer()->getPosition().x, 0.83, getPlayer()->getPosition().y } );
+    getCamera().setPosition( { getPlayer()->getPosition().x, 0.85, getPlayer()->getPosition().y } );
     getCamera().setYaw( getPlayer()->getRotation() );
 
     for ( std::pair<Id, Entity*> idEntityPair: entities )

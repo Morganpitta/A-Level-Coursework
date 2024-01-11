@@ -7,7 +7,7 @@ int main()
 {
     sf::RenderWindow window( sf::VideoMode(1600,800), "Mazewars" );
 
-    if ( !loadEntityAssets() || !loadBaseAssets() )
+    if ( !loadEntityAssets() || !loadAssets() )
         return 1;
 
     FpsLimiter fps( 60 );

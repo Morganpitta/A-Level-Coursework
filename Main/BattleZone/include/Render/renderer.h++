@@ -13,6 +13,7 @@
     class Renderer
     {
         const float zNear;
+        const float mountainHeight;
         sf::VertexArray lineVertices;
         Camera camera;
 
@@ -39,7 +40,7 @@
 
             void drawEntity( sf::RenderWindow& window, Entity *entity );
 
-            void drawSkybox( sf::RenderWindow& window );
+            void drawBackground( sf::RenderWindow& window );
 
             void clear();
 

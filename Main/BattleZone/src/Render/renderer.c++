@@ -17,7 +17,7 @@ bool loadAssets()
     return true;
 }
 
-Renderer::Renderer(): zNear( 0.01f ), camera(), lineVertices( sf::PrimitiveType::Lines )
+Renderer::Renderer(): zNear( 0.01f ), mountainHeight( 150 ), camera(), lineVertices( sf::PrimitiveType::Lines )
 {
     
 }
@@ -127,17 +127,19 @@ void Renderer::drawEntity( sf::RenderWindow& window, Entity *entity )
     }
 }
 
-void Renderer::drawSkybox( sf::RenderWindow& window )
+void Renderer::drawBackground( sf::RenderWindow& window )
 {
-    float percentOffset = std::fmod( 2 * M_PI + camera.getYaw(), 2* M_PI ) / ( 2*M_PI );
+    float mountainsWidth = mountains.getSize().x;
+
     float percentWidth = camera.getFov() / ( 2*M_PI );
+    float percentOffset = normaliseAngle( camera.getYaw() ) / ( 2*M_PI ) - percentWidth/2;
 
-    sf::RectangleShape skyBox( {1600,150} );
-    skyBox.setPosition({0,250});
-    skyBox.setTexture( &mountains );
-    skyBox.setTextureRect( sf::IntRect({(mountains.getSize().x*3) * ( percentOffset - percentWidth/2 ),0},{(mountains.getSize().x*3) * ( percentWidth ), mountains.getSize().y}) );
+    sf::RectangleShape background( {window.getSize().x,this->mountainHeight} );
+    background.setPosition({0,window.getSize().y/2-this->mountainHeight});
+    background.setTexture( &mountains );
+    background.setTextureRect( sf::IntRect({mountainsWidth * ( percentOffset ),0},{mountainsWidth * ( percentWidth ), mountains.getSize().y}) );
 
-    window.draw( skyBox );
+    window.draw( background );
 }
 
 void Renderer::clear()

@@ -54,9 +54,9 @@ void BattleZone::update( sf::RenderWindow &window )
     }
 
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::A ) )
-        getPlayer()->turnLeft( M_PI/100 );
+        getPlayer()->turnLeft( M_PI/70 );
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::D ) )
-        getPlayer()->turnRight( M_PI/100 );
+        getPlayer()->turnRight( M_PI/70 );
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::W ) )
         getPlayer()->moveForward( 0.1 );
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::S ) )
@@ -79,6 +79,8 @@ void BattleZone::render( sf::RenderWindow &window )
     renderer.clear();
     
     // Things will be renderered at a later date
+
+    renderer.drawBackground( window );
 
     for ( std::pair<Id, Entity*> idEntityPair: entities )
     {

@@ -18,14 +18,14 @@ void Tank::update( BattleZone &game )
     // To the right 
     if ( angleOffset > M_PI/100.f )
     {
-        turnRight( M_PI/100.f );
+        turnRight( M_PI/200.f );
     }
     else if ( angleOffset < -M_PI/100.f )
     {
-        turnLeft( M_PI/100.f );
+        turnLeft( M_PI/200.f );
     }
     else
     {
-        moveForward( 0.1 );
+        moveForward( 0.03 );
     }
 }

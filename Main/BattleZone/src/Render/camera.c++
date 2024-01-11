@@ -6,7 +6,7 @@ Camera::Camera()
     this->yaw = 0;
     this->pitch = 0;
     this->roll = 0;
-    this->fov = 2;
+    this->fov = M_PI / 2;
 }
 
 sf::Vector3f Camera::getPosition() const

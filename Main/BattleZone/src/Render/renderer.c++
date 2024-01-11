@@ -123,7 +123,7 @@ void Renderer::drawEntity( sf::RenderWindow& window, Entity *entity )
     if ( !entity->isDead() )
     {
         sf::Vector3f position = { entity->getPosition().x, 0, entity->getPosition().y };
-        draw( window, entity->getModel(), { entity->getRotation(), 0, 0,  } );
+        draw( window, entity->getModel(), { entity->getRotation(), 0, 0, position } );
     }
 }
 

@@ -24,6 +24,8 @@ void Tank::update( BattleZone &game )
     {
         turnLeft( M_PI/100.f );
     }
-
-    moveForward( 0.1 );
+    else
+    {
+        moveForward( 0.1 );
+    }
 }

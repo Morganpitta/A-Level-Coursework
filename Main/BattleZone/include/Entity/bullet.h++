@@ -5,8 +5,10 @@
 
     class Bullet: public Entity
     {
+        Id ownerId;
+
         public:
-            Bullet( sf::Vector2f position = {0,0}, float rotation = 0 );
+            Bullet( Id ownerId, sf::Vector2f position = {0,0}, float rotation = 0 );
 
             virtual void update( BattleZone &game ) override;
     };

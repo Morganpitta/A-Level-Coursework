@@ -16,11 +16,9 @@ int main()
 
     BattleZone game;
 
-    game.addEntity( new Tank() );
+    game.addEntity( new Tank( {-2,2} ) );
 
     game.addEntity( new Obstacle( {2, 2} ) );
-
-    game.addEntity( new Bullet( {-2, 2} ) );
 
     while (window.isOpen())
     {

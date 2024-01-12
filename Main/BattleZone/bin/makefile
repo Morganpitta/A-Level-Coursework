@@ -20,7 +20,7 @@ endif
 
 CFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -I$(ROOT_DIR)/Include -I$(INCLUDE)
 
-entities = entity.o tank.o obstacle.o bullet.o
+entities = entity.o tank.o obstacle.o bullet.o player.o
 
 # ****************************************************
 # Targets needed to bring the executable up to date
@@ -45,6 +45,9 @@ main.o: ${SRC}/main.c++ battleZone.o
 
 battleZone.o: ${SRC}/battleZone.c++ ${INCLUDE}/battleZone.h++ renderer.o ${entities}
 	$(CC) $(CFLAGS) -c ${SRC}/battleZone.c++
+
+player.o: ${SRC}/Entity/player.c++ ${INCLUDE}/Entity/player.h++ entity.o
+	$(CC) $(CFLAGS) -c ${SRC}/Entity/player.c++
 
 bullet.o: ${SRC}/Entity/bullet.c++ ${INCLUDE}/Entity/bullet.h++ entity.o
 	$(CC) $(CFLAGS) -c ${SRC}/Entity/bullet.c++

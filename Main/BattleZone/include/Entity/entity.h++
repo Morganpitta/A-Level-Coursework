@@ -14,6 +14,7 @@
             Id id;
             bool dead;
             EntityType type;
+            float radius;
 
         public:
             Entity( sf::Vector2f position = {0,0} );
@@ -32,7 +33,7 @@
 
             Model3D *getModel();
 
-            float getSize() const;
+            float getRadius() const;
 
             void setPosition( sf::Vector2f position );
 
@@ -53,6 +54,12 @@
             void setId( Id id );
 
             void kill();
+
+            static bool isColliding( Entity *entity1, Entity *entity2 );
+
+            static bool isColliding( Entity *entity1, sf::Vector2f offset1, Entity *entity2, sf::Vector2f offset2 );
+
+            static bool isColliding( Entity *entity, sf::Vector2f offset, const std::map<Id,Entity*> &entities, std::function<bool(Entity*)> filter = []( Entity *entity){return true;} );
 
             virtual void update( BattleZone &game );
     };

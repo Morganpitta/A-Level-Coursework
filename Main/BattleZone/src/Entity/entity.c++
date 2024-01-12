@@ -28,6 +28,7 @@ Entity::Entity( sf::Vector2f position )
     this->dead = false;
     this->type = NoType;
     this->model = nullptr;
+    this->radius = 1;
 }
 
 sf::Vector2f Entity::getPosition() const
@@ -63,6 +64,11 @@ EntityType Entity::getType() const
 Model3D *Entity::getModel()
 {
     return this->model;
+}
+
+float Entity::getRadius() const
+{
+    return this->radius;
 }
 
 void Entity::setPosition( sf::Vector2f position )
@@ -121,6 +127,34 @@ void Entity::setId( Id id )
 void Entity::kill()
 {
     this->dead = true;
+}
+
+bool Entity::isColliding( Entity *entity1, Entity *entity2 )
+{
+    return isColliding( entity1, {0,0}, entity2, {0,0} );
+}
+
+bool Entity::isColliding( Entity *entity1, sf::Vector2f offset1, Entity *entity2, sf::Vector2f offset2 )
+{
+    sf::Vector2f relativePosition = ( entity1->getPosition() + offset1 ) - ( entity2->getPosition() + offset2 );
+
+    return relativePosition.x * relativePosition.x + relativePosition.y * relativePosition.y < entity1->getRadius() + entity2->getRadius();
+}
+
+bool Entity::isColliding( Entity *entity, sf::Vector2f offset, const std::map<Id,Entity*> &entities, std::function<bool(Entity*)> filter )
+{
+    for ( const std::pair<Id, Entity*> &idEntityPair: entities )
+    {
+        if ( !idEntityPair.second->isDead() && idEntityPair.first != entity->getId() && filter( idEntityPair.second ) )
+        {
+            if ( isColliding( entity, offset, idEntityPair.second, {0,0} ) )
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 void Entity::update( BattleZone &game )

@@ -19,6 +19,8 @@
 
             Entity *getEntity( Id id );
 
+            const std::map<Id, Entity*> &getEntities();
+
             Entity *getPlayer();
 
             Id addEntity( Entity* entity );

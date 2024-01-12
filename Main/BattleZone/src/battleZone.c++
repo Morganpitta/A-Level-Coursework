@@ -1,5 +1,7 @@
 #include "battleZone.h++"
 #include "Entity/entity.h++"
+#include "Entity/player.h++"
+#include "Entity/bullet.h++"
 #include <iostream>
 
 BattleZone::BattleZone()
@@ -8,7 +10,7 @@ BattleZone::BattleZone()
 
     this->playerId = 
         addEntity(
-            new Entity( { 0,0 } ) 
+            new Player( { 0,0 } ) 
         );
 }
 
@@ -20,6 +22,11 @@ Camera &BattleZone::getCamera()
 Entity *BattleZone::getEntity( Id id )
 {
     return this->entities[id];
+}
+
+const std::map<Id, Entity*> &BattleZone::getEntities()
+{
+    return this->entities;
 }
 
 Entity *BattleZone::getPlayer()
@@ -59,6 +66,8 @@ void BattleZone::update( sf::RenderWindow &window )
                 break;
             
             case sf::Event::KeyPressed:
+                if ( event.key.code == sf::Keyboard::Space )
+                    addEntity( new Bullet( getPlayer()->getId(), getPlayer()->getPosition(), getPlayer()->getRotation() ) );
                 if ( event.key.code == sf::Keyboard::P )
                     std::cout<<"REEEE";
                 break;
@@ -66,13 +75,15 @@ void BattleZone::update( sf::RenderWindow &window )
     }
 
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::A ) )
-        getPlayer()->turnLeft( M_PI/70 );
+        getPlayer()->turnLeft( M_PI/100 );
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::D ) )
-        getPlayer()->turnRight( M_PI/70 );
-    if ( sf::Keyboard::isKeyPressed( sf::Keyboard::W ) )
-        getPlayer()->moveForward( 0.1 );
-    if ( sf::Keyboard::isKeyPressed( sf::Keyboard::S ) )
-        getPlayer()->moveForward( -0.1 );
+        getPlayer()->turnRight( M_PI/100 );
+    if ( sf::Keyboard::isKeyPressed( sf::Keyboard::W ) &&
+         !Entity::isColliding( getPlayer(), 0.08f * get2DUnitVector( getPlayer()->getRotation() ), getEntities() ) )
+        getPlayer()->moveForward( 0.08 );
+    if ( sf::Keyboard::isKeyPressed( sf::Keyboard::S ) &&
+         !Entity::isColliding( getPlayer(), -0.08f * get2DUnitVector( getPlayer()->getRotation() ), getEntities() ) )
+        getPlayer()->moveForward( -0.08 );
 
     getCamera().setPosition( { getPlayer()->getPosition().x, 0.85, getPlayer()->getPosition().y } );
     getCamera().setYaw( getPlayer()->getRotation() );
@@ -84,6 +95,8 @@ void BattleZone::update( sf::RenderWindow &window )
             idEntityPair.second->update( *this );
         }
     }
+
+    cleanUpEntities();
 }
 
 void BattleZone::render( sf::RenderWindow &window )

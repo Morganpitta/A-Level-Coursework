@@ -143,7 +143,7 @@ bool Entity::isColliding( Entity *entity1, sf::Vector2f offset1, Entity *entity2
 
 bool Entity::isColliding( Entity *entity, sf::Vector2f offset, const std::map<Id,Entity*> &entities, std::function<bool(Entity*)> filter )
 {
-    for ( const std::pair<Id, Entity*> &idEntityPair: entities )
+    for ( const std::pair<const Id, Entity*> &idEntityPair: entities )
     {
         if ( !idEntityPair.second->isDead() && idEntityPair.first != entity->getId() && filter( idEntityPair.second ) )
         {

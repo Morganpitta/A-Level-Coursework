@@ -3,6 +3,7 @@
 
     class BattleZone;
     #include "entityBase.h++"
+    #include <functional>
 
     class Entity
     {

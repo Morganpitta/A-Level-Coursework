@@ -26,7 +26,12 @@ void Tank::update( BattleZone &game )
     }
     else
     {
-        if ( !isColliding( this, 0.03f * get2DUnitVector( getRotation() ), game.getEntities() ) )
+        if ( !isColliding( 
+                this, 
+                0.03f * get2DUnitVector( getRotation() ), 
+                game.getEntities(),
+                [ this ]( Entity *entity) { return entity->getType() != BulletType; }
+            ) )
             moveForward( 0.03 );
     }
 }

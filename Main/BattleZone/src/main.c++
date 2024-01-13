@@ -20,7 +20,7 @@ int main()
 
     game.addEntity( new Obstacle( {2, 2} ) );
 
-    while (window.isOpen())
+    while (window.isOpen() && !game.getPlayer()->isDead())
     {
         game.update( window );
 

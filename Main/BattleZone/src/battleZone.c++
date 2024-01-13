@@ -79,10 +79,20 @@ void BattleZone::update( sf::RenderWindow &window )
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::D ) )
         getPlayer()->turnRight( M_PI/100 );
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::W ) &&
-         !Entity::isColliding( getPlayer(), 0.08f * get2DUnitVector( getPlayer()->getRotation() ), getEntities() ) )
+         !Entity::isColliding(
+            getPlayer(), 
+            0.08f * get2DUnitVector( getPlayer()->getRotation() ), 
+            getEntities(),
+            [ this ]( Entity *entity) { return entity->getType() != BulletType; }
+         ) )
         getPlayer()->moveForward( 0.08 );
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::S ) &&
-         !Entity::isColliding( getPlayer(), -0.08f * get2DUnitVector( getPlayer()->getRotation() ), getEntities() ) )
+         !Entity::isColliding(
+            getPlayer(), 
+            -0.08f * get2DUnitVector( getPlayer()->getRotation() ), 
+            getEntities(),
+            [ this ]( Entity *entity) { return entity->getType() != BulletType; } 
+         ) )
         getPlayer()->moveForward( -0.08 );
 
     getCamera().setPosition( { getPlayer()->getPosition().x, 0.85, getPlayer()->getPosition().y } );

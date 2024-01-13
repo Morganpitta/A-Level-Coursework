@@ -7,6 +7,7 @@ Tank::Tank( sf::Vector2f position ): Entity( position )
     this->type = TankType;
     this->model = &tankModel;
     this->reloadCooldown = 0;
+    this->radius = 0.7;
 }
 
 void Tank::update( BattleZone &game )

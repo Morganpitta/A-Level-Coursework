@@ -129,7 +129,7 @@ void Renderer::drawEntity( sf::RenderWindow& window, Entity *entity )
 
 void Renderer::drawBackground( sf::RenderWindow& window )
 {
-    float mountainsWidth = mountains.getSize().x;
+    float mountainsWidth = mountains.getSize().x * 3.f;
 
     float percentWidth = camera.getFov() / ( 2*M_PI );
     float percentOffset = normaliseAngle( camera.getYaw() ) / ( 2*M_PI ) - percentWidth/2;

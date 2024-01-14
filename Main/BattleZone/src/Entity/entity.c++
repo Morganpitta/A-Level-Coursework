@@ -28,7 +28,7 @@ Entity::Entity( sf::Vector2f position )
     this->dead = false;
     this->type = NoType;
     this->model = nullptr;
-    this->radius = 1;
+    this->radius = 0;
 }
 
 sf::Vector2f Entity::getPosition() const

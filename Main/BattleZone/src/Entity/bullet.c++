@@ -6,6 +6,7 @@ Bullet::Bullet( Id ownerId, sf::Vector2f position, float rotation ): Entity( pos
     this->type = BulletType;
     this->model = &bulletModel;
     this->ownerId = ownerId;
+    this->radius = 0.15;
     setRotation( rotation );
 }
 

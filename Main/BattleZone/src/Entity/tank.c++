@@ -13,6 +13,11 @@ Tank::Tank( sf::Vector2f position ): Entity( position )
 
 void Tank::update( BattleZone &game )
 {
+    if ( this->reloadCooldown > 0)
+    {
+        this->reloadCooldown--;
+    }
+
     sf::Vector2f relativePosition = relativePositionOf( game.getPlayer()->getPosition() );
 
     float angleOffset = atan2( relativePosition.x, relativePosition.y );
@@ -28,14 +33,18 @@ void Tank::update( BattleZone &game )
     }
     else
     {
-        if ( !isColliding( 
+        if ( getColliding( 
                 this, 
                 0.03f * get2DUnitVector( getRotation() ), 
                 game.getEntities(),
                 [ this ]( Entity *entity) { return entity->getType() != BulletType; }
-            ) )
+            ).empty() )
             moveForward( 0.03 );
         
-        game.addEntity( new Bullet( getId(), getPosition(), getRotation() ) );
+        if ( this->reloadCooldown == 0 )
+        {
+            game.addEntity( new Bullet( getId(), getPosition(), getRotation() ) );
+            this->reloadCooldown = 120;
+        }
     }
 }

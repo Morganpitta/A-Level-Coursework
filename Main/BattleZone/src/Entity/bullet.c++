@@ -17,7 +17,8 @@ Id Bullet::getOwnerId() const
 
 void Bullet::update( BattleZone &game )
 {
-    if ( isColliding( 
+    std::vector<Entity *> collidingEntities = 
+        getColliding( 
             this, 
             0.1f * get2DUnitVector( getRotation() ), 
             game.getEntities(), 
@@ -26,8 +27,13 @@ void Bullet::update( BattleZone &game )
                     return static_cast<Bullet*>( entity )->getOwnerId() != getOwnerId();
                 return entity->getId() != getOwnerId();
             }
-        ) )
+        );
+    if ( !collidingEntities.empty() )
     {
+        for ( Entity* entity: collidingEntities )
+        {
+            entity->damage( 1 );
+        }
         kill();
         return;
     }

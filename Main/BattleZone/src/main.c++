@@ -28,7 +28,8 @@ int main()
 
         game.render( window );
 
-        fps.draw(window, {0,0}, 30, sf::Color::White);
+        sf::Text health( std::to_string( game.getPlayer()->getHealth() ), defaultFont );
+        window.draw( health );
 
         window.display();
         fps.restartAndSleep();

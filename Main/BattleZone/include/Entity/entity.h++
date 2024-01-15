@@ -60,7 +60,7 @@
 
             static bool isColliding( Entity *entity1, sf::Vector2f offset1, Entity *entity2, sf::Vector2f offset2 );
 
-            static bool isColliding( Entity *entity, sf::Vector2f offset, const std::map<Id,Entity*> &entities, std::function<bool(Entity*)> filter = []( Entity *entity){return true;} );
+            static std::vector<Entity*> getColliding( Entity *entity, sf::Vector2f offset, const std::map<Id,Entity*> &entities, std::function<bool(Entity*)> filter = []( Entity *entity){return true;} );
 
             virtual void update( BattleZone &game );
     };

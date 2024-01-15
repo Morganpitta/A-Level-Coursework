@@ -141,20 +141,21 @@ bool Entity::isColliding( Entity *entity1, sf::Vector2f offset1, Entity *entity2
     return relativePosition.x * relativePosition.x + relativePosition.y * relativePosition.y < entity1->getRadius() + entity2->getRadius();
 }
 
-bool Entity::isColliding( Entity *entity, sf::Vector2f offset, const std::map<Id,Entity*> &entities, std::function<bool(Entity*)> filter )
+std::vector<Entity*> Entity::getColliding( Entity *entity, sf::Vector2f offset, const std::map<Id,Entity*> &entities, std::function<bool(Entity*)> filter )
 {
+    std::vector<Entity*> collidingEntities;
     for ( const std::pair<const Id, Entity*> &idEntityPair: entities )
     {
         if ( !idEntityPair.second->isDead() && idEntityPair.first != entity->getId() && filter( idEntityPair.second ) )
         {
             if ( isColliding( entity, offset, idEntityPair.second, {0,0} ) )
             {
-                return true;
+                collidingEntities.push_back( idEntityPair.second );
             }
         }
     }
 
-    return false;
+    return collidingEntities;
 }
 
 void Entity::update( BattleZone &game )

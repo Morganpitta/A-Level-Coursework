@@ -2,6 +2,9 @@
 #include "Entity/entity.h++"
 #include "Entity/player.h++"
 #include "Entity/bullet.h++"
+#include "Entity/tank.h++"
+#include "Entity/obstacle.h++"
+#include "random.h++"
 #include <iostream>
 
 BattleZone::BattleZone()
@@ -46,11 +49,54 @@ void BattleZone::cleanUpEntities()
 {
     for ( auto iterator = this->entities.begin(); iterator != this->entities.end(); )
     {
-        Entity *entity = (*iterator).second; 
-        if ( entity->isDead() && entity->getType() != PlayerType )
+        Entity *entity = (*iterator).second;
+        sf::Vector2f relativePositionToPlayer = entity->getPosition() - getPlayer()->getPosition();
+        float distanceToPlayer = sqrt( relativePositionToPlayer.x * relativePositionToPlayer.x + relativePositionToPlayer.y * relativePositionToPlayer.y );
+        if ( ( entity->isDead() || distanceToPlayer > 30 ) && entity->getType() != PlayerType )
             iterator = this->entities.erase( iterator );
         else
             iterator++;
+    }
+}
+
+void BattleZone::attemptToSpawnEntities()
+{
+    int numberOfTanks =
+        std::count_if(
+            this->entities.begin(),
+            this->entities.end(),
+            []( const std::pair<Id, Entity*> idEntityPair )
+            {
+                return idEntityPair.second->getType() == TankType;
+            }
+        );
+
+    while ( numberOfTanks < 4 )
+    {
+        float spawnAngle = randomFloat( 0, 2 * M_PI );
+        sf::Vector2f spawnLocation = getPlayer()->getPosition() + 
+            20.f * get2DUnitVector( spawnAngle );
+        addEntity( new Tank( spawnLocation ) );
+        numberOfTanks++;
+    }
+
+    int numberOfObstacles = 
+        std::count_if(
+            this->entities.begin(),
+            this->entities.end(),
+            []( const std::pair<Id, Entity*> idEntityPair )
+            {
+                return idEntityPair.second->getType() == ObstacleType;
+            }
+        );
+
+    while ( numberOfObstacles < 10 )
+    {
+        float spawnAngle = randomFloat( 0, 2 * M_PI );
+        sf::Vector2f spawnLocation = getPlayer()->getPosition() + 
+            20.f * get2DUnitVector( spawnAngle );
+        addEntity( new Obstacle( spawnLocation ) );
+        numberOfObstacles++;
     }
 }
 
@@ -79,20 +125,20 @@ void BattleZone::update( sf::RenderWindow &window )
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::D ) )
         getPlayer()->turnRight( M_PI/100 );
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::W ) &&
-         !Entity::isColliding(
+         Entity::getColliding(
             getPlayer(), 
             0.08f * get2DUnitVector( getPlayer()->getRotation() ), 
             getEntities(),
             [ this ]( Entity *entity) { return entity->getType() != BulletType; }
-         ) )
+         ).empty() )
         getPlayer()->moveForward( 0.08 );
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::S ) &&
-         !Entity::isColliding(
+         Entity::getColliding(
             getPlayer(), 
             -0.08f * get2DUnitVector( getPlayer()->getRotation() ), 
             getEntities(),
             [ this ]( Entity *entity) { return entity->getType() != BulletType; } 
-         ) )
+         ).empty() )
         getPlayer()->moveForward( -0.08 );
 
     getCamera().setPosition( { getPlayer()->getPosition().x, 0.85, getPlayer()->getPosition().y } );
@@ -107,6 +153,7 @@ void BattleZone::update( sf::RenderWindow &window )
     }
 
     cleanUpEntities();
+    attemptToSpawnEntities();
 }
 
 void BattleZone::render( sf::RenderWindow &window )

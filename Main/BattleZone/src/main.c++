@@ -16,10 +16,6 @@ int main()
 
     BattleZone game;
 
-    game.addEntity( new Tank( {-2,2} ) );
-
-    game.addEntity( new Obstacle( {2, 2} ) );
-
     while (window.isOpen() && !game.getPlayer()->isDead())
     {
         game.update( window );

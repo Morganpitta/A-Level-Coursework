@@ -10,6 +10,8 @@
         public:
             Bullet( Id ownerId, sf::Vector2f position = {0,0}, float rotation = 0 );
 
+            Id getOwnerId() const;
+
             virtual void update( BattleZone &game ) override;
     };
 

@@ -1,4 +1,5 @@
 #include "Entity/tank.h++"
+#include "Entity/bullet.h++"
 #include "battleZone.h++"
 #include <iostream>
 
@@ -34,5 +35,7 @@ void Tank::update( BattleZone &game )
                 [ this ]( Entity *entity) { return entity->getType() != BulletType; }
             ) )
             moveForward( 0.03 );
+        
+        game.addEntity( new Bullet( getId(), getPosition(), getRotation() ) );
     }
 }

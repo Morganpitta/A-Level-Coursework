@@ -10,13 +10,22 @@ Bullet::Bullet( Id ownerId, sf::Vector2f position, float rotation ): Entity( pos
     setRotation( rotation );
 }
 
+Id Bullet::getOwnerId() const
+{
+    return this->ownerId;
+}
+
 void Bullet::update( BattleZone &game )
 {
     if ( isColliding( 
             this, 
             0.1f * get2DUnitVector( getRotation() ), 
             game.getEntities(), 
-            [ this ]( Entity *entity) { return entity->getId() != this->ownerId; }
+            [ this ]( Entity *entity) { 
+                if ( entity->getType() == BulletType )
+                    return static_cast<Bullet*>( entity )->getOwnerId() != getOwnerId();
+                return entity->getId() != getOwnerId();
+            }
         ) )
     {
         kill();

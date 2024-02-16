@@ -27,6 +27,8 @@
 
             void moveForward();
 
+            void moveBackward();
+
             void turnLeft();
 
             void turnRight();

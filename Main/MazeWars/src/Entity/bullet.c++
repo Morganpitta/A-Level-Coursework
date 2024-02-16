@@ -11,6 +11,11 @@ Bullet::Bullet( Id ownerId, sf::Vector2i position, Direction direction ): Entity
     this->movementCooldown = 5;
 }
 
+Id Bullet::getOwnerId() const
+{
+    return this->ownerId;
+}
+
 void Bullet::update( MazeWars &game )
 {
     if ( this->movementCooldown > 0 )
@@ -32,7 +37,7 @@ void Bullet::update( MazeWars &game )
             bool hitEntity = false;
             for ( Id entityId: hitEntities )
             {
-                if ( entityId == ownerId )
+                if ( entityId == getOwnerId() )
                     continue;
                 Entity* entity = game.getEntity( entityId );
 

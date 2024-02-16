@@ -43,6 +43,11 @@ void Camera::moveForward()
     setPosition( transposePosition( getPosition(), getDirection() ) );
 }
 
+void Camera::moveBackward()
+{
+    setPosition( transposePosition( getPosition(), reverseDirection( getDirection() ) ) );
+}
+
 void Camera::turnLeft()
 {
     setDirection( normaliseDirection( int(getDirection()) - 1 ) );

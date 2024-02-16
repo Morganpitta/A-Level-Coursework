@@ -7,7 +7,7 @@
 
 int main()
 {
-    sf::RenderWindow window( sf::VideoMode(1600,800), "Mazewars" );
+    sf::RenderWindow window( sf::VideoMode(1600,900), "Mazewars" );
 
     if ( !loadEntityAssets() || !loadAssets() )
         return 1;

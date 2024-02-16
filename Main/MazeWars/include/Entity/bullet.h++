@@ -10,6 +10,8 @@
 
         public:
             Bullet( Id ownerId, sf::Vector2i position = {0,0}, Direction direction = North );
+            
+            Id getOwnerId() const;
 
             virtual void update( MazeWars &game ) override;
     };

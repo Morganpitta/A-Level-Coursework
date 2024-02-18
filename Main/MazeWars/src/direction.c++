@@ -19,7 +19,7 @@ std::string directionToString( Direction direction )
             return "West";
             break;
         default:
-            return "Unkown";
+            return "Unknown";
             break;
     }
 }

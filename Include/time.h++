@@ -61,7 +61,7 @@
 
             void draw( sf::RenderWindow &window, sf::Vector2f topLeft, std::size_t size, sf::Color colour = sf::Color::Black )
             {
-                sf::Text text( std::to_string( (int) std::ceil( this->averageFps ) ), defaultFont );
+                sf::Text text( std::to_string( (int) std::round( this->averageFps ) ), defaultFont );
 
                 text.setFillColor( colour );
                 text.setPosition( topLeft );

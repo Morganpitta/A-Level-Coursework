@@ -17,7 +17,7 @@
         PlayerType
     };
 
-    extern sf::Texture TriangleTexture;
+    extern sf::Texture EnemyTexture;
     extern sf::Texture CircleTexture;
 
     extern bool loadEntityAssets();

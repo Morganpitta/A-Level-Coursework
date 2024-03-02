@@ -16,7 +16,7 @@
         const int MiniMapRadius;
 
         public:
-            MazeWars( sf::Vector2i dimensions );
+            MazeWars( sf::Vector2u displaySize, sf::Vector2i dimensions );
 
             Camera &getCamera();
 
@@ -28,11 +28,15 @@
 
             std::vector<Id> getEntitiesAtLocation( sf::Vector2i position ) const;
 
+            bool playerCanMove( Direction direction );
+
             Id addEntity( Entity* entity );
 
             void cleanUpEntities();
 
             void attemptToSpawnEntities();
+
+            void handleInput( sf::Event &event );
 
             void update( sf::RenderWindow &window );
 

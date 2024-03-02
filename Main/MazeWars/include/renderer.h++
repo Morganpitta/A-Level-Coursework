@@ -10,6 +10,7 @@
 
     class Renderer
     {
+        const sf::Vector2u displaySize;
         const float yNear;
         const float wallHeight;
         Camera camera;
@@ -31,11 +32,13 @@
         );
 
         public:
-            Renderer();
+            Renderer( sf::Vector2u displaySize );
 
             Camera &getCamera();
 
             float getYNear() const;
+            
+            sf::Vector2u getDisplaySize() const;
 
             bool onScreen( 
                 sf::RenderWindow& window, 

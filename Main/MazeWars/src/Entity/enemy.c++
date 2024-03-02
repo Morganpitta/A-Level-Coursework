@@ -5,7 +5,7 @@
 Enemy::Enemy( sf::Vector2i position ): Entity( position )
 {
     this->type = EnemyType;
-    this->texture = &TriangleTexture;
+    this->texture = &EnemyTexture;
     this->movementCooldown = 0;
     this->reactionCooldown = 60;
 }

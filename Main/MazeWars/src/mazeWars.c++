@@ -5,7 +5,7 @@
 #include "Entity/enemy.h++"
 #include "random.h++"
 
-MazeWars::MazeWars( sf::Vector2i dimensions ): mazeGrid( dimensions ), MiniMapRadius(3)
+MazeWars::MazeWars( sf::Vector2u displaySize, sf::Vector2i dimensions ): renderer(displaySize), mazeGrid( dimensions ), MiniMapRadius(3)
 {
     this->nextId = 0;
     generateMazeDepthFirst( mazeGrid, 1 );
@@ -60,6 +60,14 @@ std::vector<Id> MazeWars::getEntitiesAtLocation( sf::Vector2i position ) const
     return entities;
 }
 
+bool MazeWars::playerCanMove( Direction direction )
+{
+    return getMaze().getCell( 
+            getPlayer()->getPosition(),
+            direction
+        ) != true;
+}
+
 Id MazeWars::addEntity( Entity* entity )
 {
     Id entityId = nextId++;
@@ -92,9 +100,9 @@ void MazeWars::attemptToSpawnEntities()
             }
         );
 
-    int spawnDistance = 10;
+    int spawnDistance = 20;
 
-    while ( numberOfEnemies < 30 )
+    while ( numberOfEnemies < 5 )
     {
         float spawnAngle = randomFloat( 0, 2 * M_PI );
         sf::Vector2i spawnLocation = getPlayer()->getPosition() + 
@@ -115,44 +123,44 @@ void MazeWars::attemptToSpawnEntities()
     }
 }
 
-void MazeWars::update( sf::RenderWindow &window )
+void MazeWars::handleInput( sf::Event &event )
 {
-    sf::Event event;
-    while ( window.pollEvent(event) )
+    if (event.type==sf::Event::KeyPressed)
     {
-        switch ( event.type )
+        switch ( event.key.code )
         {
-            case sf::Event::Closed:
-                window.close();
+            case sf::Keyboard::A:
+                getPlayer()->turnLeft();
                 break;
-
-            case sf::Event::KeyPressed:
-                if ( event.key.code == sf::Keyboard::A )
-                    getPlayer()->turnLeft();
-                if ( event.key.code == sf::Keyboard::D )
-                    getPlayer()->turnRight();
-                if ( event.key.code == sf::Keyboard::W &&
-                    !getMaze().getCell( 
+            case sf::Keyboard::D:
+                getPlayer()->turnRight();
+                break;
+            case sf::Keyboard::W:
+                if ( playerCanMove( getPlayer()->getDirection() ) )
+                    getPlayer()->moveForward();
+                break;
+            case sf::Keyboard::S:
+                if ( playerCanMove( reverseDirection( getPlayer()->getDirection() ) ) )
+                    getPlayer()->moveBackward();
+                break;
+            case sf::Keyboard::Space:
+                addEntity(
+                    new Bullet( 
+                        getPlayer()->getId(), 
                         getPlayer()->getPosition(), 
                         getPlayer()->getDirection() 
                     )
-                )
-                    getPlayer()->moveForward();
-                if ( event.key.code == sf::Keyboard::S &&
-                    !getMaze().getCell( 
-                        getPlayer()->getPosition(), 
-                        reverseDirection( getPlayer()->getDirection() ) 
-                    )
-                )
-                    getPlayer()->moveBackward();
-                if ( event.key.code == sf::Keyboard::Space )
-                    addEntity( new Bullet( getPlayer()->getId(), getPlayer()->getPosition(), getPlayer()->getDirection() ) );
-                if ( event.key.code == sf::Keyboard::P )
-                    std::cout<<"REEEE";
+                );
+                break;
+            case sf::Keyboard::P:
+                std::cout<<"REEEE";
                 break;
         }
     }
+}
 
+void MazeWars::update( sf::RenderWindow &window )
+{
     getCamera().setPosition( getPlayer()->getPosition() );
     getCamera().setDirection( getPlayer()->getDirection() );
     

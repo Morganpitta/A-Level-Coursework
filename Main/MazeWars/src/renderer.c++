@@ -22,7 +22,7 @@ bool Renderer::canDrawInRange(
         startIndex <= endIndex,
         "Start index must be less than the end index"
     );
-    for ( int index = std::max( 0.f, std::floor( startIndex ) ); index <= std::min( std::floor( endIndex ), window.getSize().x - 1.f ); index++ )
+    for ( int index = std::max( 0.f, std::floor( startIndex ) ); index <= std::min( std::floor( endIndex ), getDisplaySize().x - 1.f ); index++ )
     {
         if ( !hasBeenDrawnOn(index) )
             return true;
@@ -45,7 +45,7 @@ void Renderer::setHasBeenDrawnOn(
     this->drawnOn[xIndex] = value;
 }
 
-Renderer::Renderer(): camera(), wallVertices( sf::PrimitiveType::Lines ), yNear(0.1), wallHeight(300)
+Renderer::Renderer( sf::Vector2u displaySize ): displaySize( displaySize ), camera(), wallVertices( sf::PrimitiveType::Lines ), yNear(0.1), wallHeight(300)
 {
 
 }
@@ -60,9 +60,15 @@ float Renderer::getYNear() const
     return this->yNear;
 }
 
+sf::Vector2u Renderer::getDisplaySize() const
+{
+    return this->displaySize;
+}
+
+
 bool Renderer::onScreen( sf::RenderWindow& window, float xValue ) const
 {
-    return 0 <= xValue && xValue < window.getSize().x;
+    return 0 <= xValue && xValue < getDisplaySize().x;
 }
 
 sf::Vector2f Renderer::clipWallSegmentToNearPlane( sf::Vector2f wallStart, sf::Vector2f wallEnd )
@@ -103,14 +109,14 @@ bool Renderer::projectWall(
         std::swap( wallStart, wallEnd );
     }
 
-    wallStart.x *= ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 );
-    wallEnd.x *= ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 );
+    wallStart.x *= ( getDisplaySize().x / 2 ) / tan( camera.getFov() / 2 );
+    wallEnd.x *= ( getDisplaySize().x / 2 ) / tan( camera.getFov() / 2 );
 
-    wallStart.x += window.getSize().x / 2.f;
-    wallEnd.x += window.getSize().x / 2.f;
+    wallStart.x += getDisplaySize().x / 2.f;
+    wallEnd.x += getDisplaySize().x / 2.f;
 
     // Test if offscreen
-    if ( wallEnd.x < 0  || wallStart.x > window.getSize().x )
+    if ( wallEnd.x < 0  || wallStart.x > getDisplaySize().x )
         return false;
 
     return true;
@@ -130,14 +136,14 @@ bool Renderer::projectPoint(
     
     position.x /= position.y;
 
-    position.x *= ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 );
+    position.x *= ( getDisplaySize().x / 2 ) / tan( camera.getFov() / 2 );
 
-    position.x += window.getSize().x / 2.f;
+    position.x += getDisplaySize().x / 2.f;
 
     size /= position.y * 2;
 
     // Test if offscreen
-    if ( position.x + size < 0  || position.x - size > window.getSize().x )
+    if ( position.x + size < 0  || position.x - size > getDisplaySize().x )
         return false;
 
     return true;
@@ -157,11 +163,11 @@ void Renderer::drawWallVertical(
             wallVertices,
             sf::Vector2f(
                 std::floor(position.x),
-                ( window.getSize().y + wallHeight ) / 2
+                ( getDisplaySize().y + wallHeight ) / 2
             ),
             sf::Vector2f(
                 std::floor(position.x),
-                ( window.getSize().y - wallHeight ) / 2
+                ( getDisplaySize().y - wallHeight ) / 2
             ),
             sf::Color::Green
         );
@@ -214,11 +220,11 @@ void Renderer::drawWallHorizontals(
                 wallVertices,
                 sf::Vector2f(
                     wallStartX - 1,
-                    ( window.getSize().y + std::floor( wallStartHeight ) ) / 2
+                    ( getDisplaySize().y + std::floor( wallStartHeight ) ) / 2
                 ),
                 sf::Vector2f(
                     index,
-                    ( window.getSize().y + std::floor( wallHeight ) ) / 2
+                    ( getDisplaySize().y + std::floor( wallHeight ) ) / 2
                 ),
                 sf::Color::Green
             );
@@ -227,11 +233,11 @@ void Renderer::drawWallHorizontals(
                 wallVertices,
                 sf::Vector2f(
                     wallStartX - 1,
-                    ( window.getSize().y - std::floor( wallStartHeight ) ) / 2
+                    ( getDisplaySize().y - std::floor( wallStartHeight ) ) / 2
                 ),
                 sf::Vector2f(
                     index,
-                    ( window.getSize().y - std::floor( wallHeight ) ) / 2
+                    ( getDisplaySize().y - std::floor( wallHeight ) ) / 2
                 ),
                 sf::Color::Green
             );
@@ -317,7 +323,7 @@ void Renderer::drawEntity(
                 entityRectangle.setPosition(
                     {
                         float( entityImageStartX ),
-                        ( window.getSize().y ) / 2 - size
+                        ( getDisplaySize().y ) / 2 - size
                     }
                 );
                 entityRectangle.setTexture( entity->getTexture() );
@@ -367,7 +373,7 @@ void Renderer::render(
     wallVertices.clear();
     this->entityRectangles.clear();
 
-    drawnOn.resize( window.getSize().x );
+    drawnOn.resize( getDisplaySize().x );
     std::fill(
         drawnOn.begin(),
         drawnOn.end(),

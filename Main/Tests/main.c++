@@ -1,6 +1,29 @@
 #include <SFML/Graphics.hpp>
 #include "time.h++"
 
+void handleResize( 
+    sf::RenderWindow &window,
+    float windowWidth, 
+    float windowHeight
+)
+{
+    float ratio = float(windowWidth)/windowHeight;
+    float targetRatio = 16.f/9.f;
+    
+    if ( ratio > targetRatio )
+    {
+        float offset = 1600.f*(ratio/targetRatio-1);
+        sf::FloatRect visibleArea(-offset/2, 0, 1600+offset, 900);
+        window.setView(sf::View(visibleArea));
+    }
+    else if ( ratio < targetRatio )
+    {
+        float offset = 900.f*(targetRatio/ratio-1);
+        sf::FloatRect visibleArea(0, -offset/2, 1600, 900+offset);
+        window.setView(sf::View(visibleArea));
+    }
+}
+
 void handleInputs( sf::RenderWindow &window )
 {
     sf::Event event;
@@ -15,19 +38,7 @@ void handleInputs( sf::RenderWindow &window )
                 break;
             
             case sf::Event::Resized:
-                float ratio = float(event.size.width)/event.size.height;
-                std::cout << "width: " << event.size.width << " height: " << event.size.height << " ratio: " << ratio << std::endl;
-                
-                if ( ratio > 16.f/9.f )
-                {
-                    sf::FloatRect visibleArea(0, 0, 1600.f*(float(event.size.width)/event.size.height), 900);
-                    window.setView(sf::View(visibleArea));
-                }
-                else if ( ratio < 16.f/9.f )
-                {
-                    sf::FloatRect visibleArea(0, 0, 1600, 900.f*(float(event.size.width)/1600));
-                    window.setView(sf::View(visibleArea));
-                }
+                handleResize(window, (float) event.size.width, (float) event.size.height);
                 break;
         }
     }
@@ -44,7 +55,7 @@ int main()
 
     sf::Texture texture;
 
-    if ( !texture.loadFromFile("MazeWars/triangle.png") )
+    if ( !texture.loadFromFile("MazeWars/circle.png") )
         return 1;
     
     FpsLimiter fps( 60 );

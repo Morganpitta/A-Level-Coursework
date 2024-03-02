@@ -2,14 +2,14 @@
 #include "mazeWars.h++"
 
 const Id NullId = -1;
-sf::Texture TriangleTexture;
+sf::Texture EnemyTexture;
 sf::Texture CircleTexture;
 
 bool loadEntityAssets()
 {
     setWorkingDirectoryToDefault();
 
-    if ( !TriangleTexture.loadFromFile( "MazeWars/triangle.png" ) )
+    if ( !EnemyTexture.loadFromFile( "MazeWars/eyeball.png" ) )
         return false;
 
     if ( !CircleTexture.loadFromFile( "MazeWars/circle.png" ) )

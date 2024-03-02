@@ -65,6 +65,7 @@
         }
         
         assert( false, ( "Unable to find assets folder. (Current working directory: " + directoryString + " )" ) );
+
         return false;
     }
 

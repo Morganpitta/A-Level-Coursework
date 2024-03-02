@@ -23,5 +23,5 @@
     extern bool loadEntityAssets();
 
     class Entity;
-    
+
 #endif /* ENTITY_BASE_HPP */

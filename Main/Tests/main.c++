@@ -55,7 +55,7 @@ int main()
 
     sf::Texture texture;
 
-    if ( !texture.loadFromFile("MazeWars/circle.png") )
+    if ( !texture.loadFromFile("MazeWars/triangle.png") )
         return 1;
     
     FpsLimiter fps( 60 );
@@ -69,7 +69,14 @@ int main()
         // Things will be drawn here
 
         sf::RectangleShape rect({1600,900});
+        rect.setFillColor(sf::Color::White);
+        rect.setOutlineThickness(0);
         rect.setTexture(&texture);
+        //window.draw(rect);
+        rect.setFillColor(sf::Color::Green);
+        rect.setTexture(nullptr);
+        rect.setOutlineThickness(-10);
+        rect.setFillColor(sf::Color::Transparent);
         window.draw(rect);
 
         // Display the frames per second in the top left

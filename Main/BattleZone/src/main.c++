@@ -46,7 +46,7 @@ void handleInputs( sf::RenderWindow &window, BattleZone &game )
                 break;
             
             default:
-                game.handleInputs(event);
+                game.handleInput(event);
                 break;
         }
     }
@@ -61,8 +61,9 @@ int main()
 
     FpsLimiter fps( 60 );
 
-    BattleZone game;
+    BattleZone game( {1600,900} );
 
+    
     while (window.isOpen() && !game.getPlayer()->isDead())
     {
         handleInputs( window, game );

@@ -12,17 +12,20 @@
 
     class Renderer
     {
+        const sf::Vector2u displaySize;
         const float zNear;
         const float mountainHeight;
         sf::VertexArray lineVertices;
         Camera camera;
 
         public:
-            Renderer();
+            Renderer( sf::Vector2u displaySize );
 
             Camera& getCamera();
 
             float getZNear() const;
+            
+            sf::Vector2u getDisplaySize() const;
 
             sf::Vector3f clipLineToNearPlane( const sf::Vector3f& lineStart, const sf::Vector3f& lineEnd  );
 

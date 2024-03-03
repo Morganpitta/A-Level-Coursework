@@ -7,7 +7,7 @@
 #include "random.h++"
 #include <iostream>
 
-BattleZone::BattleZone()
+BattleZone::BattleZone( sf::Vector2u displaySize ): renderer(displaySize)
 {
     this->nextId = 0;
 
@@ -100,26 +100,19 @@ void BattleZone::attemptToSpawnEntities()
     }
 }
 
+void BattleZone::handleInput( sf::Event &event )
+{
+    if ( event.type == sf::Event::KeyPressed )
+    {
+        if ( event.key.code == sf::Keyboard::Space )
+            addEntity( new Bullet( getPlayer()->getId(), getPlayer()->getPosition(), getPlayer()->getRotation() ) );
+        if ( event.key.code == sf::Keyboard::P )
+            std::cout<<"REEEE";
+    }
+}
+
 void BattleZone::update( sf::RenderWindow &window )
 {
-    sf::Event event;
-    while ( window.pollEvent(event) )
-    {
-        switch ( event.type )
-        {
-            case sf::Event::Closed:
-                window.close();
-                break;
-            
-            case sf::Event::KeyPressed:
-                if ( event.key.code == sf::Keyboard::Space )
-                    addEntity( new Bullet( getPlayer()->getId(), getPlayer()->getPosition(), getPlayer()->getRotation() ) );
-                if ( event.key.code == sf::Keyboard::P )
-                    std::cout<<"REEEE";
-                break;
-        }
-    }
-
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::A ) )
         getPlayer()->turnLeft( M_PI/100 );
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::D ) )

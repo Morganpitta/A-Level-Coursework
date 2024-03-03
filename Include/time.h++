@@ -49,7 +49,15 @@
                 if ( duration < maxDuration )
                 {
                     //https://stackoverflow.com/questions/51088819/control-loop-time-with-usleep
-                    std::this_thread::sleep_until( startTime + maxDuration );
+                    //std::this_thread::sleep_until( startTime + maxDuration );
+                    //sleep_until is inaccurate
+                    while ( std::chrono::duration_cast<microseconds>(timeNow() - this->startTime) < maxDuration )
+                    {
+                        usleep(100);
+                    }
+                }
+                else
+                {
                 }
 
                 this->averageFps = ( this->averageFps + 1/( std::max( duration, this->maxDuration ).count()/1000000.f ) )/2.f;

@@ -13,7 +13,7 @@
         Id nextId;
 
         public:
-            BattleZone();
+            BattleZone( sf::Vector2u displaySize );
 
             Camera &getCamera();
 
@@ -28,6 +28,8 @@
             void cleanUpEntities();
 
             void attemptToSpawnEntities();
+
+            void handleInput( sf::Event &event );
 
             void update( sf::RenderWindow &window );
 

@@ -17,7 +17,7 @@ bool loadAssets()
     return true;
 }
 
-Renderer::Renderer(): zNear( 0.01f ), mountainHeight( 150 ), camera(), lineVertices( sf::PrimitiveType::Lines )
+Renderer::Renderer( sf::Vector2u displaySize ): displaySize(displaySize), zNear( 0.01f ), mountainHeight( 150 ), camera(), lineVertices( sf::PrimitiveType::Lines )
 {
     
 }
@@ -30,6 +30,11 @@ Camera& Renderer::getCamera()
 float Renderer::getZNear() const
 {
     return this->zNear;
+}
+            
+sf::Vector2u Renderer::getDisplaySize() const
+{
+    return this->displaySize;
 }
 
 sf::Vector3f Renderer::clipLineToNearPlane( const sf::Vector3f& lineStart, const sf::Vector3f& lineEnd  )
@@ -66,12 +71,12 @@ bool Renderer::projectLine(
     lineStart.y /= lineStart.z;
     lineEnd.y /= lineEnd.z;
 
-    lineStart.x = lineStart.x * ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 ) + window.getSize().x / 2.f;
-    lineEnd.x = lineEnd.x * ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 ) + window.getSize().x / 2.f;
+    lineStart.x = lineStart.x * ( displaySize.x / 2 ) / tan( camera.getFov() / 2 ) + displaySize.x / 2.f;
+    lineEnd.x = lineEnd.x * ( displaySize.x / 2 ) / tan( camera.getFov() / 2 ) + displaySize.x / 2.f;
 
     //Y axis is inverted
-    lineStart.y = -lineStart.y * ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 ) + window.getSize().y / 2.f;
-    lineEnd.y = -lineEnd.y * ( window.getSize().x / 2 ) / tan( camera.getFov() / 2 ) + window.getSize().y / 2.f;
+    lineStart.y = -lineStart.y * ( displaySize.x / 2 ) / tan( camera.getFov() / 2 ) + displaySize.y / 2.f;
+    lineEnd.y = -lineEnd.y * ( displaySize.x / 2 ) / tan( camera.getFov() / 2 ) + displaySize.y / 2.f;
 
     // Test side - to be done
 
@@ -134,8 +139,8 @@ void Renderer::drawBackground( sf::RenderWindow& window )
     float percentWidth = camera.getFov() / ( 2*M_PI );
     float percentOffset = normaliseAngle( camera.getYaw() ) / ( 2*M_PI ) - percentWidth/2;
 
-    sf::RectangleShape background( {window.getSize().x,this->mountainHeight} );
-    background.setPosition({0,window.getSize().y/2-this->mountainHeight});
+    sf::RectangleShape background( {displaySize.x,this->mountainHeight} );
+    background.setPosition({0,displaySize.y/2-this->mountainHeight});
     background.setTexture( &mountains );
     background.setTextureRect( sf::IntRect({mountainsWidth * ( percentOffset ),0},{mountainsWidth * ( percentWidth ), mountains.getSize().y}) );
 

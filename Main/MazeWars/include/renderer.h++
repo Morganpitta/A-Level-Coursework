@@ -7,6 +7,7 @@
     #include "draw.h++"
     #include <queue>
     #include <map>
+    #include <algorithm>
 
     class Renderer
     {
@@ -21,7 +22,6 @@
         bool hasBeenDrawnOn( int xIndex ) const;
 
         bool canDrawInRange(
-            sf::RenderWindow &window,
             float startIndex,
             float endIndex
         ) const;
@@ -40,10 +40,7 @@
             
             sf::Vector2u getDisplaySize() const;
 
-            bool onScreen( 
-                sf::RenderWindow& window, 
-                float xValue 
-            ) const;
+            bool onScreen( float xValue ) const;
 
             sf::Vector2f clipWallSegmentToNearPlane( 
                 sf::Vector2f wallStart,
@@ -51,38 +48,28 @@
             );
 
             bool projectWall(
-                sf::RenderWindow& window,
                 sf::Vector2f &wallStart,
                 sf::Vector2f &wallEnd
             );
 
             bool projectPoint(
-                sf::RenderWindow& window,
                 sf::Vector2f &position,
                 float &size
             );
 
-            void drawWallVertical(
-                sf::RenderWindow& window,
-                sf::Vector2f position
-            );
+            void drawWallVertical( sf::Vector2f position );
 
             void drawWallHorizontals(
-                sf::RenderWindow& window,
                 sf::Vector2f &wallStart,
                 sf::Vector2f &wallEnd
             );
 
             void drawWall(
-                sf::RenderWindow& window,
                 sf::Vector2f &wallStart,
                 sf::Vector2f &wallEnd
             );
 
-            void drawEntity(
-                sf::RenderWindow &window,
-                Entity *entity
-            );
+            void drawEntity( Entity *entity );
 
             void render(
                 sf::RenderWindow& window,

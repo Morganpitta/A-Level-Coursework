@@ -13,7 +13,6 @@ bool Renderer::hasBeenDrawnOn( int xIndex ) const
 }
 
 bool Renderer::canDrawInRange(
-    sf::RenderWindow &window,
     float startIndex,
     float endIndex
 ) const
@@ -66,7 +65,7 @@ sf::Vector2u Renderer::getDisplaySize() const
 }
 
 
-bool Renderer::onScreen( sf::RenderWindow& window, float xValue ) const
+bool Renderer::onScreen( float xValue ) const
 {
     return 0 <= xValue && xValue < getDisplaySize().x;
 }
@@ -79,7 +78,6 @@ sf::Vector2f Renderer::clipWallSegmentToNearPlane( sf::Vector2f wallStart, sf::V
 }
 
 bool Renderer::projectWall(
-    sf::RenderWindow& window,
     sf::Vector2f &wallStart,
     sf::Vector2f &wallEnd
 )
@@ -123,7 +121,6 @@ bool Renderer::projectWall(
 }
 
 bool Renderer::projectPoint(
-    sf::RenderWindow& window,
     sf::Vector2f &position,
     float &size
 )
@@ -150,11 +147,10 @@ bool Renderer::projectPoint(
 }
 
 void Renderer::drawWallVertical(
-    sf::RenderWindow& window,
     sf::Vector2f position
 )
 {
-    if ( onScreen( window, position.x ) &&
+    if ( onScreen( position.x ) &&
             !hasBeenDrawnOn( std::floor( position.x ) ) )
     {
         float wallHeight = std::floor( this->wallHeight / position.y );
@@ -177,7 +173,6 @@ void Renderer::drawWallVertical(
 }
 
 void Renderer::drawWallHorizontals(
-    sf::RenderWindow& window,
     sf::Vector2f &wallStart,
     sf::Vector2f &wallEnd
 )
@@ -254,24 +249,22 @@ void Renderer::drawWallHorizontals(
 }
 
 void Renderer::drawWall(
-    sf::RenderWindow& window,
     sf::Vector2f &wallStart,
     sf::Vector2f &wallEnd
 )
 {
-    drawWallVertical( window, wallStart );
+    drawWallVertical(  wallStart );
 
-    drawWallVertical( window, wallEnd );
+    drawWallVertical( wallEnd );
 
     // If it's one or two pixels thin we can stop
     if ( std::floor( wallEnd.x ) - std::floor( wallStart.x ) <= 1 )
         return;
 
-    drawWallHorizontals( window, wallStart, wallEnd );
+    drawWallHorizontals( wallStart, wallEnd );
 }
 
 void Renderer::drawEntity(
-    sf::RenderWindow &window,
     Entity *entity
 )
 {
@@ -281,7 +274,7 @@ void Renderer::drawEntity(
 
     float size = entity->getSize();
 
-    if ( projectPoint( window, position, size ) )
+    if ( projectPoint( position, size ) )
     {
         int entityImageStartX = std::floor( position.x - size );
         float entityTextureStartX = 0;
@@ -392,7 +385,7 @@ void Renderer::render(
         for ( Entity *entity: entitiesInCell )
         {
             if ( entity->getId() != playerId && !entity->isDead() )
-                drawEntity( window, entity );
+                drawEntity( entity );
         }
 
         forEachDirection( direction )
@@ -406,16 +399,16 @@ void Renderer::render(
                 sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) +
                 rotatePosition({0.5, 0.5}, direction);
 
-            if ( !projectWall( window, wallStart, wallEnd ) )
+            if ( !projectWall( wallStart, wallEnd ) )
                 continue;
 
             // If theres no space to draw anything why are we going to bother with any other checks
-            if ( !canDrawInRange( window, wallStart.x, wallEnd.x ) )
+            if ( !canDrawInRange( wallStart.x, wallEnd.x ) )
                 continue;
 
             if ( isWallInDirection )
             {
-                drawWall( window, wallStart, wallEnd );
+                drawWall( wallStart, wallEnd );
             }
             else
             {
@@ -435,6 +428,7 @@ void Renderer::render(
     }
 
     window.draw( wallVertices );
+    std::reverse( this->entityRectangles.begin(), this->entityRectangles.end() );
     for ( sf::RectangleShape &entityRectangle: this->entityRectangles )
     {
         window.draw( entityRectangle );

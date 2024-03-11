@@ -1,18 +1,24 @@
 #include <SFML/Graphics.hpp>
 #include "time.h++"
 
-int main()
+void handleInputs( sf::RenderWindow &window )
 {
-    int frame = 0;
-    timePoint startTime = timeNow();
-
-    FpsLimiter fps( 60 );
-
-    while ( true )
+    sf::Event event;
+    // For each event
+    while ( window.pollEvent(event) )
     {
-        std::cout << ++frame / ( float(std::chrono::duration_cast<microseconds>( startTime - timeNow() ).count()) / 1000000.f ) << std::endl;
-        fps.restartAndSleep();
+        // Handle appropriately
+        switch ( event.type )
+        {
+            case sf::Event::Closed:
+                window.close();
+                break;
+        }
     }
-
-    return 0; // Program ran successfully! return 0 to represent no errors
 }
+
+    while ( window.isOpen() )
+    {
+        handleInputs( window );
+
+        window.clear( sf::Color::Black );

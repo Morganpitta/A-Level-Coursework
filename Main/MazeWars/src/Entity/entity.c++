@@ -9,7 +9,7 @@ bool loadEntityAssets()
 {
     setWorkingDirectoryToDefault();
 
-    if ( !EnemyTexture.loadFromFile( "MazeWars/eyeball.png" ) )
+    if ( !EnemyTexture.loadFromFile( "MazeWars/eye.png" ) )
         return false;
 
     if ( !CircleTexture.loadFromFile( "MazeWars/circle.png" ) )

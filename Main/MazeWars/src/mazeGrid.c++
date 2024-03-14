@@ -1,5 +1,6 @@
 #include "mazeGrid.h++"
 #include "assert.h++"
+#include "draw.h++"
 
 MazeGrid::MazeGrid( sf::Vector2i dimensions )
 {
@@ -242,9 +243,6 @@ void drawMaze(
     float xSegmentSize = ( bottomRight.x - topLeft.x ) / maze.getDimensions().x;
     float ySegmentSize = ( bottomRight.y - topLeft.y ) / maze.getDimensions().y;
 
-    // To keep track of the number of vertices that have been used yet.
-    int vertexIndex = 0;
-
     // Loop through each horizontal wall
     for ( int xIndex = 0; xIndex < maze.getDimensions().x; xIndex++ )
     {
@@ -252,21 +250,15 @@ void drawMaze(
         {
             if ( maze.getHorizontal( { xIndex, yIndex } ) )
             {
-                // Add the two vertices that make up the wall to the vertex array, 
-                // incrementing the vertex index both times
-                vertexArray[vertexIndex++] = sf::Vertex( 
+                appendLineToArray( vertexArray,
                     sf::Vector2f( 
                         topLeft.x + xIndex * xSegmentSize,
                         bottomRight.y - yIndex * ySegmentSize
                     ), 
-                    sf::Color::Green
-                
-                );
-                vertexArray[vertexIndex++] = sf::Vertex( 
                     sf::Vector2f( 
                         topLeft.x + ( xIndex + 1 ) * xSegmentSize,
                         bottomRight.y - ( yIndex ) * ySegmentSize
-                    ), 
+                    ),
                     sf::Color::Green
                 );
             }
@@ -280,18 +272,11 @@ void drawMaze(
         {
             if ( maze.getVertical( { xIndex, yIndex } ) )
             {
-                // Add the two vertices that make up the wall to the vertex array, 
-                // incrementing the vertex index both times
-                vertexArray[vertexIndex++] = sf::Vertex( 
+                appendLineToArray( vertexArray,
                     sf::Vector2f( 
                         topLeft.x + xIndex * xSegmentSize,
                         bottomRight.y - yIndex * ySegmentSize
                     ), 
-                    sf::Color::Green
-                
-                );
-
-                vertexArray[vertexIndex++] = sf::Vertex( 
                     sf::Vector2f( 
                         topLeft.x + ( xIndex ) * xSegmentSize,
                         bottomRight.y - ( yIndex + 1 ) * ySegmentSize
@@ -301,6 +286,7 @@ void drawMaze(
             }
         }
     }
+    
     window.draw( vertexArray );
     
     for ( sf::Vector2i marker: markers )

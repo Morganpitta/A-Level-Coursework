@@ -293,7 +293,9 @@ void drawMaze(
     {
         sf::RectangleShape markerRectangle = sf::RectangleShape({xSegmentSize/2.f,ySegmentSize/2.f});
 
-        markerRectangle.setPosition( sf::Vector2f(marker.x*xSegmentSize,-marker.y*ySegmentSize) + sf::Vector2f(50+xSegmentSize/4.f,750-(3*ySegmentSize)/4.f) );
+        markerRectangle.setPosition( 
+            sf::Vector2f(marker.x*xSegmentSize,-marker.y*ySegmentSize) + sf::Vector2f(50+xSegmentSize/4.f,750-(3*ySegmentSize)/4.f) 
+        );
 
         window.draw( markerRectangle );
     }

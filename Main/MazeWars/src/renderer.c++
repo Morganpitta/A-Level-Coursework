@@ -44,7 +44,11 @@ void Renderer::setHasBeenDrawnOn(
     this->drawnOn[xIndex] = value;
 }
 
-Renderer::Renderer( sf::Vector2u displaySize ): displaySize( displaySize ), camera(), wallVertices( sf::PrimitiveType::Lines ), yNear(0.1), wallHeight(300)
+Renderer::Renderer( sf::Vector2u displaySize ): displaySize( displaySize ), 
+                                                camera(), 
+                                                wallVertices( sf::PrimitiveType::Lines ), 
+                                                yNear(0.1), 
+                                                wallHeight(300)
 {
 
 }

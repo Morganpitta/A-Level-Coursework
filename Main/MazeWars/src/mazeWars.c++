@@ -235,5 +235,7 @@ void MazeWars::drawMiniMapEntities( sf::RenderWindow &window, sf::Vector2f topLe
 
 void MazeWars::render( sf::RenderWindow &window )
 {
+    drawMaze( window, getMaze(), {50,50}, {750,750});
+
     renderer.render( window, mazeGrid, entityGrid, playerId );
 }

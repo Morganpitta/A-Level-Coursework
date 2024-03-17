@@ -21,7 +21,11 @@ bool Renderer::canDrawInRange(
         startIndex <= endIndex,
         "Start index must be less than the end index"
     );
-    for ( int index = std::max( 0.f, std::floor( startIndex ) ); index <= std::min( std::floor( endIndex ), getDisplaySize().x - 1.f ); index++ )
+
+    startIndex = std::max( 0.f, startIndex );
+    endIndex = std::min( endIndex, getDisplaySize().x - 1.f );
+
+    for ( int index = startIndex; index <= endIndex; index++ )
     {
         if ( !hasBeenDrawnOn(index) )
             return true;
@@ -177,7 +181,7 @@ void Renderer::drawWallVertical(
 )
 {
     if ( onScreen( position.x ) &&
-            !hasBeenDrawnOn( std::floor( position.x ) ) )
+         !hasBeenDrawnOn( std::floor( position.x ) ) )
     {
         float wallHeight = std::floor( this->wallHeight / position.y );
         

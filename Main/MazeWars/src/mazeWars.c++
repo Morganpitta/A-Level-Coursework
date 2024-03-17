@@ -5,7 +5,7 @@
 #include "Entity/enemy.h++"
 #include "random.h++"
 
-MazeWars::MazeWars( sf::Vector2u displaySize, sf::Vector2i dimensions ): renderer(displaySize), mazeGrid( dimensions ), MiniMapRadius(3)
+MazeWars::MazeWars( sf::Vector2u displaySize, sf::Vector2i dimensions ): renderer(displaySize), mazeGrid( dimensions )//, MiniMapRadius(3)
 {
     this->nextId = 0;
     generateMazeDepthFirst( mazeGrid, 1 );

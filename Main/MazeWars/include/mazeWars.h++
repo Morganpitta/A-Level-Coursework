@@ -13,7 +13,7 @@
         std::vector<std::vector<std::vector<Entity*>>> entityGrid;
         Id playerId;
         Id nextId;
-        const int MiniMapRadius;
+        //const int MiniMapRadius;
 
         public:
             MazeWars( sf::Vector2u displaySize, sf::Vector2i dimensions );

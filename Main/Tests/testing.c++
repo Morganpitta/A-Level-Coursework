@@ -1,28 +1,30 @@
 #include "renderer.h++"
 #include "Entity/entity.h++"
 
-const float targetWidth = 1600;
-const float targetHeight = 900;
-
-void handleResize( 
-    sf::RenderWindow &window,
-    float windowWidth, 
-    float windowHeight
+void Renderer::render(
+    sf::RenderWindow& window,
+    MazeGrid &mazeGrid,
+    const std::vector<std::vector<std::vector<Entity*>>> &entityGrid,
+    Id playerId
 )
 {
-    float ratio = windowWidth/windowHeight;
-    float targetRatio = targetWidth/targetHeight;
-    
-    if ( ratio > targetRatio )
+    this->entityRectangles.clear();
+
+    // Code removed for brevity 
+
+    while ( !cellsToVisit.empty() )
     {
-        float offset = targetWidth*(ratio/targetRatio-1);
-        sf::FloatRect visibleArea(-offset/2, 0, targetWidth+offset, targetHeight);
-        window.setView(sf::View(visibleArea));
-    }
-    else if ( ratio < targetRatio )
-    {
-        float offset = targetHeight*(targetRatio/ratio-1);
-        sf::FloatRect visibleArea(0, -offset/2, targetWidth, targetHeight+offset);
-        window.setView(sf::View(visibleArea));
+        sf::Vector2i currentCell = cellsToVisit.front(); cellsToVisit.pop();
+        visitedCells[currentCell.x][currentCell.y] = true;
+
+        std::vector<Entity*> entitiesInCell = entityGrid[currentCell.x][currentCell.y];
+
+        for ( Entity *entity: entitiesInCell )
+        {
+            if ( entity->getId() != playerId && !entity->isDead() )
+                drawEntity( entity );
+        }
+
+        forEachDirection( direction )
     }
 }

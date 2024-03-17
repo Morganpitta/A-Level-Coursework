@@ -5,20 +5,23 @@ void Renderer::drawWallVertical(
     sf::Vector2f position
 )
 {
-    float wallHeight = std::floor( this->wallHeight / position.y );
-    
-    appendLineToArray(
-        wallVertices,
-        sf::Vector2f(
-            std::floor(position.x),
-            ( getDisplaySize().y + wallHeight ) / 2
-        ),
-        sf::Vector2f(
-            std::floor(position.x),
-            ( getDisplaySize().y - wallHeight ) / 2
-        ),
-        sf::Color::Green
-    );
+    if ( onScreen( position.x ) )
+    {
+        float wallHeight = std::floor( this->wallHeight / position.y );
+        
+        appendLineToArray(
+            wallVertices,
+            sf::Vector2f(
+                std::floor(position.x),
+                ( getDisplaySize().y + wallHeight ) / 2
+            ),
+            sf::Vector2f(
+                std::floor(position.x),
+                ( getDisplaySize().y - wallHeight ) / 2
+            ),
+            sf::Color::Green
+        );
+    }
 }
 
 void Renderer::drawWallHorizontals(

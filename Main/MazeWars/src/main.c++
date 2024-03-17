@@ -63,7 +63,7 @@ int main()
 
     setRandomNumberSeed( timeNow().time_since_epoch().count() );
 
-    MazeWars game( {targetWidth,targetHeight}, { 10, 10 } );
+    MazeWars game( sf::Vector2u(targetWidth,targetHeight), { 10, 10 } );
 
     while (window.isOpen() && !game.getPlayer()->isDead())
     {

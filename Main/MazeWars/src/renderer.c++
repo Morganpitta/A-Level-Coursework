@@ -5,7 +5,7 @@ bool Renderer::hasBeenDrawnOn( int xIndex ) const
 {
     assert(
         xIndex >= 0 &&
-        std::size_t(xIndex) < drawnOn.size(),
+        std::size_t(xIndex) < getDisplaySize().x,
         "Index out of range"
     );
 
@@ -37,7 +37,7 @@ void Renderer::setHasBeenDrawnOn(
 {
     assert(
         xIndex >= 0 &&
-        std::size_t(xIndex) < drawnOn.size(),
+        std::size_t(xIndex) < getDisplaySize().x,
         "Index out of range"
     );
 
@@ -195,7 +195,7 @@ void Renderer::drawWallHorizontals(
         wallStartX = 0;
     }
 
-    int wallEndX = std::min<int>( std::floor( wallEnd.x ), this->drawnOn.size() - 1 );
+    int wallEndX = std::min<int>( std::floor( wallEnd.x ), getDisplaySize().x - 1 );
 
     while ( true )
     {
@@ -293,7 +293,7 @@ void Renderer::drawEntity(
             entityImageStartX = 0;
         }
     
-        int entityImageEndX = std::min<int>( std::floor( position.x + size ), this->drawnOn.size() - 1 );
+        int entityImageEndX = std::min<int>( std::floor( position.x + size ), getDisplaySize().x - 1 );
 
         while ( true )
         {

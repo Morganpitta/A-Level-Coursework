@@ -125,7 +125,7 @@ void Renderer::render(
                 sf::Vector2i connectedCell = 
                     transposePosition( 
                         currentCell, 
-                        (Direction) direction 
+                        (Direction) direction
                     );
                 
                 if ( mazeGrid.inBounds( connectedCell ) && 

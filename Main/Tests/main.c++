@@ -2,8 +2,9 @@
 #include "time.h++"
 #include "renderer.h++"
 #include "mazeGenerator.h++"
+#include "random.h++"
 
-const float targetWidth = 1600;
+const float targetWidth = 900;
 const float targetHeight = 900;
 
 void handleResize( 
@@ -63,6 +64,7 @@ int main()
 
     MazeGrid mazeGrid( { 10, 10 } );
 
+    setRandomNumberSeed( timeNow().time_since_epoch().count() );
     generateMazeDepthFirst( mazeGrid, 0 );
 
     Renderer renderer( { targetWidth, targetHeight } );

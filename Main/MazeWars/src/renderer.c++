@@ -5,7 +5,7 @@ bool Renderer::hasBeenDrawnOn( int xIndex ) const
 {
     assert(
         xIndex >= 0 &&
-        std::size_t(xIndex) < drawnOn.size(),
+        std::size_t(xIndex) < getDisplaySize().x,
         "Index out of range"
     );
 
@@ -37,7 +37,7 @@ void Renderer::setHasBeenDrawnOn(
 {
     assert(
         xIndex >= 0 &&
-        std::size_t(xIndex) < drawnOn.size(),
+        std::size_t(xIndex) < getDisplaySize().x,
         "Index out of range"
     );
 
@@ -195,7 +195,7 @@ void Renderer::drawWallHorizontals(
         wallStartX = 0;
     }
 
-    int wallEndX = std::min<int>( std::floor( wallEnd.x ), this->drawnOn.size() - 1 );
+    int wallEndX = std::min<int>( std::floor( wallEnd.x ), getDisplaySize().x - 1 );
 
     while ( true )
     {
@@ -293,7 +293,7 @@ void Renderer::drawEntity(
             entityImageStartX = 0;
         }
     
-        int entityImageEndX = std::min<int>( std::floor( position.x + size ), this->drawnOn.size() - 1 );
+        int entityImageEndX = std::min<int>( std::floor( position.x + size ), getDisplaySize().x - 1 );
 
         while ( true )
         {
@@ -358,8 +358,8 @@ void Renderer::render(
     Id playerId
 )
 {
-    std::queue<sf::Vector2i> cellsToVisitQueue;
-    cellsToVisitQueue.push( camera.getPosition() );
+    std::queue<sf::Vector2i> cellsToVisit;
+    cellsToVisit.push( camera.getPosition() );
 
     std::vector<std::vector<bool>> visitedCells;
     visitedCells.assign(
@@ -381,10 +381,9 @@ void Renderer::render(
     );
 
 
-    while ( !cellsToVisitQueue.empty() )
+    while ( !cellsToVisit.empty() )
     {
-        sf::Vector2i currentCell = cellsToVisitQueue.front();
-        cellsToVisitQueue.pop();
+        sf::Vector2i currentCell = cellsToVisit.front(); cellsToVisit.pop();
         visitedCells[currentCell.x][currentCell.y] = true;
 
         std::vector<Entity*> entitiesInCell = entityGrid[currentCell.x][currentCell.y];
@@ -415,10 +414,12 @@ void Renderer::render(
 
             if ( isWallInDirection )
             {
+                // If there's a wall, just draw it and continue with next loop.
                 drawWall( wallStart, wallEnd );
             }
             else
             {
+                // Else try to add the connected cell to the cellsToVisit
                 sf::Vector2i connectedCell =
                     transposePosition(
                         currentCell,
@@ -428,13 +429,14 @@ void Renderer::render(
                 if ( mazeGrid.inBounds( connectedCell ) &&
                         !visitedCells[connectedCell.x][connectedCell.y] )
                 {
-                    cellsToVisitQueue.push( connectedCell );
+                    cellsToVisit.push( connectedCell );
                 }
             }
         }
     }
 
     window.draw( wallVertices );
+    
     std::reverse( this->entityRectangles.begin(), this->entityRectangles.end() );
     for ( sf::RectangleShape &entityRectangle: this->entityRectangles )
     {

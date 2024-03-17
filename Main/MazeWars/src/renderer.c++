@@ -44,6 +44,25 @@ void Renderer::setHasBeenDrawnOn(
     this->drawnOn[xIndex] = value;
 }
 
+void Renderer::setHasBeenDrawnOn(
+    int startIndex,
+    int endIndex,
+    bool value
+)
+{
+    assert(
+        startIndex <= endIndex,
+        "Start index must be less than the end index"
+    );
+
+    startIndex = std::max(0, startIndex);
+    endIndex = std::min<int>( endIndex, getDisplaySize().x - 1 );
+
+    if (startIndex <= endIndex)
+        std::fill( drawnOn.begin() + startIndex, drawnOn.begin() + endIndex, value );
+}
+
+
 Renderer::Renderer( sf::Vector2u displaySize ): displaySize( displaySize ), 
                                                 yNear(0.1),
                                                 wallHeight(300),
@@ -184,10 +203,11 @@ void Renderer::drawWallHorizontals(
     sf::Vector2f &wallEnd
 )
 {
+    float wallHeightDelta = ( std::floor( this->wallHeight / wallEnd.y ) - std::floor( this->wallHeight / wallStart.y ) ) / 
+                            ( std::floor( wallEnd.x ) - std::floor( wallStart.x ) );
+    
     int wallStartX = std::floor( wallStart.x + 1 );
-    float wallStartHeight = std::floor( this->wallHeight / wallStart.y );
-
-    float wallHeightDelta = ( std::floor( this->wallHeight / wallEnd.y ) - wallStartHeight ) / ( std::floor( wallEnd.x ) - std::floor( wallStart.x ) );
+    float wallStartHeight = std::floor( this->wallHeight / wallStart.y ) + wallHeightDelta;
     
     if ( wallStartX < 0 )
     {
@@ -199,6 +219,7 @@ void Renderer::drawWallHorizontals(
 
     while ( true )
     {
+        // Find the x value where the drawn on value changes
         bool wasDrawnOn = hasBeenDrawnOn( wallStartX );
         int index =
             std::min<int>(
@@ -213,16 +234,17 @@ void Renderer::drawWallHorizontals(
                 wallEndX
             );
 
-        float wallHeight = wallStartHeight + wallHeightDelta * ( index - wallStartX + 1 );
+        // Get the corresponding height value for the given x.
+        float wallHeight = wallStartHeight + wallHeightDelta * ( index - wallStartX );
 
-        //aka its hit a section where its turned into a wall
+        // If it was just on an undrawn section, draw the walls
         if ( wasDrawnOn == false )
         {
             appendLineToArray(
                 wallVertices,
                 sf::Vector2f(
                     wallStartX - 1,
-                    ( getDisplaySize().y + std::floor( wallStartHeight ) ) / 2
+                    ( getDisplaySize().y + std::floor( wallStartHeight - wallHeightDelta ) ) / 2
                 ),
                 sf::Vector2f(
                     index,
@@ -235,7 +257,7 @@ void Renderer::drawWallHorizontals(
                 wallVertices,
                 sf::Vector2f(
                     wallStartX - 1,
-                    ( getDisplaySize().y - std::floor( wallStartHeight ) ) / 2
+                    ( getDisplaySize().y - std::floor( wallStartHeight - wallHeightDelta ) ) / 2
                 ),
                 sf::Vector2f(
                     index,
@@ -244,7 +266,7 @@ void Renderer::drawWallHorizontals(
                 sf::Color::Green
             );
             
-            std::fill( drawnOn.begin() + wallStartX, drawnOn.begin() + index, true );
+            setHasBeenDrawnOn( wallStartX, index, true );
         }
 
         if ( index >= wallEndX )

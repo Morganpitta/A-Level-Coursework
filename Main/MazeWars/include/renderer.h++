@@ -31,6 +31,12 @@
             bool value
         );
 
+        void setHasBeenDrawnOn(
+            int startIndex,
+            int endIndex,
+            bool value
+        );
+
         public:
             Renderer( sf::Vector2u displaySize );
 

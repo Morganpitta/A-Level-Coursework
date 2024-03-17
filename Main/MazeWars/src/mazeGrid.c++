@@ -21,25 +21,25 @@ sf::Vector2i MazeGrid::getDimensions() const
 bool MazeGrid::inBounds( sf::Vector2i position )  const
 {
     return 0 <= position.x && position.x < getDimensions().x &&
-            0 <= position.y && position.y < getDimensions().y;
+           0 <= position.y && position.y < getDimensions().y;
 }
 
-int MazeGrid::getNumberOfWalls() const
+std::size_t MazeGrid::getNumberOfWalls() const
 {
     return this->numberOfWalls;
 }
 
-int MazeGrid::getNumberOfHorizontalSegments() const
+std::size_t MazeGrid::getNumberOfHorizontalSegments() const
 {
     return getDimensions().x * (getDimensions().y+1);
 }
 
-int MazeGrid::getNumberOfVerticalSegments() const
+std::size_t MazeGrid::getNumberOfVerticalSegments() const
 {
     return (getDimensions().x+1) * getDimensions().y;
 }
 
-int MazeGrid::getNumberOfWallSegments() const
+std::size_t MazeGrid::getNumberOfWallSegments() const
 {
     return getNumberOfHorizontalSegments() + getNumberOfVerticalSegments();
 }
@@ -47,7 +47,7 @@ int MazeGrid::getNumberOfWallSegments() const
 bool MazeGrid::getHorizontal( sf::Vector2i position ) const
 {
     assert( 
-        position.x+position.y*getDimensions().x < getNumberOfHorizontalSegments(),
+        std::size_t(position.x+position.y*getDimensions().x) < getNumberOfHorizontalSegments(),
         "Cannot access a horizontal wall segment that doesn't exist"
     );
 
@@ -57,7 +57,7 @@ bool MazeGrid::getHorizontal( sf::Vector2i position ) const
 bool MazeGrid::getVertical( sf::Vector2i position ) const
 {
     assert( 
-        position.x+position.y*getDimensions().x < getNumberOfVerticalSegments(),
+        std::size_t(position.x+position.y*getDimensions().x) < getNumberOfVerticalSegments(),
         "Cannot access a vertical wall segment that doesn't exist"
     );
 
@@ -86,9 +86,11 @@ bool MazeGrid::getCell(
         case West:
             return getVertical( { position.x, position.y } );
             break;
-    }
 
-    throw std::runtime_error( "Direction can only be: North, East, South, West" );
+        default:
+            throw std::runtime_error( "Direction can only be: North, East, South, West" );
+            break;
+    }
 }
 
 void MazeGrid::set( 
@@ -225,6 +227,10 @@ void MazeGrid::setCell(
             
         case West:
             setVertical( { position.x, position.y }, value );
+            break;
+
+        default:
+            throw std::runtime_error( "Direction can only be: North, East, South, West" );
             break;
     }
 }

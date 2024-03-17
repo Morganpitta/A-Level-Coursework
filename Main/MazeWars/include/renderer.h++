@@ -42,19 +42,19 @@
 
             bool onScreen( float xValue ) const;
 
-            sf::Vector2f clipWallSegmentToNearPlane( 
-                sf::Vector2f wallStart,
-                sf::Vector2f wallEnd 
-            );
-
-            bool projectWall(
-                sf::Vector2f &wallStart,
-                sf::Vector2f &wallEnd
+            sf::Vector2f clipLineToNearPlane( 
+                sf::Vector2f lineStart,
+                sf::Vector2f lineEnd 
             );
 
             bool projectPoint(
                 sf::Vector2f &position,
                 float &size
+            );
+
+            bool projectLine(
+                sf::Vector2f &lineStart,
+                sf::Vector2f &lineEnd
             );
 
             void drawWallVertical( sf::Vector2f position );

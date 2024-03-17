@@ -1,20 +1,73 @@
-sf::Vector2i Entity::relativePositionOf( sf::Vector2i position )
+#include "renderer.h++"
+#include "Entity/entity.h++"
+
+void Renderer::drawWallVertical(
+    sf::Vector2f position
+)
 {
-    return sf::Vector2i( rotatePosition( 
-        sf::Vector2f( position - getPosition() ),
-        normaliseDirection( -getDirection() )
-    ) );
+    float wallHeight = std::floor( this->wallHeight / position.y );
+    
+    appendLineToArray(
+        wallVertices,
+        sf::Vector2f(
+            std::floor(position.x),
+            ( getDisplaySize().y + wallHeight ) / 2
+        ),
+        sf::Vector2f(
+            std::floor(position.x),
+            ( getDisplaySize().y - wallHeight ) / 2
+        ),
+        sf::Color::Green
+    );
 }
 
-void Entity::damage( int amount )
+void Renderer::drawWallHorizontals(
+    sf::Vector2f &wallStart,
+    sf::Vector2f &wallEnd
+)
 {
-    setHealth( std::max( getHealth() - amount, 0 ) );
+    float wallStartHeight = std::floor( this->wallHeight / wallStart.y );
+    float wallEndHeight = std::floor( this->wallHeight / wallEnd.y );
 
-    if ( getHealth() <= 0 )
-        kill();
+    appendLineToArray(
+        wallVertices,
+        sf::Vector2f(
+            wallStart.x,
+            ( getDisplaySize().y + std::floor( wallStartHeight ) ) / 2
+        ),
+        sf::Vector2f(
+            wallEnd.x,
+            ( getDisplaySize().y + std::floor( wallEndHeight ) ) / 2
+        ),
+        sf::Color::Green
+    );
+
+    appendLineToArray(
+        wallVertices,
+        sf::Vector2f(
+            wallStart.x,
+            ( getDisplaySize().y - std::floor( wallStartHeight ) ) / 2
+        ),
+        sf::Vector2f(
+            wallEnd.x,
+            ( getDisplaySize().y - std::floor( wallEndHeight ) ) / 2
+        ),
+        sf::Color::Green
+    );
 }
 
-void Entity::update( MazeWars &game )
+void Renderer::drawWall(
+    sf::Vector2f &wallStart,
+    sf::Vector2f &wallEnd
+)
 {
+    drawWallVertical(  wallStart );
 
+    drawWallVertical( wallEnd );
+
+    // If it's one or two pixels thin we can stop
+    if ( std::floor( wallEnd.x ) - std::floor( wallStart.x ) <= 1 )
+        return;
+
+    drawWallHorizontals( wallStart, wallEnd );
 }

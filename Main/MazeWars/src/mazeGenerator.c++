@@ -28,22 +28,23 @@ Direction getRandomValidDirection(
     const std::vector<std::vector<bool>> &isSearched 
 )
 {
-    std::vector<Direction> directions = { North, East, South, West };
+    std::vector<Direction> validDirections = {};
 
-    for ( int index = 0; index < directions.size(); index++ )
+    forEachDirection( direction )
     {
-        sf::Vector2i transposedPosition = transposePosition( position, directions[index] );
+        sf::Vector2i transposedPosition = transposePosition( position, direction );
 
-        if ( !mazeGrid.inBounds( transposedPosition ) || isSearched[ transposedPosition.x ][ transposedPosition.y ] )
-        {
-            directions.erase(directions.begin()+index--);
-        }
+        // If the position is in bounds, and it hasn't been searched, add it to our list.
+        if ( mazeGrid.inBounds( transposedPosition ) && !isSearched[ transposedPosition.x ][ transposedPosition.y ] )
+            validDirections.push_back( direction );
     }
 
-    if ( directions.size() == 0 )
+    // If theres no valid directions, return NoDirection
+    if ( validDirections.size() == 0 )
         return NoDirection;
     
-    return directions[ randomInt( 0, directions.size() - 1 ) ];
+    // Select a random direction from the list.
+    return validDirections[ randomInt( 0, validDirections.size() - 1 ) ];
 }
 
 void generateMazeDepthFirst( 
@@ -61,8 +62,8 @@ void generateMazeDepthFirst(
 
     while ( true )
     {
-        Direction direction = getRandomValidDirection( position, mazeGrid, isSearched );
         isSearched[position.x][position.y] = true;
+        Direction direction = getRandomValidDirection( position, mazeGrid, isSearched );
 
         if ( direction == NoDirection )
         {

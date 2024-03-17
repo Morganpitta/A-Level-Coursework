@@ -21,13 +21,13 @@
 
             bool inBounds( sf::Vector2i position )  const;
 
-            int getNumberOfWalls() const;
+            std::size_t getNumberOfWalls() const;
 
-            int getNumberOfHorizontalSegments() const;
+            std::size_t getNumberOfHorizontalSegments() const;
 
-            int getNumberOfVerticalSegments() const;
+            std::size_t getNumberOfVerticalSegments() const;
 
-            int getNumberOfWallSegments() const;
+            std::size_t getNumberOfWallSegments() const;
 
             bool getHorizontal( sf::Vector2i position ) const;
 

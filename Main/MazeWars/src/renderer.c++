@@ -5,7 +5,7 @@ bool Renderer::hasBeenDrawnOn( int xIndex ) const
 {
     assert(
         xIndex >= 0 &&
-        xIndex < drawnOn.size(),
+        std::size_t(xIndex) < drawnOn.size(),
         "Index out of range"
     );
 
@@ -37,7 +37,7 @@ void Renderer::setHasBeenDrawnOn(
 {
     assert(
         xIndex >= 0 &&
-        xIndex < drawnOn.size(),
+        std::size_t(xIndex) < drawnOn.size(),
         "Index out of range"
     );
 
@@ -45,10 +45,10 @@ void Renderer::setHasBeenDrawnOn(
 }
 
 Renderer::Renderer( sf::Vector2u displaySize ): displaySize( displaySize ), 
-                                                camera(), 
-                                                wallVertices( sf::PrimitiveType::Lines ), 
                                                 yNear(0.1),
-                                                wallHeight(300)
+                                                wallHeight(300),
+                                                camera(), 
+                                                wallVertices( sf::PrimitiveType::Lines )
 {
 
 }
@@ -68,60 +68,17 @@ sf::Vector2u Renderer::getDisplaySize() const
     return this->displaySize;
 }
 
-
 bool Renderer::onScreen( float xValue ) const
 {
     return 0 <= xValue && xValue < getDisplaySize().x;
 }
 
-sf::Vector2f Renderer::clipWallSegmentToNearPlane( sf::Vector2f wallStart, sf::Vector2f wallEnd )
+sf::Vector2f Renderer::clipLineToNearPlane( sf::Vector2f lineStart, sf::Vector2f lineEnd )
 {
-    float delta = ( wallStart.y - getYNear() ) / ( wallStart.y - wallEnd.y );
+    // A linear interpolation
+    float delta = ( lineStart.y - getYNear() ) / ( lineStart.y - lineEnd.y );
     
-    return { wallStart.x + ( wallEnd.x - wallStart.x ) * delta, getYNear() };
-}
-
-bool Renderer::projectWall(
-    sf::Vector2f &wallStart,
-    sf::Vector2f &wallEnd
-)
-{
-    //Getting relative position
-    wallStart = getCamera().relativePositionOf( wallStart );
-    wallEnd = getCamera().relativePositionOf( wallEnd );
-
-    // Clip near
-    if ( wallStart.y < getYNear() && wallEnd.y < getYNear() )
-        return false;
-    else if ( wallStart.y < getYNear() )
-    {
-        wallStart = clipWallSegmentToNearPlane( wallStart, wallEnd );
-    }
-    else if ( wallEnd.y < getYNear() )
-    {
-        wallEnd = clipWallSegmentToNearPlane( wallStart, wallEnd );
-    }
-
-    wallStart.x /= wallStart.y;
-    wallEnd.x /= wallEnd.y;
-
-    // Making sure it's start to end not end to start
-    if ( wallStart.x > wallEnd.x )
-    {
-        std::swap( wallStart, wallEnd );
-    }
-
-    wallStart.x *= ( getDisplaySize().x / 2 ) / tan( camera.getFov() / 2 );
-    wallEnd.x *= ( getDisplaySize().x / 2 ) / tan( camera.getFov() / 2 );
-
-    wallStart.x += getDisplaySize().x / 2.f;
-    wallEnd.x += getDisplaySize().x / 2.f;
-
-    // Test if offscreen
-    if ( wallEnd.x < 0  || wallStart.x > getDisplaySize().x )
-        return false;
-
-    return true;
+    return { lineStart.x + ( lineEnd.x - lineStart.x ) * delta, getYNear() };
 }
 
 bool Renderer::projectPoint(
@@ -132,19 +89,65 @@ bool Renderer::projectPoint(
     //Getting relative position
     position = getCamera().relativePositionOf( position );
 
+    // Clip near
     if ( position.y < getYNear() )
         return false;
     
+    // Divide by distance to camera
     position.x /= position.y;
 
+    // Stretch to match screen size and center on screen
     position.x *= ( getDisplaySize().x / 2 ) / tan( camera.getFov() / 2 );
-
     position.x += getDisplaySize().x / 2.f;
 
     size /= position.y * 2;
 
-    // Test if offscreen
+    // Test if off screen
     if ( position.x + size < 0  || position.x - size > getDisplaySize().x )
+        return false;
+
+    return true;
+}
+
+bool Renderer::projectLine(
+    sf::Vector2f &lineStart,
+    sf::Vector2f &lineEnd
+)
+{
+    //Getting relative position
+    lineStart = getCamera().relativePositionOf( lineStart );
+    lineEnd = getCamera().relativePositionOf( lineEnd );
+
+    // Clip near
+    if ( lineStart.y < getYNear() && lineEnd.y < getYNear() )
+        return false;
+    else if ( lineStart.y < getYNear() )
+    {
+        lineStart = clipLineToNearPlane( lineStart, lineEnd );
+    }
+    else if ( lineEnd.y < getYNear() )
+    {
+        lineEnd = clipLineToNearPlane( lineStart, lineEnd );
+    }
+
+    // Divide by distance to camera
+    lineStart.x /= lineStart.y;
+    lineEnd.x /= lineEnd.y;
+
+    // Making sure it's start to end not end to start
+    if ( lineStart.x > lineEnd.x )
+    {
+        std::swap( lineStart, lineEnd );
+    }
+
+    // Stretch to match screen size and center on screen
+    lineStart.x *= ( getDisplaySize().x / 2 ) / tan( camera.getFov() / 2 );
+    lineStart.x += getDisplaySize().x / 2.f;
+    lineEnd.x *= ( getDisplaySize().x / 2 ) / tan( camera.getFov() / 2 );
+    lineEnd.x += getDisplaySize().x / 2.f;
+
+    // Test if off screen
+    if ( lineEnd.x < 0  || lineStart.x > getDisplaySize().x )
         return false;
 
     return true;
@@ -403,7 +406,7 @@ void Renderer::render(
                 sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) +
                 rotatePosition({0.5, 0.5}, direction);
 
-            if ( !projectWall( wallStart, wallEnd ) )
+            if ( !projectLine( wallStart, wallEnd ) )
                 continue;
 
             // If theres no space to draw anything why are we going to bother with any other checks

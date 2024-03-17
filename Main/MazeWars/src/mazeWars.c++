@@ -21,8 +21,8 @@ MazeWars::MazeWars( sf::Vector2u displaySize, sf::Vector2i dimensions ): rendere
         addEntity(
             new Player( 
                 {
-                    std::floor( dimensions.x/2 ),
-                    std::floor( dimensions.y/2 )
+                    dimensions.x/2,
+                    dimensions.y/2
                 }
             ) 
         );
@@ -155,6 +155,9 @@ void MazeWars::handleInput( sf::Event &event )
             case sf::Keyboard::P:
                 std::cout<<"REEEE";
                 break;
+
+            default:
+                break;
         }
     }
 }
@@ -187,6 +190,7 @@ void MazeWars::update( sf::RenderWindow &window )
 }
 
 // Not going to use this
+/*
 void MazeWars::drawMiniMapEntities( sf::RenderWindow &window, sf::Vector2f topLeft, sf::Vector2f bottomRight )
 {
     sf::VertexArray vertexArray( sf::PrimitiveType::Lines );
@@ -232,6 +236,7 @@ void MazeWars::drawMiniMapEntities( sf::RenderWindow &window, sf::Vector2f topLe
 
     window.draw( vertexArray );
 }
+*/
 
 void MazeWars::render( sf::RenderWindow &window )
 {

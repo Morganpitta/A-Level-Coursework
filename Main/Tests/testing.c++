@@ -1,73 +1,41 @@
 #include "renderer.h++"
 #include "Entity/entity.h++"
 
-void Renderer::drawWallVertical(
-    sf::Vector2f position
+void Renderer::render(
+    sf::RenderWindow& window,
+    MazeGrid &mazeGrid,
+    const std::vector<std::vector<std::vector<Entity*>>> &entityGrid,
+    Id playerId
 )
 {
-    float wallHeight = std::floor( this->wallHeight / position.y );
-    
-    appendLineToArray(
-        wallVertices,
-        sf::Vector2f(
-            std::floor(position.x),
-            ( getDisplaySize().y + wallHeight ) / 2
-        ),
-        sf::Vector2f(
-            std::floor(position.x),
-            ( getDisplaySize().y - wallHeight ) / 2
-        ),
-        sf::Color::Green
-    );
-}
+    wallVertices.clear();
 
-void Renderer::drawWallHorizontals(
-    sf::Vector2f &wallStart,
-    sf::Vector2f &wallEnd
-)
-{
-    float wallStartHeight = std::floor( this->wallHeight / wallStart.y );
-    float wallEndHeight = std::floor( this->wallHeight / wallEnd.y );
+    for ( int xIndex = 0; xIndex < mazeGrid.getDimensions().x; xIndex++ )
+    {
+        for ( int yIndex = 0; yIndex < mazeGrid.getDimensions().x; yIndex++ )
+        {
+            sf::Vector2i currentCell = { xIndex, yIndex };
+            forEachDirection( direction )
+            {
+                bool isWallInDirection = mazeGrid.getCell( currentCell, direction );
 
-    appendLineToArray(
-        wallVertices,
-        sf::Vector2f(
-            wallStart.x,
-            ( getDisplaySize().y + std::floor( wallStartHeight ) ) / 2
-        ),
-        sf::Vector2f(
-            wallEnd.x,
-            ( getDisplaySize().y + std::floor( wallEndHeight ) ) / 2
-        ),
-        sf::Color::Green
-    );
+                if ( isWallInDirection )
+                {
+                    sf::Vector2f wallStart =
+                        sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) +
+                        rotatePosition({-0.5, 0.5}, direction);
+                    sf::Vector2f wallEnd =
+                        sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) +
+                        rotatePosition({0.5, 0.5}, direction);
 
-    appendLineToArray(
-        wallVertices,
-        sf::Vector2f(
-            wallStart.x,
-            ( getDisplaySize().y - std::floor( wallStartHeight ) ) / 2
-        ),
-        sf::Vector2f(
-            wallEnd.x,
-            ( getDisplaySize().y - std::floor( wallEndHeight ) ) / 2
-        ),
-        sf::Color::Green
-    );
-}
+                    if ( !projectLine( wallStart, wallEnd ) )
+                        continue;
 
-void Renderer::drawWall(
-    sf::Vector2f &wallStart,
-    sf::Vector2f &wallEnd
-)
-{
-    drawWallVertical(  wallStart );
+                    drawWall( wallStart, wallEnd );
+                }
+            }
+        }
+    }
 
-    drawWallVertical( wallEnd );
-
-    // If it's one or two pixels thin we can stop
-    if ( std::floor( wallEnd.x ) - std::floor( wallStart.x ) <= 1 )
-        return;
-
-    drawWallHorizontals( wallStart, wallEnd );
+    window.draw( wallVertices );
 }

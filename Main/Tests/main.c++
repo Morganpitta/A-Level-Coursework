@@ -1,6 +1,7 @@
-#include "mazeWars.h++"
-#include "Entity/entity.h++"
-#include "random.h++"
+#include <SFML/Graphics.hpp>
+#include "time.h++"
+#include "renderer.h++"
+#include "mazeGenerator.h++"
 
 const float targetWidth = 900;
 const float targetHeight = 900;
@@ -28,7 +29,7 @@ void handleResize(
     }
 }
 
-void handleInputs( sf::RenderWindow &window, MazeWars &game )
+void handleInputs( sf::RenderWindow &window )
 {
     sf::Event event;
     // For each event
@@ -44,41 +45,45 @@ void handleInputs( sf::RenderWindow &window, MazeWars &game )
             case sf::Event::Resized:
                 handleResize(window, (float) event.size.width, (float) event.size.height);
                 break;
-            
-            default:
-                game.handleInput(event);
-                break;
         }
     }
 }
 
 int main()
 {
-    sf::RenderWindow window( sf::VideoMode(900,900), "Mazewars" );
+    // Create window instance
+    sf::RenderWindow window( sf::VideoMode(1600,900), "Mazewars" );
 
-    if ( !loadEntityAssets() || !loadBaseAssets() )
-        return 1;
+    // Load base assets like a default font and etc
+    if ( !loadBaseAssets() )
+        return 1; // If unable, end the program and return one to represent an error
 
+    
     FpsLimiter fps( 60 );
 
-    setRandomNumberSeed( timeNow().time_since_epoch().count() );
+    MazeGrid mazeGrid( { 10, 10 } );
 
-    MazeWars game( {targetWidth,targetHeight}, { 50, 50 } );
+    generateMazeDepthFirst( mazeGrid, 0 );
 
-    while (window.isOpen() && !game.getPlayer()->isDead())
+    Renderer renderer( { targetWidth, targetHeight } );
+
+    renderer.getCamera().setPosition( {5,5} );
+
+    while ( window.isOpen() )
     {
-        handleInputs( window, game );
-        game.update( window );
+        handleInputs( window );
 
         window.clear( sf::Color::Black );
 
-        game.render( window );
+        // Things will be drawn here
+        renderer.render( window, mazeGrid );
 
+        // Display the frames per second in the top left
         fps.draw(window, {0,0}, 30, sf::Color::White);
 
         window.display();
         fps.restartAndSleep();
     }
 
-    return 0;
+    return 0; // Program ran successfully! return 0 to represent no errors
 }

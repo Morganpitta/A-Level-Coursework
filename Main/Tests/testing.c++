@@ -1,41 +1,28 @@
 #include "renderer.h++"
 #include "Entity/entity.h++"
 
-void Renderer::render(
-    sf::RenderWindow& window,
-    MazeGrid &mazeGrid,
-    const std::vector<std::vector<std::vector<Entity*>>> &entityGrid,
-    Id playerId
+const float targetWidth = 1600;
+const float targetHeight = 900;
+
+void handleResize( 
+    sf::RenderWindow &window,
+    float windowWidth, 
+    float windowHeight
 )
 {
-    wallVertices.clear();
-
-    for ( int xIndex = 0; xIndex < mazeGrid.getDimensions().x; xIndex++ )
+    float ratio = windowWidth/windowHeight;
+    float targetRatio = targetWidth/targetHeight;
+    
+    if ( ratio > targetRatio )
     {
-        for ( int yIndex = 0; yIndex < mazeGrid.getDimensions().x; yIndex++ )
-        {
-            sf::Vector2i currentCell = { xIndex, yIndex };
-            forEachDirection( direction )
-            {
-                bool isWallInDirection = mazeGrid.getCell( currentCell, direction );
-
-                if ( isWallInDirection )
-                {
-                    sf::Vector2f wallStart =
-                        sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) +
-                        rotatePosition({-0.5, 0.5}, direction);
-                    sf::Vector2f wallEnd =
-                        sf::Vector2f(currentCell.x + 0.5, currentCell.y + 0.5 ) +
-                        rotatePosition({0.5, 0.5}, direction);
-
-                    if ( !projectLine( wallStart, wallEnd ) )
-                        continue;
-
-                    drawWall( wallStart, wallEnd );
-                }
-            }
-        }
+        float offset = targetWidth*(ratio/targetRatio-1);
+        sf::FloatRect visibleArea(-offset/2, 0, targetWidth+offset, targetHeight);
+        window.setView(sf::View(visibleArea));
     }
-
-    window.draw( wallVertices );
+    else if ( ratio < targetRatio )
+    {
+        float offset = targetHeight*(targetRatio/ratio-1);
+        sf::FloatRect visibleArea(0, -offset/2, targetWidth, targetHeight+offset);
+        window.setView(sf::View(visibleArea));
+    }
 }

@@ -47,7 +47,7 @@ void Renderer::setHasBeenDrawnOn(
 Renderer::Renderer( sf::Vector2u displaySize ): displaySize( displaySize ), 
                                                 camera(), 
                                                 wallVertices( sf::PrimitiveType::Lines ), 
-                                                yNear(0.1), 
+                                                yNear(0.1),
                                                 wallHeight(300)
 {
 

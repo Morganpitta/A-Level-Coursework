@@ -3,7 +3,7 @@
 #include "renderer.h++"
 #include "mazeGenerator.h++"
 
-const float targetWidth = 900;
+const float targetWidth = 1600;
 const float targetHeight = 900;
 
 void handleResize( 
@@ -14,19 +14,19 @@ void handleResize(
 {
     float ratio = windowWidth/windowHeight;
     float targetRatio = targetWidth/targetHeight;
+    sf::FloatRect visibleArea(0, 0, targetWidth, targetHeight);
     
     if ( ratio > targetRatio )
     {
         float offset = targetWidth*(ratio/targetRatio-1);
-        sf::FloatRect visibleArea(-offset/2, 0, targetWidth+offset, targetHeight);
-        window.setView(sf::View(visibleArea));
+        visibleArea = sf::FloatRect(-offset/2, 0, targetWidth+offset, targetHeight);
     }
     else if ( ratio < targetRatio )
     {
         float offset = targetHeight*(targetRatio/ratio-1);
-        sf::FloatRect visibleArea(0, -offset/2, targetWidth, targetHeight+offset);
-        window.setView(sf::View(visibleArea));
+        visibleArea = sf::FloatRect(0, -offset/2, targetWidth, targetHeight+offset);
     }
+    window.setView(sf::View(visibleArea));
 }
 
 void handleInputs( sf::RenderWindow &window )

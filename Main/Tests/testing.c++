@@ -5,75 +5,29 @@
 #include "Entity/enemy.h++"
 #include "random.h++"
 
-
-MazeWars::MazeWars( sf::Vector2u displaySize, sf::Vector2i dimensions ): renderer(displaySize), mazeGrid( dimensions )
+void MazeWars::update( sf::RenderWindow &window )
 {
-    this->nextId = 0;
-    generateMazeDepthFirst( mazeGrid, 1 );
-    entityGrid.resize(
-        dimensions.x,
-        std::vector<std::vector<Entity*>>(
-            dimensions.y,
-            std::vector<Entity*>()
-        )
-    );
-
-    this->playerId = 
-        addEntity(
-            new Player( 
-                {
-                    dimensions.x/2,
-                    dimensions.y/2
-                }
-            ) 
-        );
-}
-
-Camera &MazeWars::getCamera()
-{
-    return this->renderer.getCamera();
-}
-
-MazeGrid &MazeWars::getMaze()
-{
-    return this->mazeGrid;
-}
-
-Entity *MazeWars::getEntity( Id id )
-{
-    return this->entities[id];
-}
-
-Entity *MazeWars::getPlayer()
-{
-    return getEntity( this->playerId );
-}
-
-std::vector<Id> MazeWars::getEntitiesAtLocation( sf::Vector2i position ) const
-{
-    // I need to convert arrays of Id's to arrays of pointers
-    std::vector<Id> entities;
-
-    for ( const Entity* entity: entityGrid[position.x][position.y] )
+    getCamera().setPosition( getPlayer()->getPosition() );
+    getCamera().setDirection( getPlayer()->getDirection() );
+    
+    for ( std::vector<std::vector<Entity*>> &column: this->entityGrid )
     {
-        entities.push_back( entity->getId() );
+        for ( std::vector<Entity*> &cellEntities: column )
+        {
+            cellEntities.clear();
+        }
     }
 
-    return entities;
-}
+    for ( std::pair<Id, Entity*> idEntityPair: this->entities )
+    {
+        Entity *entity = idEntityPair.second;
+        if ( !entity->isDead() )
+        {
+            entity->update( *this );
+            sf::Vector2i position = entity->getPosition();
+            entityGrid[position.x][position.y].push_back( entity );
+        }
+    }
 
-bool MazeWars::playerCanMove( Direction direction )
-{
-    return getMaze().getCell( 
-            getPlayer()->getPosition(),
-            direction
-        ) != true;
-}
-
-Id MazeWars::addEntity( Entity* entity )
-{
-    Id entityId = nextId++;
-    this->entities[entityId] = entity;
-    entity->setId( entityId );
-    return entityId;
+    cleanUpEntities();
 }

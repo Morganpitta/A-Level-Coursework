@@ -68,7 +68,7 @@ int main()
     while (window.isOpen() && !game.getPlayer()->isDead())
     {
         handleInputs( window, game );
-        game.update( window );
+        game.update();
 
         window.clear( sf::Color::Black );
 

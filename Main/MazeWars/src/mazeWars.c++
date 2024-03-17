@@ -81,6 +81,8 @@ void MazeWars::cleanUpEntities()
         Entity *entity = (*iterator).second; 
         if ( entity->isDead() && entity->getType() != PlayerType )
         {
+            std::vector<Entity*> &entityVector = this->entityGrid[entity->getPosition().x][entity->getPosition().y];
+            entityVector.erase(std::remove(entityVector.begin(), entityVector.end(), entity), entityVector.end());
             delete entity;
             iterator = this->entities.erase( iterator );
         }
@@ -103,7 +105,7 @@ void MazeWars::attemptToSpawnEntities()
 
     int spawnDistance = 20;
 
-    while ( numberOfEnemies < 0 )
+    while ( numberOfEnemies < 4 )
     {
         float spawnAngle = randomFloat( 0, 2 * M_PI );
         sf::Vector2i spawnLocation = getPlayer()->getPosition() + 
@@ -153,9 +155,6 @@ void MazeWars::handleInput( sf::Event &event )
                     )
                 );
                 break;
-            case sf::Keyboard::P:
-                std::cout<<"REEEE";
-                break;
 
             default:
                 break;
@@ -163,12 +162,12 @@ void MazeWars::handleInput( sf::Event &event )
     }
 }
 
-void MazeWars::update( sf::RenderWindow &window )
+void MazeWars::update()
 {
     getCamera().setPosition( getPlayer()->getPosition() );
     getCamera().setDirection( getPlayer()->getDirection() );
     
-    for ( std::vector<std::vector<Entity*>> &column: entityGrid )
+    for ( std::vector<std::vector<Entity*>> &column: this->entityGrid )
     {
         for ( std::vector<Entity*> &cellEntities: column )
         {
@@ -176,13 +175,14 @@ void MazeWars::update( sf::RenderWindow &window )
         }
     }
 
-    for ( std::pair<Id, Entity*> idEntityPair: entities )
+    for ( std::pair<Id, Entity*> idEntityPair: this->entities )
     {
-        if ( !idEntityPair.second->isDead() )
+        Entity *entity = idEntityPair.second;
+        if ( !entity->isDead() )
         {
-            idEntityPair.second->update( *this );
-            sf::Vector2i position = idEntityPair.second->getPosition();
-            entityGrid[position.x][position.y].push_back( idEntityPair.second );
+            entity->update( *this );
+            sf::Vector2i position = entity->getPosition();
+            entityGrid[position.x][position.y].push_back( entity );
         }
     }
 

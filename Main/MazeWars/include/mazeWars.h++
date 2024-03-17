@@ -40,7 +40,7 @@
 
             void handleInput( sf::Event &event );
 
-            void update( sf::RenderWindow &window );
+            void update();
 
             // Not going to use this
             //void drawMiniMapEntities( sf::RenderWindow &window, sf::Vector2f topLeft, sf::Vector2f bottomRight );

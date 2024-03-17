@@ -17,6 +17,8 @@
 
         public:
             MazeWars( sf::Vector2u displaySize, sf::Vector2i dimensions );
+            
+            ~MazeWars();
 
             Camera &getCamera();
 

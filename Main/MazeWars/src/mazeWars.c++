@@ -28,25 +28,23 @@ MazeWars::MazeWars( sf::Vector2u displaySize, sf::Vector2i dimensions ): rendere
         );
 }
 
-Camera &MazeWars::getCamera()
+MazeWars::~MazeWars()
 {
-    return this->renderer.getCamera();
+    for ( std::pair<Id,Entity*> idEntityPair : this->entities )
+    {
+        delete idEntityPair.second;
+    }
+
+    this->entities.clear();
 }
 
-MazeGrid &MazeWars::getMaze()
-{
-    return this->mazeGrid;
-}
+Camera &MazeWars::getCamera() { return this->renderer.getCamera(); }
 
-Entity *MazeWars::getEntity( Id id )
-{
-    return this->entities[id];
-}
+MazeGrid &MazeWars::getMaze() { return this->mazeGrid; }
 
-Entity *MazeWars::getPlayer()
-{
-    return getEntity( this->playerId );
-}
+Entity *MazeWars::getEntity( Id id ) { return this->entities[id]; }
+
+Entity *MazeWars::getPlayer() { return getEntity( this->playerId ); }
 
 std::vector<Id> MazeWars::getEntitiesAtLocation( sf::Vector2i position ) const
 {
@@ -82,7 +80,10 @@ void MazeWars::cleanUpEntities()
     {
         Entity *entity = (*iterator).second; 
         if ( entity->isDead() && entity->getType() != PlayerType )
+        {
+            delete entity;
             iterator = this->entities.erase( iterator );
+        }
         else
             iterator++;
     }

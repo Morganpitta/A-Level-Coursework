@@ -18,7 +18,7 @@ else
 endif
 
 
-CFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -I$(ROOT_DIR)/Include -I$(INCLUDE)
+CFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -Wdelete-non-virtual-dtor -I$(ROOT_DIR)/Include -I$(INCLUDE) 
 
 render = camera.o renderer.o
 entities = pathFinding.o entity.o enemy.o bullet.o player.o

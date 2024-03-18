@@ -3,7 +3,7 @@
 
 const Id NullId = -1;
 sf::Texture EnemyTexture;
-sf::Texture CircleTexture;
+sf::Texture BulletTexture;
 
 bool loadEntityAssets()
 {
@@ -12,7 +12,7 @@ bool loadEntityAssets()
     if ( !EnemyTexture.loadFromFile( "MazeWars/eye.png" ) )
         return false;
 
-    if ( !CircleTexture.loadFromFile( "MazeWars/circle.png" ) )
+    if ( !BulletTexture.loadFromFile( "MazeWars/circle.png" ) )
         return false;
 
     return true;

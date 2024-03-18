@@ -16,7 +16,7 @@
         {
             sf::Vector2i previousCell = NullPosition;
             int distanceToStart = 0;
-            int minDistanceToEnd = 0;
+            int predictedDistanceToEnd = 0;
         };
         std::vector<std::vector<CellData>> graphData;
         std::set<sf::Vector2i,std::function<bool(const sf::Vector2i&, const sf::Vector2i&)>> cellsToVisit;
@@ -26,6 +26,8 @@
         void reset( sf::Vector2i dimensions );
 
         CellData &getCellData( sf::Vector2i position );
+
+        CellData getCellData( sf::Vector2i position ) const;
 
         void addCellToVisit( sf::Vector2i currentCell, sf::Vector2i nextCell, sf::Vector2i finalPosition );
 

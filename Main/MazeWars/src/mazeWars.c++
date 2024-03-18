@@ -116,7 +116,7 @@ void MazeWars::attemptToSpawnEntities()
         if ( getMaze().inBounds( spawnLocation ) )
         {
             addEntity( new Enemy( spawnLocation ) );
-            spawnDistance = 10;
+            spawnDistance = 20;
             numberOfEnemies++;
         }
         else 

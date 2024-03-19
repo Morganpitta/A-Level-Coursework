@@ -5,29 +5,29 @@
 #include "Entity/enemy.h++"
 #include "random.h++"
 
-void MazeWars::update( sf::RenderWindow &window )
+void MazeWars::handleInput( sf::Event &event )
 {
-    getCamera().setPosition( getPlayer()->getPosition() );
-    getCamera().setDirection( getPlayer()->getDirection() );
-    
-    for ( std::vector<std::vector<Entity*>> &column: this->entityGrid )
+    if (event.type==sf::Event::KeyPressed)
     {
-        for ( std::vector<Entity*> &cellEntities: column )
+        switch ( event.key.code )
         {
-            cellEntities.clear();
+            case sf::Keyboard::A:
+                getPlayer()->turnLeft();
+                break;
+            case sf::Keyboard::D:
+                getPlayer()->turnRight();
+                break;
+            case sf::Keyboard::W:
+                if ( playerCanMove( getPlayer()->getDirection() ) )
+                    getPlayer()->moveForward();
+                break;
+            case sf::Keyboard::S:
+                if ( playerCanMove( reverseDirection( getPlayer()->getDirection() ) ) )
+                    getPlayer()->moveBackward();
+                break;
+
+            default:
+                break;
         }
     }
-
-    for ( std::pair<Id, Entity*> idEntityPair: this->entities )
-    {
-        Entity *entity = idEntityPair.second;
-        if ( !entity->isDead() )
-        {
-            entity->update( *this );
-            sf::Vector2i position = entity->getPosition();
-            entityGrid[position.x][position.y].push_back( entity );
-        }
-    }
-
-    cleanUpEntities();
 }

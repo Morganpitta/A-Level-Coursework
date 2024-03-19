@@ -18,7 +18,7 @@
     };
 
     extern sf::Texture EnemyTexture;
-    extern sf::Texture CircleTexture;
+    extern sf::Texture BulletTexture;
 
     extern bool loadEntityAssets();
 

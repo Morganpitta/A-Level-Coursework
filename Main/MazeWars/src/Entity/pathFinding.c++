@@ -28,14 +28,16 @@ float manhattanDistance( sf::Vector2i startPosition, sf::Vector2i finalPosition 
 
 bool AStarSolver::comparisonFunction( const sf::Vector2i &position1, const sf::Vector2i &position2 ) const
 {
-    if ( this->graphData[position1.x][position1.y].minDistanceToEnd ==
-            this->graphData[position2.x][position2.y].minDistanceToEnd )
+    // If the distances are the same, since its a set comparison function it needs to be consistent.
+    // So use the position to calculate a consistent comparison.
+    if ( getCellData(position1).predictedDistanceToEnd ==
+         getCellData(position2).predictedDistanceToEnd )
     {
         return std::tie( position1.x, position1.y ) < std::tie( position2.x, position2.y );
     }
 
-    return this->graphData[position1.x][position1.y].minDistanceToEnd <
-            this->graphData[position2.x][position2.y].minDistanceToEnd;
+    return getCellData(position1).predictedDistanceToEnd <
+           getCellData(position2).predictedDistanceToEnd;
 }
 
 
@@ -64,22 +66,24 @@ AStarSolver::CellData &AStarSolver::getCellData( sf::Vector2i position )
     return this->graphData[position.x][position.y];
 }
 
+AStarSolver::CellData AStarSolver::getCellData( sf::Vector2i position ) const
+{
+    return this->graphData[position.x][position.y];
+}
+
 void AStarSolver::addCellToVisit( sf::Vector2i currentCell, sf::Vector2i nextCell, sf::Vector2i finalPosition )
 {
-    if ( 
+    // If the cell is unvisited or the original path was longer than this path, update to use this path.
+    if (
         getCellData(nextCell).previousCell == NullPosition || 
         getCellData(nextCell).distanceToStart > 
         getCellData(currentCell).distanceToStart + 1 
     )
     { 
-
         getCellData(nextCell).previousCell = currentCell;
-        getCellData(nextCell).distanceToStart = 
-            getCellData(currentCell).distanceToStart + 1;
+        getCellData(nextCell).distanceToStart = getCellData(currentCell).distanceToStart + 1;
 
-        getCellData(nextCell).minDistanceToEnd = 
-            getCellData(nextCell).distanceToStart +
-            manhattanDistance(nextCell, finalPosition);
+        getCellData(nextCell).predictedDistanceToEnd = getCellData(nextCell).distanceToStart + manhattanDistance(nextCell, finalPosition);
         
         cellsToVisit.insert( nextCell );
     }
@@ -104,7 +108,7 @@ std::vector<sf::Vector2i> AStarSolver::getReturnPath( sf::Vector2i startPosition
     return path;
 }
 
-AStarSolver::AStarSolver(): cellsToVisit(std::bind(&AStarSolver::comparisonFunction,this, std::placeholders::_1, std::placeholders::_2))
+AStarSolver::AStarSolver(): cellsToVisit(std::bind(&AStarSolver::comparisonFunction, this, std::placeholders::_1, std::placeholders::_2))
 {
     
 }

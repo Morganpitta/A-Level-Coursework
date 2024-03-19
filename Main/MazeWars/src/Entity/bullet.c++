@@ -5,19 +5,17 @@ Bullet::Bullet( Id ownerId, sf::Vector2i position, Direction direction ): Entity
 {
     this->ownerId = ownerId;
     this->type = BulletType;
-    this->texture = &CircleTexture;
+    this->texture = &BulletTexture;
     this->size = 20;
     this->direction = direction;
     this->movementCooldown = 5;
 }
 
-Id Bullet::getOwnerId() const
-{
-    return this->ownerId;
-}
+Id Bullet::getOwnerId() const { return this->ownerId; }
 
 void Bullet::update( MazeWars &game )
 {
+    // If the bullet is still on movement cooldown, decrement the cooldown and exit.
     if ( this->movementCooldown > 0 )
     {    
         this->movementCooldown--;
@@ -26,6 +24,7 @@ void Bullet::update( MazeWars &game )
 
     this->movementCooldown = 5;
 
+    // If there is a wall in front.
     if ( game.getMaze().getCell( getPosition(), getDirection() ) ) 
         kill();
     else

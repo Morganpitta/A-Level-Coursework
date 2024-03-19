@@ -13,6 +13,7 @@
         std::vector<std::vector<std::vector<Entity*>>> entityGrid;
         Id playerId;
         Id nextId;
+        std::size_t playerKills;
         //const int MiniMapRadius;
 
         public:

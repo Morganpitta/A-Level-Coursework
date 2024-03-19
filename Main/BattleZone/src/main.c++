@@ -54,7 +54,7 @@ void handleInputs( sf::RenderWindow &window, BattleZone &game )
 
 int main()
 {
-    sf::RenderWindow window( sf::VideoMode(1600,900), "Mazewars" );
+    sf::RenderWindow window( sf::VideoMode(1600,900), "BattleZone" );
 
     if ( !loadEntityAssets() || !loadAssets() )
         return 1;

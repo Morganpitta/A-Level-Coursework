@@ -26,6 +26,8 @@ MazeWars::MazeWars( sf::Vector2u displaySize, sf::Vector2i dimensions ): rendere
                 }
             ) 
         );
+
+    this->playerKills = 0;
 }
 
 MazeWars::~MazeWars()
@@ -81,6 +83,8 @@ void MazeWars::cleanUpEntities()
         Entity *entity = (*iterator).second; 
         if ( entity->isDead() && entity->getType() != PlayerType )
         {
+            if ( entity->getType() == EnemyType )
+                this->playerKills++;
             std::vector<Entity*> &entityVector = this->entityGrid[entity->getPosition().x][entity->getPosition().y];
             entityVector.erase(std::remove(entityVector.begin(), entityVector.end(), entity), entityVector.end());
             delete entity;
@@ -242,4 +246,9 @@ void MazeWars::drawMiniMapEntities( sf::RenderWindow &window, sf::Vector2f topLe
 void MazeWars::render( sf::RenderWindow &window )
 {
     renderer.render( window, mazeGrid, entityGrid, playerId );
+
+    sf::Text text(std::to_string(this->playerKills),defaultFont,60);
+    text.setOrigin( {text.getGlobalBounds().width/2.f,0} );
+    text.setPosition( {renderer.getDisplaySize().x/2.f, 0} );
+    window.draw( text );
 }

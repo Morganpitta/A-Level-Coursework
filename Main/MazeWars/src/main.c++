@@ -74,7 +74,7 @@ int main()
 
         game.render( window );
 
-        fps.draw(window, {0,0}, 30, sf::Color::White);
+        // fps.draw(window, {0,0}, 30, sf::Color::White);
 
         window.display();
         fps.restartAndSleep();

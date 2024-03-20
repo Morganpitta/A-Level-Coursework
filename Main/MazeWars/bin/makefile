@@ -29,11 +29,14 @@ entities = pathFinding.o entity.o enemy.o bullet.o player.o
 default: default_compile main.o
 	$(CC) *.o -o ${ROOT_DIR}/.vscode/a.out $(CFLAGS)
 
-exe: static_compile main.o
-	$(CCEXE) *.o -o ${ROOT_DIR}/.vscode/a.exe $(CFLAGS)
+exe: exe_compile static_compile main.o
+	$(CC) *.o -o ${ROOT_DIR}/.vscode/a.exe $(CFLAGS)
 
 clean:
 	rm *.o ${ROOT_DIR}/.vscode/a.exe ${ROOT_DIR}/.vscode/a.out
+
+exe_compile:
+	$(eval CC = $(CCEXE) )
 
 static_compile:
 	$(eval CFLAGS += $(SFMLSTATICFLAGS) -O )

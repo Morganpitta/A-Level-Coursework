@@ -13,45 +13,24 @@ sf::Vector3f Model3D::Transformations::apply( sf::Vector3f position ) const
         ) + this->rotationOrigin + this->position;
 };
 
-Model3D::Model3D()
-{
-
-}
+Model3D::Model3D() {}
 
 Model3D::Model3D( std::string path )
 {
     importFromFile( path );
 }
 
-const Triangle& Model3D::getTriangle( int index ) const
-{
-    return this->triangles[index];
-}
+const Triangle& Model3D::getTriangle( int index ) const { return this->triangles[index]; }
 
-void Model3D::setTriangle( int index, Triangle triangle )
-{
-    this->triangles[index] = triangle;
-}
+void Model3D::setTriangle( int index, Triangle triangle ) { this->triangles[index] = triangle; }
 
-const Line& Model3D::getLine( int index ) const
-{
-    return this->lines[index];
-}
+const Line& Model3D::getLine( int index ) const { return this->lines[index]; }
 
-void Model3D::setTriangle( int index, Line line )
-{
-    this->lines[index] = line;
-}
+void Model3D::setTriangle( int index, Line line ) { this->lines[index] = line; }
 
-std::size_t Model3D::getTriangleCount() const
-{
-    return this->triangles.size();
-}
+std::size_t Model3D::getTriangleCount() const { return this->triangles.size(); }
 
-std::size_t Model3D::getLineCount() const
-{
-    return this->lines.size();
-}
+std::size_t Model3D::getLineCount() const { return this->lines.size(); }
 
 void Model3D::importFromFile( std::string path )
 {
@@ -61,12 +40,17 @@ void Model3D::importFromFile( std::string path )
     std::vector<std::vector<int>> lines;
     this->triangles.clear();
     this->lines.clear();
+
     setWorkingDirectoryToDefault();
+    // Open the file in input mode
     std::ifstream file( path );
     assert( file.is_open(), "Error opening file: " + getWorkingDirectory() +"/" + path );
+
     int lineError = parseFile( file, vertices, verticesNormal, faces, lines );
     assert( lineError == -1, "Error reading file: "+path+", line: "+std::to_string( lineError ) );
+
     file.close();
+
     assert( processData( vertices, verticesNormal, faces, lines ), "Error processing file: "+path );
 }
 
@@ -78,16 +62,33 @@ int Model3D::parseFile( std::ifstream& file,
 {
     int index = 0;
     std::string line;
-    while ( getline ( file, line ) )
+    // Keep getting the next line until it returns false (Meaning there is no next line)
+    while ( getline( file, line ) )
     {
+        // Keep track of which line index we are on.
         index++;
+        // If the parseLine function returns a false, indicating a failure, end the loop.
         if ( !parseLine( line, vertices, verticesNormal, faces, lines ) )
         {
             return index;
         }
     }
 
+    // Return -1 indicating no error.
     return -1;
+}
+
+bool Model3D::parseVectorString( std::istringstream &stream, sf::Vector3f &vector )
+{
+    std::string value;
+    // Retrieve the next value using the >> stream operator
+    // If the >> operator returns false it means that an invalid value was found
+    if ( !(stream >> value) ) return false; vector.x = std::stof( value );
+    if ( !(stream >> value) ) return false; vector.y = std::stof( value );
+    if ( !(stream >> value) ) return false; vector.z = std::stof( value );
+
+    // Everything was successful!
+    return true;
 }
 
 bool Model3D::parseLine( std::string line,
@@ -96,48 +97,51 @@ bool Model3D::parseLine( std::string line,
                 std::vector<std::vector<int>>& faces,
                 std::vector<std::vector<int>>& lines )
 {
-    std::istringstream words( line );
-    std::string word;
-    words >> word;
+    std::istringstream stream( line );
+    std::string identifier; stream >> identifier;
 
-    if ( word == "v" )
+    if ( identifier == "v" )
     {
         sf::Vector3f position;
-        if ( !(words >> word) ) return false; position.x = std::stof( word );
-        if ( !(words >> word) ) return false; position.y = std::stof( word );
-        if ( !(words >> word) ) return false; position.z = std::stof( word );
+        if ( !parseVectorString( stream, position ) ) return false;
 
         vertices.push_back( position );
     }
-    else if ( word == "vn" )
+    else if ( identifier == "vn" )
     {
-        //To be done
+        sf::Vector3f normal;
+        if ( !parseVectorString( stream, normal ) ) return false;
+
+        verticesNormal.push_back( normal );
     }
-    else if ( word == "f" )
+    else if ( identifier == "f" )
     {
         faces.push_back( {} );
-        while ( words >> word )
+        while ( stream >> identifier )
         {
-            int end = word.find( '/' );
-            if ( end == -1 ) end = word.size();
-            std::string number = word.substr(0, end);
+            // For now just retrieve the first value, the vertex value.
+            // If I implement the Star Wars Arcade Game, i can add further code to fetch the normal data.
+            int end = identifier.find( '/' );
+            if ( end == -1 ) end = identifier.size();
+            std::string number = identifier.substr(0, end);
             if ( number == "" ) return false;
             faces.back().push_back( std::stoi( number ) );
         }
         if ( faces.back().size() < 3 )
             return false;
     }
-    else if ( word == "l" )
+    else if ( identifier == "l" )
     {
         lines.push_back( {} );
-        while ( words >> word )
+        while ( stream >> identifier )
         {
-            lines.back().push_back( std::stoi( word ) );
+            lines.back().push_back( std::stoi( identifier ) );
         }
         if ( lines.back().size() < 2 )
             return false;
     }
 
+    // Everything was successful!
     return true;
 }
 
@@ -146,8 +150,10 @@ bool Model3D::processData( std::vector<sf::Vector3f>& vertices,
                     std::vector<std::vector<int>>& faces,
                     std::vector<std::vector<int>>& lines )
 {
+    // Iterate through each face
     for ( int faceIndex = 0; faceIndex < faces.size(); faceIndex++ )
     {
+        // Fan triangulation
         for ( int vertexIndex = 1; vertexIndex < faces[faceIndex].size() - 1; vertexIndex++ )
         {
             this->triangles.push_back( Triangle() );
@@ -157,6 +163,7 @@ bool Model3D::processData( std::vector<sf::Vector3f>& vertices,
         }
     }
 
+    // Iterate through each line
     for ( int lineIndex = 0; lineIndex < lines.size(); lineIndex++ )
     {
         for ( int vertexIndex = 0; vertexIndex < lines[lineIndex].size() - 1; vertexIndex++ )

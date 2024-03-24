@@ -49,6 +49,9 @@
                             std::vector<std::vector<int>>& faces,
                             std::vector<std::vector<int>>& lines );
 
+            static bool parseVectorString( std::istringstream &stream, sf::Vector3f &vector );
+
+
             bool parseLine( std::string line,
                             std::vector<sf::Vector3f>& vertices,
                             std::vector<sf::Vector3f>& verticesNormal,

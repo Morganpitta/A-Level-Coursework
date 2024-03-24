@@ -1,33 +1,43 @@
-#include "mazeWars.h++"
-#include "Entity/entity.h++"
-#include "Entity/bullet.h++"
-#include "Entity/player.h++"
-#include "Entity/enemy.h++"
-#include "random.h++"
+#include "time.h++"
+#include "Render/renderer.h++"
 
-void MazeWars::handleInput( sf::Event &event )
+const float targetWidth = 1600;
+const float targetHeight = 900;
+
+void handleResize( 
+    sf::RenderWindow &window,
+    float windowWidth, 
+    float windowHeight
+);
+
+void handleInputs( sf::RenderWindow &window );
+
+int main()
 {
-    if (event.type==sf::Event::KeyPressed)
-    {
-        switch ( event.key.code )
-        {
-            case sf::Keyboard::A:
-                getPlayer()->turnLeft();
-                break;
-            case sf::Keyboard::D:
-                getPlayer()->turnRight();
-                break;
-            case sf::Keyboard::W:
-                if ( playerCanMove( getPlayer()->getDirection() ) )
-                    getPlayer()->moveForward();
-                break;
-            case sf::Keyboard::S:
-                if ( playerCanMove( reverseDirection( getPlayer()->getDirection() ) ) )
-                    getPlayer()->moveBackward();
-                break;
+    sf::RenderWindow window( sf::VideoMode(targetWidth,targetHeight), "BattleZone" );
 
-            default:
-                break;
-        }
+    if ( !loadAssets() )
+        return 1;
+
+    FpsLimiter fps( 60 );
+
+    Renderer renderer( {targetWidth,targetHeight} );
+
+    Model3D model("BattleZone/pyramid.obj");
+
+    while (window.isOpen())
+    {
+        handleInputs( window );
+
+        window.clear( sf::Color::Black );
+        renderer.clear();
+
+        renderer.draw(&model);
+
+        renderer.display(window);
+        window.display();
+        fps.restartAndSleep();
     }
+
+    return 0;
 }

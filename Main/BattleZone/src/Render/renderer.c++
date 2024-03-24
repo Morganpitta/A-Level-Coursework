@@ -17,25 +17,19 @@ bool loadAssets()
     return true;
 }
 
-Renderer::Renderer( sf::Vector2u displaySize ): displaySize(displaySize), zNear( 0.01f ), mountainHeight( 150 ), camera(), lineVertices( sf::PrimitiveType::Lines )
+Renderer::Renderer( sf::Vector2u displaySize ): displaySize(displaySize), 
+                                                zNear( 0.01f ), 
+                                                mountainHeight( 150 ),
+                                                lineVertices( sf::PrimitiveType::Lines ), 
+                                                camera()
 {
-    
 }
 
-Camera& Renderer::getCamera()
-{
-    return camera;
-}
+Camera& Renderer::getCamera() { return camera; }
 
-float Renderer::getZNear() const
-{
-    return this->zNear;
-}
+float Renderer::getZNear() const { return this->zNear; }
             
-sf::Vector2u Renderer::getDisplaySize() const
-{
-    return this->displaySize;
-}
+sf::Vector2u Renderer::getDisplaySize() const { return this->displaySize; }
 
 sf::Vector3f Renderer::clipLineToNearPlane( const sf::Vector3f& lineStart, const sf::Vector3f& lineEnd  )
 {
@@ -45,7 +39,6 @@ sf::Vector3f Renderer::clipLineToNearPlane( const sf::Vector3f& lineStart, const
 }
 
 bool Renderer::projectLine( 
-    sf::RenderWindow& window,
     sf::Vector3f& lineStart,
     sf::Vector3f& lineEnd
 )
@@ -78,20 +71,20 @@ bool Renderer::projectLine(
     lineStart.y = -lineStart.y * ( displaySize.x / 2 ) / tan( camera.getFov() / 2 ) + displaySize.y / 2.f;
     lineEnd.y = -lineEnd.y * ( displaySize.x / 2 ) / tan( camera.getFov() / 2 ) + displaySize.y / 2.f;
 
-    // Test side - to be done
-
     return true;
 }
 
 void Renderer::drawTriangle(
-    sf::RenderWindow& window, const Triangle& triangle, const Model3D::Transformations& transformations )
+    const Triangle& triangle, 
+    const Model3D::Transformations& transformations 
+)
 {
     sf::Vector3f lineStart, lineEnd;
     for ( int index = 0; index < 3; index++ )
     {
         lineStart = transformations.apply( triangle.getVertexPosition( index ) );
         lineEnd = transformations.apply( triangle.getVertexPosition( index + 1 ) );
-        if ( projectLine( window,  lineStart, lineEnd ) )
+        if ( projectLine( lineStart, lineEnd ) )
         {
             appendLineToArray( lineVertices, { lineStart.x, lineStart.y }, { lineEnd.x, lineEnd.y }, sf::Color::Green );
         }
@@ -99,36 +92,40 @@ void Renderer::drawTriangle(
 }
 
 void Renderer::drawLine(
-    sf::RenderWindow& window, const Line& line, const Model3D::Transformations& transformations )
+    const Line& line, 
+    const Model3D::Transformations& transformations 
+)
 {
     sf::Vector3f lineStart = transformations.apply( line.getVertexPosition( 0 ) );
     sf::Vector3f lineEnd = transformations.apply( line.getVertexPosition( 1 ) );
-    if ( projectLine( window, lineStart, lineEnd ) )
+    if ( projectLine( lineStart, lineEnd ) )
     {
         appendLineToArray( lineVertices, { lineStart.x, lineStart.y }, { lineEnd.x, lineEnd.y }, sf::Color::Green );
     }
 }
 
 void Renderer::draw(
-    sf::RenderWindow& window, Model3D *model, Model3D::Transformations transformations )
+    Model3D *model, 
+    Model3D::Transformations transformations 
+)
 {
-    for ( int index = 0; index < model->getTriangleCount(); index++ )
+    for ( std::size_t index = 0; index < model->getTriangleCount(); index++ )
     {
-        drawTriangle( window, model->getTriangle(index), transformations );
+        drawTriangle( model->getTriangle(index), transformations );
     }
 
-    for ( int index = 0; index < model->getLineCount(); index++ )
+    for ( std::size_t index = 0; index < model->getLineCount(); index++ )
     {
-        drawLine( window, model->getLine(index), transformations );
+        drawLine( model->getLine(index), transformations );
     }
 }
 
-void Renderer::drawEntity( sf::RenderWindow& window, Entity *entity )
+void Renderer::drawEntity( Entity *entity )
 {
     if ( !entity->isDead() )
     {
         sf::Vector3f position = { entity->getPosition().x, 0, entity->getPosition().y };
-        draw( window, entity->getModel(), { entity->getRotation(), 0, 0, position } );
+        draw( entity->getModel(), { entity->getRotation(), 0, 0, position } );
     }
 }
 
@@ -139,10 +136,10 @@ void Renderer::drawBackground( sf::RenderWindow& window )
     float percentWidth = camera.getFov() / ( 2*M_PI );
     float percentOffset = normaliseAngle( camera.getYaw() ) / ( 2*M_PI ) - percentWidth/2;
 
-    sf::RectangleShape background( {displaySize.x,this->mountainHeight} );
+    sf::RectangleShape background( {(float)displaySize.x, (float)this->mountainHeight} );
     background.setPosition({0,displaySize.y/2-this->mountainHeight});
     background.setTexture( &mountains );
-    background.setTextureRect( sf::IntRect({mountainsWidth * ( percentOffset ),0},{mountainsWidth * ( percentWidth ), mountains.getSize().y}) );
+    background.setTextureRect( sf::IntRect({ int( mountainsWidth * percentOffset ),0},{ int( mountainsWidth * percentWidth ), (int) mountains.getSize().y}) );
 
     window.draw( background );
 }

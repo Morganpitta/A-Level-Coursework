@@ -27,21 +27,32 @@
             
             sf::Vector2u getDisplaySize() const;
 
-            sf::Vector3f clipLineToNearPlane( const sf::Vector3f& lineStart, const sf::Vector3f& lineEnd  );
+            sf::Vector3f clipLineToNearPlane( 
+                const sf::Vector3f& lineStart, 
+                const sf::Vector3f& lineEnd 
+            );
 
             bool projectLine( 
-                sf::RenderWindow& window,
                 sf::Vector3f& lineStart,
                 sf::Vector3f& lineEnd
             );
 
-            void drawTriangle( sf::RenderWindow& window, const Triangle& triangle, const Model3D::Transformations& transformations = {} );
+            void drawTriangle( 
+                const Triangle& triangle, 
+                const Model3D::Transformations& transformations = {} 
+            );
 
-            void drawLine( sf::RenderWindow& window, const Line& line, const Model3D::Transformations& transformations = {} );
+            void drawLine( 
+                const Line& line, 
+                const Model3D::Transformations& transformations = {} 
+            );
 
-            void draw( sf::RenderWindow& window, Model3D *model, Model3D::Transformations transformations = {} );
+            void draw( 
+                Model3D *model, 
+                Model3D::Transformations transformations = {} 
+            );
 
-            void drawEntity( sf::RenderWindow& window, Entity *entity );
+            void drawEntity( Entity *entity );
 
             void drawBackground( sf::RenderWindow& window );
 

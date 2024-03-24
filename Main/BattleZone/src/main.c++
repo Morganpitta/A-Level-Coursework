@@ -5,27 +5,30 @@
 #include "Entity/obstacle.h++"
 #include "Entity/bullet.h++"
 
+const float targetWidth = 1600;
+const float targetHeight = 900;
+
 void handleResize( 
     sf::RenderWindow &window,
     float windowWidth, 
     float windowHeight
 )
 {
-    float ratio = float(windowWidth)/windowHeight;
-    float targetRatio = 16.f/9.f;
+    float ratio = windowWidth/windowHeight;
+    float targetRatio = targetWidth/targetHeight;
+    sf::FloatRect visibleArea(0, 0, targetWidth, targetHeight);
     
     if ( ratio > targetRatio )
     {
-        float offset = 1600.f*(ratio/targetRatio-1);
-        sf::FloatRect visibleArea(-offset/2, 0, 1600+offset, 900);
-        window.setView(sf::View(visibleArea));
+        float offset = targetWidth*(ratio/targetRatio-1);
+        visibleArea = sf::FloatRect(-offset/2, 0, targetWidth+offset, targetHeight);
     }
     else if ( ratio < targetRatio )
     {
-        float offset = 900.f*(targetRatio/ratio-1);
-        sf::FloatRect visibleArea(0, -offset/2, 1600, 900+offset);
-        window.setView(sf::View(visibleArea));
+        float offset = targetHeight*(targetRatio/ratio-1);
+        visibleArea = sf::FloatRect(0, -offset/2, targetWidth, targetHeight+offset);
     }
+    window.setView(sf::View(visibleArea));
 }
 
 void handleInputs( sf::RenderWindow &window, BattleZone &game )

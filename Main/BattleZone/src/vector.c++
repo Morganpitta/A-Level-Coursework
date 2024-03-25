@@ -85,3 +85,8 @@ sf::Vector3f getRandom3DUnitVector()
 {
     return get3DUnitVector( randomFloat( 0, M_PI * 2 ) );
 }
+
+float vectorDot( sf::Vector2f vector1, sf::Vector2f vector2 )
+{
+    return vector1.x * vector2.x + vector1.y * vector2.y;
+}

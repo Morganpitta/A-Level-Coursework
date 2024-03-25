@@ -4,6 +4,7 @@
     #include <SFML/System.hpp>
     #define _USE_MATH_DEFINES
     #include <cmath>
+    #include <vector>
 
     float normaliseAngle( float angle );
     
@@ -18,5 +19,7 @@
     sf::Vector3f get3DUnitVector( float angle );
 
     sf::Vector3f getRandom3DUnitVector();
+
+    float vectorDot( sf::Vector2f vector1, sf::Vector2f vector2 );
 
 #endif /* VECTOR_HPP */ 

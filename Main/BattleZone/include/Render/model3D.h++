@@ -22,6 +22,16 @@
                 sf::Vector3f rotationOrigin = {0,0,0};
 
                 public:
+                    Transformations( 
+                        float yaw = 0, 
+                        float pitch = 0, 
+                        float roll = 0, 
+                        sf::Vector3f position = {0,0,0},
+                        sf::Vector3f rotationOrigin = {0,0,0}
+                    ): yaw(yaw), pitch(pitch), roll(roll), position(position), rotationOrigin(rotationOrigin)
+                    {
+                    }
+
                     sf::Vector3f apply( sf::Vector3f position ) const;
             };
             

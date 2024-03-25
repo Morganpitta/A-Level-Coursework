@@ -131,15 +131,18 @@ void Renderer::drawEntity( Entity *entity )
 
 void Renderer::drawBackground( sf::RenderWindow& window )
 {
-    float mountainsWidth = mountains.getSize().x * 3.f;
-
-    float percentWidth = camera.getFov() / ( 2*M_PI );
-    float percentOffset = normaliseAngle( camera.getYaw() ) / ( 2*M_PI ) - percentWidth/2;
+    int textureWidth = std::floor( mountains.getSize().x * 3 * ( camera.getFov() / ( 2*M_PI ) ) );
+    int textureOffset = std::floor(
+        mountains.getSize().x * 3 * ( normaliseAngle( camera.getYaw() ) / ( 2*M_PI ) ) - textureWidth/2.f 
+    );
 
     sf::RectangleShape background( {(float)displaySize.x, (float)this->mountainHeight} );
-    background.setPosition({0,displaySize.y/2-this->mountainHeight});
+    // Center on screen
+    background.setPosition({0,displaySize.y/2.f-this->mountainHeight});
     background.setTexture( &mountains );
-    background.setTextureRect( sf::IntRect({ int( mountainsWidth * percentOffset ),0},{ int( mountainsWidth * percentWidth ), (int) mountains.getSize().y}) );
+
+    // This function sets which part of the mountains to display
+    background.setTextureRect( sf::IntRect({textureOffset,0},{textureWidth, (int) mountains.getSize().y}) );
 
     window.draw( background );
 }

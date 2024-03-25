@@ -14,15 +14,11 @@
         TriangleVertex vertices[3];
         public:
             TriangleVertex getVertex( int index ) const;
-
-            void setVertex( int index, TriangleVertex vertex );
-            
             sf::Vector3f getVertexPosition( int index ) const;
-
-            void setVertexPosition( int index, sf::Vector3f position );
-            
             sf::Vector3f getVertexNormal( int index ) const;
 
+            void setVertex( int index, TriangleVertex vertex );
+            void setVertexPosition( int index, sf::Vector3f position );
             void setVertexNormal( int index, sf::Vector3f normal );
     };
 

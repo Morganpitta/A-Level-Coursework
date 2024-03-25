@@ -20,17 +20,14 @@
         std::vector<bool> drawnOn;
 
         bool hasBeenDrawnOn( int xIndex ) const;
-
         bool canDrawInRange(
             float startIndex,
             float endIndex
         ) const;
-
         void setHasBeenDrawnOn(
             int xIndex,
             bool value
         );
-
         void setHasBeenDrawnOn(
             int startIndex,
             int endIndex,
@@ -41,35 +38,28 @@
             Renderer( sf::Vector2u displaySize );
 
             Camera &getCamera();
-
             float getYNear() const;
-            
             sf::Vector2u getDisplaySize() const;
-
             bool onScreen( float xValue ) const;
 
             sf::Vector2f clipLineToNearPlane( 
                 sf::Vector2f lineStart,
                 sf::Vector2f lineEnd 
             );
-
             bool projectPoint(
                 sf::Vector2f &position,
                 float &size
             );
-
             bool projectLine(
                 sf::Vector2f &lineStart,
                 sf::Vector2f &lineEnd
             );
 
             void drawWallVertical( sf::Vector2f position );
-
             void drawWallHorizontals(
                 sf::Vector2f &wallStart,
                 sf::Vector2f &wallEnd
             );
-
             void drawWall(
                 sf::Vector2f &wallStart,
                 sf::Vector2f &wallEnd

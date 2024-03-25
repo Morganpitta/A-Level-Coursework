@@ -13,11 +13,9 @@
         LineVertex vertices[2];
         public:
             LineVertex getVertex( int index ) const;
-
-            void setVertex( int index, LineVertex vertex );
-            
             sf::Vector3f getVertexPosition( int index ) const;
 
+            void setVertex( int index, LineVertex vertex );
             void setVertexPosition( int index, sf::Vector3f position );
     };
 

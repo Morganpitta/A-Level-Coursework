@@ -16,21 +16,15 @@
             BattleZone( sf::Vector2u displaySize );
 
             Camera &getCamera();
-
             Entity *getEntity( Id id );
-
             const std::map<Id, Entity*> &getEntities();
-
             Entity *getPlayer();
 
             Id addEntity( Entity* entity );
 
             void cleanUpEntities();
-
             void attemptToSpawnEntities();
-
             void handleInput( sf::Event &event );
-
             void update( sf::RenderWindow &window );
 
             void render( sf::RenderWindow &window );

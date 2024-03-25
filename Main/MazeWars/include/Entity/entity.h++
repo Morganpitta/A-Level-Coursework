@@ -23,42 +23,27 @@
             Entity( sf::Vector2i position = {0,0} );
 
             sf::Vector2i getPosition() const;
-
             Direction getDirection() const;
-
             int getHealth() const;
-
             Id getId() const;
-
             bool isDead() const;
-
             EntityType getType() const;
-
             sf::Texture *getTexture() const;
-
             float getSize() const;
 
             void setPosition( sf::Vector2i position );
-
             void setDirection( Direction direction );
-
-            void moveForward();
-
-            void moveBackward();
-
-            void turnLeft();
-
-            void turnRight();
-
-            sf::Vector2i relativePositionOf( sf::Vector2i position );
-            
             void setHealth( int health );
-
-            void damage( int amount );
-
             void setId( Id id );
 
+            void moveForward();
+            void moveBackward();
+            void turnLeft();
+            void turnRight();
+            void damage( int amount );
             void kill();
+
+            sf::Vector2i relativePositionOf( sf::Vector2i position );
 
             virtual void update( MazeWars &game );
     };

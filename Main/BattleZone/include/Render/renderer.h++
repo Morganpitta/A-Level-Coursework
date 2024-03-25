@@ -22,9 +22,7 @@
             Renderer( sf::Vector2u displaySize );
 
             Camera& getCamera();
-
             float getZNear() const;
-            
             sf::Vector2u getDisplaySize() const;
 
             sf::Vector3f clipLineToNearPlane( 

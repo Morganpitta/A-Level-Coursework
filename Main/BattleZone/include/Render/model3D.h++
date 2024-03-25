@@ -36,20 +36,16 @@
             };
             
             Model3D();
-            
             Model3D( std::string path );
 
             const Triangle& getTriangle( int index ) const;
-
-            void setTriangle( int index, Triangle triangle );
-
             const Line& getLine( int index ) const;
 
-            void setTriangle( int index, Line line );
-
             std::size_t getTriangleCount() const; 
-
             std::size_t getLineCount() const;
+
+            void setTriangle( int index, Triangle triangle );
+            void setTriangle( int index, Line line );
 
             void importFromFile( std::string path );
 
@@ -60,7 +56,6 @@
                             std::vector<std::vector<int>>& lines );
 
             static bool parseVectorString( std::istringstream &stream, sf::Vector3f &vector );
-
 
             bool parseLine( std::string line,
                             std::vector<sf::Vector3f>& vertices,

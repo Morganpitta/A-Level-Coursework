@@ -22,13 +22,9 @@
             ~MazeWars();
 
             Camera &getCamera();
-
             MazeGrid &getMaze();
-
             Entity *getEntity( Id id );
-
             Entity *getPlayer();
-
             std::vector<Id> getEntitiesAtLocation( sf::Vector2i position ) const;
 
             bool playerCanMove( Direction direction );
@@ -36,11 +32,8 @@
             Id addEntity( Entity* entity );
 
             void cleanUpEntities();
-
             void attemptToSpawnEntities();
-
             void handleInput( sf::Event &event );
-
             void update();
 
             // Not going to use this

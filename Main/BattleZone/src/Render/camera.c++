@@ -14,7 +14,6 @@ sf::Vector3f Camera::getPosition() const
     return this->position;
 }
 
-
 float Camera::getYaw() const
 {
     return this->yaw;

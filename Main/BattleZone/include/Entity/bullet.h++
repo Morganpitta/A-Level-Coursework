@@ -12,6 +12,8 @@
 
             Id getOwnerId() const;
 
+            virtual CollisionRect getCollisionRect() const override;
+
             virtual void update( BattleZone &game ) override;
     };
 

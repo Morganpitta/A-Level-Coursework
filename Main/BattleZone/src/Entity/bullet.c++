@@ -6,13 +6,17 @@ Bullet::Bullet( Id ownerId, sf::Vector2f position, float rotation ): Entity( pos
     this->type = BulletType;
     this->model = &bulletModel;
     this->ownerId = ownerId;
-    this->radius = 0.15;
     setRotation( rotation );
 }
 
 Id Bullet::getOwnerId() const
 {
     return this->ownerId;
+}
+
+CollisionRect Bullet::getCollisionRect() const
+{
+    return CollisionRect( getPosition(), {0.1,0.3}, getRotation() );
 }
 
 void Bullet::update( BattleZone &game )

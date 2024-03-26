@@ -28,7 +28,6 @@ Entity::Entity( sf::Vector2f position )
     this->dead = false;
     this->type = NoType;
     this->model = nullptr;
-    this->radius = 0;
 }
 
 sf::Vector2f Entity::getPosition() const
@@ -66,9 +65,9 @@ Model3D *Entity::getModel()
     return this->model;
 }
 
-float Entity::getRadius() const
+CollisionRect Entity::getCollisionRect() const
 {
-    return this->radius;
+    return CollisionRect( getPosition(), {0,0}, getRotation() );
 }
 
 void Entity::setPosition( sf::Vector2f position )
@@ -129,26 +128,16 @@ void Entity::kill()
     this->dead = true;
 }
 
-bool Entity::isColliding( Entity *entity1, Entity *entity2 )
-{
-    return isColliding( entity1, {0,0}, entity2, {0,0} );
-}
-
-bool Entity::isColliding( Entity *entity1, sf::Vector2f offset1, Entity *entity2, sf::Vector2f offset2 )
-{
-    sf::Vector2f relativePosition = ( entity1->getPosition() + offset1 ) - ( entity2->getPosition() + offset2 );
-
-    return relativePosition.x * relativePosition.x + relativePosition.y * relativePosition.y < entity1->getRadius() + entity2->getRadius();
-}
-
 std::vector<Entity*> Entity::getColliding( Entity *entity, sf::Vector2f offset, const std::map<Id,Entity*> &entities, std::function<bool(Entity*)> filter )
 {
+    CollisionRect collisionRect = entity->getCollisionRect();
+    collisionRect.setCenter( collisionRect.getCenter() + offset );
     std::vector<Entity*> collidingEntities;
     for ( const std::pair<const Id, Entity*> &idEntityPair: entities )
     {
         if ( !idEntityPair.second->isDead() && idEntityPair.first != entity->getId() && filter( idEntityPair.second ) )
         {
-            if ( isColliding( entity, offset, idEntityPair.second, {0,0} ) )
+            if ( CollisionRect::isColliding( collisionRect, idEntityPair.second->getCollisionRect() ) )
             {
                 collidingEntities.push_back( idEntityPair.second );
             }

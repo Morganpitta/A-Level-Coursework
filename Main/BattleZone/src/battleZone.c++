@@ -106,8 +106,6 @@ void BattleZone::handleInput( sf::Event &event )
     {
         if ( event.key.code == sf::Keyboard::Space )
             addEntity( new Bullet( getPlayer()->getId(), getPlayer()->getPosition(), getPlayer()->getRotation() ) );
-        if ( event.key.code == sf::Keyboard::P )
-            std::cout<<"REEEE";
     }
 }
 

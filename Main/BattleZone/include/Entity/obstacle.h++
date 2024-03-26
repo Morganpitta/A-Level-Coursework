@@ -7,6 +7,8 @@
     {
         public:
             Obstacle( sf::Vector2f position = {0,0} );
+    
+            virtual CollisionRect getCollisionRect() const override;
     };
 
 #endif /* OBSTACLE_HPP */

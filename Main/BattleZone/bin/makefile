@@ -61,8 +61,11 @@ obstacle.o: ${SRC}/Entity/obstacle.c++ ${INCLUDE}/Entity/obstacle.h++ entity.o
 tank.o: ${SRC}/Entity/tank.c++ ${INCLUDE}/Entity/tank.h++ entity.o
 	$(CC) $(CFLAGS) -c ${SRC}/Entity/tank.c++
 
-entity.o: ${SRC}/Entity/entity.c++ ${INCLUDE}/Entity/entity.h++ battleZone.o model3D.o
+entity.o: ${SRC}/Entity/entity.c++ ${INCLUDE}/Entity/entity.h++ battleZone.o model3D.o collisionRect.o
 	$(CC) $(CFLAGS) -c ${SRC}/Entity/entity.c++
+
+collisionRect.o: ${SRC}/Entity/collisionRect.c++ ${INCLUDE}/Entity/collisionRect.h++ vector.o
+	$(CC) $(CFLAGS) -c ${SRC}/Entity/collisionRect.c++
 
 renderer.o: ${SRC}/Render/renderer.c++ ${INCLUDE}/Render/renderer.h++ model3D.o camera.o
 	$(CC) $(CFLAGS) -c ${SRC}/Render/renderer.c++

@@ -3,6 +3,7 @@
 
     class BattleZone;
     #include "entityBase.h++"
+    #include "collisionRect.h++"
     #include <functional>
 
     class Entity
@@ -15,7 +16,6 @@
             Id id;
             bool dead;
             EntityType type;
-            float radius;
 
         public:
             Entity( sf::Vector2f position = {0,0} );
@@ -27,7 +27,7 @@
             bool isDead() const;
             EntityType getType() const;
             Model3D *getModel();
-            float getRadius() const;
+            virtual CollisionRect getCollisionRect() const;
 
             void setPosition( sf::Vector2f position );
             void setRotation( float rotation );
@@ -42,8 +42,6 @@
 
             sf::Vector2f relativePositionOf( sf::Vector2f position );
 
-            static bool isColliding( Entity *entity1, Entity *entity2 );
-            static bool isColliding( Entity *entity1, sf::Vector2f offset1, Entity *entity2, sf::Vector2f offset2 );
             static std::vector<Entity*> getColliding( 
                 Entity *entity, 
                 sf::Vector2f offset, 

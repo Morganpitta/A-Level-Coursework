@@ -1,43 +1,49 @@
-#include "time.h++"
-#include "Render/renderer.h++"
+#include "Entity/collisionRect.h++"
 
-const float targetWidth = 1600;
-const float targetHeight = 900;
-
-void handleResize( 
-    sf::RenderWindow &window,
-    float windowWidth, 
-    float windowHeight
-);
-
-void handleInputs( sf::RenderWindow &window );
-
-int main()
+CollisionRect::PolygonPoints CollisionRect::getPoints() const
 {
-    sf::RenderWindow window( sf::VideoMode(targetWidth,targetHeight), "BattleZone" );
+    return {
+        center + rotatePosition({-dimensions.x/2.f,dimensions.y/2.f},rotation),
+        center + rotatePosition({dimensions.x/2.f,dimensions.y/2.f},rotation),
+        center + rotatePosition({dimensions.x/2.f,-dimensions.y/2.f},rotation),
+        center + rotatePosition({-dimensions.x/2.f,-dimensions.y/2.f},rotation)
+    };
+}
 
-    if ( !loadAssets() )
-        return 1;
+inline bool invalidNormal( sf::Vector2f vector )
+{
+    return vector.x + 0.0f == 0.0f && vector.y + 0.0f == 0.0f;
+}
 
-    FpsLimiter fps( 60 );
+bool CollisionRect::isColliding( const CollisionRect &rect1, const CollisionRect &rect2 )
+{
+    PolygonPoints selfPoints = rect1.getPoints();
+    PolygonPoints rectPoints = rect2.getPoints();
 
-    Renderer renderer( {targetWidth,targetHeight} );
+    std::vector<sf::Vector2f> normals = { 
+        { -(selfPoints[0].y - selfPoints[1].y), selfPoints[0].x - selfPoints[1].x },
+        { -(selfPoints[1].y - selfPoints[2].y), selfPoints[1].x - selfPoints[2].x },
+        { -(rectPoints[0].y - rectPoints[1].y), rectPoints[0].x - rectPoints[1].x },
+        { -(rectPoints[1].y - rectPoints[2].y), rectPoints[1].x - rectPoints[2].x }
+    };
 
-    Model3D model("BattleZone/pyramid.obj");
+    normals.erase( std::remove_if(
+        normals.begin(),
+        normals.end(), 
+        invalidNormal
+    ), normals.end() );
 
-    while (window.isOpen())
+    if ( normals.size() == 0 )
+        return false;
+
+    for ( sf::Vector2f normal: normals )
     {
-        handleInputs( window );
-
-        window.clear( sf::Color::Black );
-        renderer.clear();
-
-        renderer.draw(&model);
-
-        renderer.display(window);
-        window.display();
-        fps.restartAndSleep();
+        bool overlapping = overlappingOnVector(selfPoints,rectPoints,normal);
+        if ( !overlapping )
+        {
+            return false;
+        }
     }
 
-    return 0;
+    return true;
 }

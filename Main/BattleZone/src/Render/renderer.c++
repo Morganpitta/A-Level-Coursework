@@ -3,6 +3,7 @@
 #include "draw.h++"
 
 sf::Texture mountains;
+sf::Texture crosshair;
 
 bool loadAssets()
 {
@@ -13,6 +14,9 @@ bool loadAssets()
         return false;
     
     mountains.setRepeated( true );
+    
+    if ( !crosshair.loadFromFile( "BattleZone/crosshair.png" ) )
+        return false;
 
     return true;
 }
@@ -145,6 +149,17 @@ void Renderer::drawBackground( sf::RenderWindow& window )
     background.setTextureRect( sf::IntRect({textureOffset,0},{textureWidth, (int) mountains.getSize().y}) );
 
     window.draw( background );
+}
+
+void Renderer::drawUI( sf::RenderWindow& window )
+{
+    sf::RectangleShape crosshairRect(sf::Vector2f(crosshair.getSize())*2.f);
+
+    crosshairRect.setOrigin(crosshairRect.getSize()/2.f);
+    crosshairRect.setPosition(sf::Vector2f(displaySize)/2.f);
+    crosshairRect.setTexture(&crosshair);
+
+    window.draw(crosshairRect);
 }
 
 void Renderer::clear()

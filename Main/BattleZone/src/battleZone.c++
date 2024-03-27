@@ -154,6 +154,7 @@ void BattleZone::render( sf::RenderWindow &window )
     // Things will be renderered at a later date
 
     renderer.drawBackground( window );
+    renderer.drawUI( window );
 
     for ( std::pair<Id, Entity*> idEntityPair: entities )
     {

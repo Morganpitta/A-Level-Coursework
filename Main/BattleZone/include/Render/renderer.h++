@@ -7,6 +7,7 @@
     #include <SFML/Graphics.hpp>
 
     extern sf::Texture mountains;
+    extern sf::Texture crosshair;
 
     extern bool loadAssets();
 
@@ -53,6 +54,8 @@
             void drawEntity( Entity *entity );
 
             void drawBackground( sf::RenderWindow& window );
+
+            void drawUI( sf::RenderWindow& window );
 
             void clear();
 

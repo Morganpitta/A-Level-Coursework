@@ -12,6 +12,13 @@
 
         public:
             typedef std::vector<sf::Vector2f> PolygonPoints;
+            struct Projection
+            {
+                float min;
+                float max;
+
+                bool contains( Projection projection2 ) const;
+            };
 
             CollisionRect( sf::Vector2f center, sf::Vector2f dimensions, float rotation = 0 );
 
@@ -24,7 +31,7 @@
             void setDimensions( sf::Vector2f dimensions );
             void setRotation( float rotation );
 
-            static std::pair<float,float> minAndMaxPoints( 
+            static Projection getProjection( 
                 const PolygonPoints &rect, 
                 sf::Vector2f projectionVector
             );

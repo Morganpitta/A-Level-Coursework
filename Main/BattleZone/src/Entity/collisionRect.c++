@@ -1,5 +1,11 @@
 #include "Entity/collisionRect.h++"
 
+bool CollisionRect::Projection::contains( Projection projection2 ) const
+{
+    return min <= projection2.min && projection2.min <= max ||
+           min <= projection2.max && projection2.max <= max; 
+}
+
 sf::Vector2f CollisionRect::getCenter() const { return this->center; }
 
 sf::Vector2f CollisionRect::getDimensions() const { return this->dimensions; }
@@ -29,7 +35,7 @@ CollisionRect::PolygonPoints CollisionRect::getPoints() const
     };
 }
 
-std::pair<float,float> CollisionRect::minAndMaxPoints( const PolygonPoints &rect, sf::Vector2f projectionVector )
+CollisionRect::Projection CollisionRect::getProjection( const PolygonPoints &rect, sf::Vector2f projectionVector )
 {
     std::vector<float> dots;
     for ( std::size_t index = 0; index < rect.size(); index++ )
@@ -37,23 +43,15 @@ std::pair<float,float> CollisionRect::minAndMaxPoints( const PolygonPoints &rect
         dots.push_back(vectorDot( rect[index], projectionVector ));
     }
 
-    return std::make_pair(*std::min_element(dots.begin(),dots.end()), *std::max_element(dots.begin(),dots.end()));
+    return {*std::min_element(dots.begin(),dots.end()), *std::max_element(dots.begin(),dots.end())};
 }
 
 bool CollisionRect::overlappingOnVector( const PolygonPoints &rect1, const PolygonPoints &rect2, sf::Vector2f projectionVector )
 {
-    std::pair<float,float> rect1MinAndMax = minAndMaxPoints(rect1, projectionVector);
-    std::pair<float,float> rect2MinAndMax = minAndMaxPoints(rect2, projectionVector);
+    Projection projection1 = getProjection(rect1, projectionVector);
+    Projection projection2 = getProjection(rect2, projectionVector);
 
-    if ( rect1MinAndMax.first <= rect2MinAndMax.first && rect2MinAndMax.first <= rect1MinAndMax.second )
-    {
-        return true;
-    }
-    else if ( rect2MinAndMax.first <= rect1MinAndMax.first && rect1MinAndMax.first <= rect2MinAndMax.second )
-    {
-        return true;
-    }
-    return false;
+    return projection1.contains(projection2) || projection2.contains(projection1);
 }
 
 inline bool invalidNormal( sf::Vector2f vector )

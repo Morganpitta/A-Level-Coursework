@@ -1,0 +1,13 @@
+function update( game ) do 
+    offset = getAngleOffset( getPosition(), game.getPlayer().getPosition() )
+
+    if ( offset >= PI / 100 ) do 
+    rotate
+    end
+    else if ( offset <= -PI / 100 ) do 
+        
+    end
+    else do 
+
+    end
+end

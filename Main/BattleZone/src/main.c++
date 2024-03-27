@@ -65,7 +65,6 @@ int main()
     FpsLimiter fps( 60 );
 
     BattleZone game( {1600,900} );
-
     
     while (window.isOpen() && !game.getPlayer()->isDead())
     {

@@ -77,7 +77,7 @@ bool CollisionRect::isColliding( const CollisionRect &rect1, const CollisionRect
         invalidNormal
     ), normals.end() );
 
-    if ( normals.size() == 0 )
+    if ( normals.empty() )
         return false;
 
     for ( sf::Vector2f normal: normals )

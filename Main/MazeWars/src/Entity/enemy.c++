@@ -55,7 +55,7 @@ void Enemy::update( MazeWars &game )
         }
         else 
         {
-            if ( game.getEntitiesAtLocation( transposePosition( getPosition(), direction ) ).size() == 0 )
+            if ( game.getEntitiesAtLocation( transposePosition( getPosition(), direction ) ).empty() )
             {
                 moveForward();
                 this->movementCooldown = 120/path.size();

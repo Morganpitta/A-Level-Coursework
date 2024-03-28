@@ -40,7 +40,7 @@ Direction getRandomValidDirection(
     }
 
     // If theres no valid directions, return NoDirection
-    if ( validDirections.size() == 0 )
+    if ( validDirections.empty() )
         return NoDirection;
     
     // Select a random direction from the list.
@@ -69,7 +69,7 @@ void generateMazeDepthFirst(
         {
             positionStack.pop_back();
 
-            if ( positionStack.size() == 0 )
+            if ( positionStack.empty() )
                 break;
             
             position = positionStack[positionStack.size()-1];

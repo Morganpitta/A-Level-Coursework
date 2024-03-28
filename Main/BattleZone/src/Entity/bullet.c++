@@ -23,7 +23,7 @@ void Bullet::update( BattleZone &game )
 {
     std::vector<Entity *> collidingEntities = 
         getColliding( 
-            this, 
+            this,
             0.1f * get2DUnitVector( getRotation() ), 
             game.getEntities(), 
             [ this ]( Entity *entity) { 
@@ -32,6 +32,7 @@ void Bullet::update( BattleZone &game )
                 return entity->getId() != getOwnerId();
             }
         );
+    
     if ( !collidingEntities.empty() )
     {
         for ( Entity* entity: collidingEntities )

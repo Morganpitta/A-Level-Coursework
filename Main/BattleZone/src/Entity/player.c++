@@ -3,7 +3,7 @@
 Player::Player( sf::Vector2f position ): Entity( position )
 {
     this->type = PlayerType;
-    this->health = 100;
+    this->health = 10;
 }
 
 CollisionRect Player::getCollisionRect() const

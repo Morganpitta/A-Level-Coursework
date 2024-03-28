@@ -39,6 +39,7 @@
             // Not going to use this
             //void drawMiniMapEntities( sf::RenderWindow &window, sf::Vector2f topLeft, sf::Vector2f bottomRight );
 
+            void drawUI( sf::RenderWindow &window );
             void render( sf::RenderWindow &window );
     };
 

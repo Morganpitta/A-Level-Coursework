@@ -246,7 +246,11 @@ void MazeWars::drawMiniMapEntities( sf::RenderWindow &window, sf::Vector2f topLe
 void MazeWars::render( sf::RenderWindow &window )
 {
     renderer.render( window, mazeGrid, entityGrid, playerId );
+    drawUI( window );
+}
 
+void MazeWars::drawUI( sf::RenderWindow &window )
+{
     sf::Text text(std::to_string(this->playerKills),defaultFont,60);
     text.setOrigin( {text.getGlobalBounds().width/2.f,0} );
     text.setPosition( {renderer.getDisplaySize().x/2.f, 0} );

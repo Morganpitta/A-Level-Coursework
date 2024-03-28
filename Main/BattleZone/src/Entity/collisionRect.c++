@@ -2,8 +2,8 @@
 
 bool CollisionRect::Projection::contains( Projection projection2 ) const
 {
-    return min <= projection2.min && projection2.min <= max ||
-           min <= projection2.max && projection2.max <= max; 
+    return ( min <= projection2.min && projection2.min <= max ) ||
+           ( min <= projection2.max && projection2.max <= max );
 }
 
 sf::Vector2f CollisionRect::getCenter() const { return this->center; }

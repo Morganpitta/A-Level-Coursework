@@ -6,6 +6,7 @@
     #include "file.h++"
 
     inline sf::Font defaultFont;
+    inline sf::Font gameFont;
 
     inline bool loadBaseAssets()
     {
@@ -15,6 +16,12 @@
         {
             return false;
         }
+
+        if ( !gameFont.loadFromFile("joystix monospace.otf") )
+        {
+            return false;
+        }
+
 
         return true;
     }

@@ -11,6 +11,7 @@
         std::map<Id,Entity*> entities;
         Id playerId;
         Id nextId;
+        std::size_t playerKills;
 
         public:
             BattleZone( sf::Vector2u displaySize );
@@ -21,12 +22,14 @@
             Entity *getPlayer();
 
             Id addEntity( Entity* entity );
+            void addPlayerKill();
 
             void cleanUpEntities();
             void attemptToSpawnEntities();
             void handleInput( sf::Event &event );
             void update( sf::RenderWindow &window );
 
+            void drawUI( sf::RenderWindow &window );
             void render( sf::RenderWindow &window );
     };
 

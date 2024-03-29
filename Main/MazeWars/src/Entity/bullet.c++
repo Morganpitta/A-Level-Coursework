@@ -41,6 +41,8 @@ void Bullet::update( MazeWars &game )
                 Entity* entity = game.getEntity( entityId );
 
                 entity->damage( 1 );
+                if ( entity->isDead() && getOwnerId() == game.getPlayer()->getId() && entity->getType() == EnemyType )
+                    game.addPlayerKill();
                 hitEntity = true;
             }
 

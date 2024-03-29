@@ -44,7 +44,7 @@ void Tank::update( BattleZone &game )
                 [ this ]( Entity *entity) { return entity->getType() != BulletType; }
             ).empty() )
             moveForward( 0.03 );
-        
+
         if ( this->reloadCooldown == 0 )
         {
             game.addEntity( new Bullet( getId(), getPosition(), getRotation() ) );

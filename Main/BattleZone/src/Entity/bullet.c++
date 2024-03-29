@@ -38,6 +38,8 @@ void Bullet::update( BattleZone &game )
         for ( Entity* entity: collidingEntities )
         {
             entity->damage( 1 );
+            if ( entity->isDead() && entity->getType() == TankType && getOwnerId() == game.getPlayer()->getId() )
+                game.addPlayerKill();
         }
         kill();
         return;

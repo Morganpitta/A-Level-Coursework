@@ -75,11 +75,34 @@ int main()
 
         game.render( window );
 
-        sf::Text health( std::to_string( game.getPlayer()->getHealth() ), defaultFont );
-        window.draw( health );
-
         window.display();
         fps.restartAndSleep();
+    }
+
+    window.clear( sf::Color::Black );
+    sf::Text text("GAME OVER",gameFont,60);
+    text.setOrigin( {text.getGlobalBounds().width/2.f,text.getGlobalBounds().height/2.f} );
+    text.setPosition( {targetWidth/2.f, targetHeight/2.f} );
+    text.setFillColor(sf::Color::Green);
+    window.draw( text );
+    window.display();
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while ( window.pollEvent(event) )
+        {
+            switch ( event.type )
+            {
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                
+                case sf::Event::Resized:
+                    handleResize(window, (float) event.size.width, (float) event.size.height);
+                    break;
+            }
+        }
     }
 
     return 0;

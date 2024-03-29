@@ -5,6 +5,7 @@
 #include "Entity/tank.h++"
 #include "Entity/obstacle.h++"
 #include "random.h++"
+#include "draw.h++"
 #include <iostream>
 
 BattleZone::BattleZone( sf::Vector2u displaySize ): renderer(displaySize)
@@ -15,6 +16,8 @@ BattleZone::BattleZone( sf::Vector2u displaySize ): renderer(displaySize)
         addEntity(
             new Player( { 0,0 } ) 
         );
+        
+    this->playerKills = 0;
 }
 
 Camera &BattleZone::getCamera()
@@ -45,6 +48,11 @@ Id BattleZone::addEntity( Entity* entity )
     return entityId;
 }
 
+void BattleZone::addPlayerKill()
+{
+    this->playerKills++;
+}
+
 void BattleZone::cleanUpEntities()
 {
     for ( auto iterator = this->entities.begin(); iterator != this->entities.end(); )
@@ -53,7 +61,10 @@ void BattleZone::cleanUpEntities()
         sf::Vector2f relativePositionToPlayer = entity->getPosition() - getPlayer()->getPosition();
         float distanceToPlayer = sqrt( relativePositionToPlayer.x * relativePositionToPlayer.x + relativePositionToPlayer.y * relativePositionToPlayer.y );
         if ( ( entity->isDead() || distanceToPlayer > 30 ) && entity->getType() != PlayerType )
+        {
+            delete (*iterator).second;
             iterator = this->entities.erase( iterator );
+        }
         else
             iterator++;
     }
@@ -147,6 +158,16 @@ void BattleZone::update( sf::RenderWindow &window )
     attemptToSpawnEntities();
 }
 
+void BattleZone::drawUI( sf::RenderWindow &window )
+{
+    renderer.drawCrosshair( window );
+
+    sf::Text text("Health:"+std::to_string(getPlayer()->getHealth())+"\nScore:"+std::to_string(this->playerKills),gameFont,40);
+    text.setOrigin( {text.getGlobalBounds().width/2.f,0} );
+    text.setPosition( {(3*renderer.getDisplaySize().x)/4.f, 10} );
+    window.draw( text );
+}
+
 void BattleZone::render( sf::RenderWindow &window )
 {
     renderer.clear();
@@ -154,13 +175,14 @@ void BattleZone::render( sf::RenderWindow &window )
     // Things will be renderered at a later date
 
     renderer.drawBackground( window );
-    renderer.drawUI( window );
 
     for ( std::pair<Id, Entity*> idEntityPair: entities )
     {
         if ( idEntityPair.first != getPlayer()->getId() )
             renderer.drawEntity( idEntityPair.second );
     }
+
+    drawUI( window );
 
     renderer.display( window );
 }

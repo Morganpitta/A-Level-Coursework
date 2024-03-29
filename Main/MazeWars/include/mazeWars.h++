@@ -30,6 +30,7 @@
             bool playerCanMove( Direction direction );
 
             Id addEntity( Entity* entity );
+            void addPlayerKill();
 
             void cleanUpEntities();
             void attemptToSpawnEntities();

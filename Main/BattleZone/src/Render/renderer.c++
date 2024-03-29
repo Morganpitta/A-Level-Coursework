@@ -151,7 +151,7 @@ void Renderer::drawBackground( sf::RenderWindow& window )
     window.draw( background );
 }
 
-void Renderer::drawUI( sf::RenderWindow& window )
+void Renderer::drawCrosshair( sf::RenderWindow& window )
 {
     sf::RectangleShape crosshairRect(sf::Vector2f(crosshair.getSize())*2.f);
 

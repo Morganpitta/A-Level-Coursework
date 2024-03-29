@@ -55,7 +55,7 @@
 
             void drawBackground( sf::RenderWindow& window );
 
-            void drawUI( sf::RenderWindow& window );
+            void drawCrosshair( sf::RenderWindow& window );
 
             void clear();
 

@@ -76,6 +76,11 @@ Id MazeWars::addEntity( Entity* entity )
     return entityId;
 }
 
+void MazeWars::addPlayerKill()
+{
+    this->playerKills++;
+}
+
 void MazeWars::cleanUpEntities()
 {
     for ( auto iterator = this->entities.begin(); iterator != this->entities.end(); )
@@ -83,8 +88,6 @@ void MazeWars::cleanUpEntities()
         Entity *entity = (*iterator).second; 
         if ( entity->isDead() && entity->getType() != PlayerType )
         {
-            if ( entity->getType() == EnemyType )
-                this->playerKills++;
             std::vector<Entity*> &entityVector = this->entityGrid[entity->getPosition().x][entity->getPosition().y];
             entityVector.erase(std::remove(entityVector.begin(), entityVector.end(), entity), entityVector.end());
             delete entity;
@@ -243,16 +246,16 @@ void MazeWars::drawMiniMapEntities( sf::RenderWindow &window, sf::Vector2f topLe
 }
 */
 
+void MazeWars::drawUI( sf::RenderWindow &window )
+{
+    sf::Text text("SCORE:"+std::to_string(this->playerKills),gameFont,40);
+    text.setOrigin( {text.getGlobalBounds().width/2.f,0} );
+    text.setPosition( {renderer.getDisplaySize().x/2.f, 10} );
+    window.draw( text );
+}
+
 void MazeWars::render( sf::RenderWindow &window )
 {
     renderer.render( window, mazeGrid, entityGrid, playerId );
     drawUI( window );
-}
-
-void MazeWars::drawUI( sf::RenderWindow &window )
-{
-    sf::Text text(std::to_string(this->playerKills),defaultFont,60);
-    text.setOrigin( {text.getGlobalBounds().width/2.f,0} );
-    text.setPosition( {renderer.getDisplaySize().x/2.f, 0} );
-    window.draw( text );
 }

@@ -14,7 +14,6 @@
         Id playerId;
         Id nextId;
         std::size_t playerKills;
-        //const int MiniMapRadius;
 
         public:
             MazeWars( sf::Vector2u displaySize, sf::Vector2i dimensions );
@@ -37,10 +36,7 @@
             void handleInput( sf::Event &event );
             void update();
 
-            // Not going to use this
-            //void drawMiniMapEntities( sf::RenderWindow &window, sf::Vector2f topLeft, sf::Vector2f bottomRight );
-
-            void drawUI( sf::RenderWindow &window );
+            void drawGUI( sf::RenderWindow &window );
             void render( sf::RenderWindow &window );
     };
 

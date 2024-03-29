@@ -29,7 +29,7 @@
             void handleInput( sf::Event &event );
             void update( sf::RenderWindow &window );
 
-            void drawUI( sf::RenderWindow &window );
+            void drawGUI( sf::RenderWindow &window );
             void render( sf::RenderWindow &window );
     };
 

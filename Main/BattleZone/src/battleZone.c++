@@ -158,7 +158,7 @@ void BattleZone::update( sf::RenderWindow &window )
     attemptToSpawnEntities();
 }
 
-void BattleZone::drawUI( sf::RenderWindow &window )
+void BattleZone::drawGUI( sf::RenderWindow &window )
 {
     renderer.drawCrosshair( window );
 
@@ -182,7 +182,7 @@ void BattleZone::render( sf::RenderWindow &window )
             renderer.drawEntity( idEntityPair.second );
     }
 
-    drawUI( window );
+    drawGUI( window );
 
     renderer.display( window );
 }

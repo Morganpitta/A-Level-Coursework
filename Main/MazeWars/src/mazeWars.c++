@@ -62,10 +62,18 @@ std::vector<Id> MazeWars::getEntitiesAtLocation( sf::Vector2i position ) const
 
 bool MazeWars::playerCanMove( Direction direction )
 {
-    return getMaze().getCell( 
-            getPlayer()->getPosition(),
-            direction
-        ) != true;
+    bool isWallInDirection = getMaze().getCell( getPlayer()->getPosition(), direction );
+    if ( isWallInDirection) 
+        return false;
+    
+    std::vector<Id> entities = getEntitiesAtLocation( transposePosition( getPlayer()->getPosition(),direction ) );
+    for ( Id id : entities )
+    {
+        if ( getEntity(id)->getType() != BulletType )
+            return false;
+    }
+
+    return true;
 }
 
 Id MazeWars::addEntity( Entity* entity )
@@ -197,56 +205,7 @@ void MazeWars::update()
     attemptToSpawnEntities();
 }
 
-// Not going to use this
-/*
-void MazeWars::drawMiniMapEntities( sf::RenderWindow &window, sf::Vector2f topLeft, sf::Vector2f bottomRight )
-{
-    sf::VertexArray vertexArray( sf::PrimitiveType::Lines );
-    float width = ( bottomRight.x - topLeft.x );
-    float height = ( bottomRight.y - topLeft.y );
-    float xSegmentSize = width / ( 1 + MiniMapRadius * 2 );
-    float ySegmentSize = height / ( 1 + MiniMapRadius * 2 );
-    sf::RenderStates states;
-    states.transform.rotate( 90*getPlayer()->getDirection(), topLeft.x + width/2.f, topLeft.y + height/2.f );
-
-    for ( int relativeXIndex = 0; 
-            relativeXIndex <= MiniMapRadius * 2; 
-            relativeXIndex++ 
-    )
-    {
-        for ( int relativeYIndex = 0; 
-                relativeYIndex <= MiniMapRadius * 2; 
-                relativeYIndex++
-        )
-        {
-            int xIndex = getPlayer()->getPosition().x + relativeXIndex - MiniMapRadius;
-            int yIndex = getPlayer()->getPosition().y + relativeYIndex - MiniMapRadius;
-
-            if ( getMaze().inBounds( { xIndex, yIndex } ) )
-            {
-                for ( Id id: getEntitiesAtLocation( { xIndex, yIndex } ) )
-                {
-                    sf::RectangleShape markerRectangle = 
-                        sf::RectangleShape( {xSegmentSize/2.f, ySegmentSize/2.f} );
-
-                    markerRectangle.setPosition( 
-                        sf::Vector2f(
-                            relativeXIndex*xSegmentSize,
-                            -relativeYIndex*ySegmentSize
-                        ) + sf::Vector2f(50+xSegmentSize/4.f,750-(3*ySegmentSize)/4.f) 
-                    );
-
-                    window.draw( markerRectangle, states );
-                }
-            }
-        }
-    }
-
-    window.draw( vertexArray );
-}
-*/
-
-void MazeWars::drawUI( sf::RenderWindow &window )
+void MazeWars::drawGUI( sf::RenderWindow &window )
 {
     sf::Text text("SCORE:"+std::to_string(this->playerKills),gameFont,40);
     text.setOrigin( {text.getGlobalBounds().width/2.f,0} );
@@ -257,5 +216,5 @@ void MazeWars::drawUI( sf::RenderWindow &window )
 void MazeWars::render( sf::RenderWindow &window )
 {
     renderer.render( window, mazeGrid, entityGrid, playerId );
-    drawUI( window );
+    drawGUI( window );
 }

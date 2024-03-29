@@ -26,22 +26,20 @@
         return true;
     }
 
-    inline void restrictText( sf::Text &text, sf::Vector2f topLeft, sf::Vector2f bottomRight )
+    inline void drawTextCentered(
+        sf::RenderWindow &window,
+        std::string string,
+        sf::Font &font,
+        unsigned int size,
+        sf::Vector2f position,
+        sf::Color colour
+    )
     {
-        text.setCharacterSize( 100 );
-
-        sf::Vector2f bounds = { text.getGlobalBounds().width, text.getGlobalBounds().height };
-
-        float size = 100 * std::min(
-                ( abs(bottomRight.x-topLeft.x) ) / bounds.x,
-                ( abs(bottomRight.y-topLeft.y) ) / bounds.y
-            );
-
-        text.setCharacterSize( 
-            std::floor( size )
-        );
-        
-        text.setPosition( std::round( topLeft.x ), std::round( topLeft.y ) );
+        sf::Text text(string,font,size);
+        text.setOrigin( {text.getGlobalBounds().width/2.f,text.getGlobalBounds().height/2.f} );
+        text.setPosition( position );
+        text.setFillColor(colour);
+        window.draw( text );
     }
 
     inline void appendLineToArray(

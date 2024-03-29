@@ -20,25 +20,13 @@ BattleZone::BattleZone( sf::Vector2u displaySize ): renderer(displaySize)
     this->playerKills = 0;
 }
 
-Camera &BattleZone::getCamera()
-{
-    return this->renderer.getCamera();
-}
+Camera &BattleZone::getCamera() { return this->renderer.getCamera(); }
 
-Entity *BattleZone::getEntity( Id id )
-{
-    return this->entities[id];
-}
+Entity *BattleZone::getEntity( Id id ) { return this->entities[id]; }
 
-const std::map<Id, Entity*> &BattleZone::getEntities()
-{
-    return this->entities;
-}
+const std::map<Id, Entity*> &BattleZone::getEntities() { return this->entities; }
 
-Entity *BattleZone::getPlayer()
-{
-    return getEntity( this->playerId );
-}
+Entity *BattleZone::getPlayer() { return getEntity( this->playerId ); }
 
 Id BattleZone::addEntity( Entity* entity )
 {
@@ -48,10 +36,7 @@ Id BattleZone::addEntity( Entity* entity )
     return entityId;
 }
 
-void BattleZone::addPlayerKill()
-{
-    this->playerKills++;
-}
+void BattleZone::addPlayerKill() { this->playerKills++; }
 
 void BattleZone::cleanUpEntities()
 {
@@ -172,8 +157,6 @@ void BattleZone::render( sf::RenderWindow &window )
 {
     renderer.clear();
     
-    // Things will be renderered at a later date
-
     renderer.drawBackground( window );
 
     for ( std::pair<Id, Entity*> idEntityPair: entities )

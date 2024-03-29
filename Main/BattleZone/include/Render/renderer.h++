@@ -52,13 +52,10 @@
             );
 
             void drawEntity( Entity *entity );
-
-            void drawBackground( sf::RenderWindow& window );
-
-            void drawCrosshair( sf::RenderWindow& window );
-
+            
             void clear();
-
+            void drawBackground( sf::RenderWindow& window );
+            void drawCrosshair( sf::RenderWindow& window );
             void display( sf::RenderWindow& window );
     };
 

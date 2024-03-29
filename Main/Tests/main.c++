@@ -40,8 +40,9 @@ int main()
         angle += (2*M_PI)/60.f;
 
         renderer.drawBackground(window);
-
         renderer.display(window);
+        renderer.drawCrosshair(window);
+
         window.display();
         fps.restartAndSleep();
     }

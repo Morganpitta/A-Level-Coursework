@@ -15,6 +15,7 @@
 
         public:
             BattleZone( sf::Vector2u displaySize );
+            ~BattleZone();
 
             Camera &getCamera();
             Entity *getEntity( Id id );

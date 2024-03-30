@@ -20,6 +20,16 @@ BattleZone::BattleZone( sf::Vector2u displaySize ): renderer(displaySize)
     this->playerKills = 0;
 }
 
+BattleZone::~BattleZone()
+{
+    for ( std::pair<Id, Entity*> idEntityPair : this->entities )
+    {
+        delete idEntityPair.second;
+    }
+
+    this->entities.clear();
+}
+
 Camera &BattleZone::getCamera() { return this->renderer.getCamera(); }
 
 Entity *BattleZone::getEntity( Id id ) { return this->entities[id]; }

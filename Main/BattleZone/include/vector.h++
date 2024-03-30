@@ -6,22 +6,25 @@
     #include <cmath>
     #include <vector>
 
-    float normaliseAngle( float angle );
+    namespace BattleZone
+    {
+        float normaliseAngle( float angle );
+        
+        sf::Vector2f rotatePosition( sf::Vector2f position, float angle );
+
+        sf::Vector3f rotatePosition( sf::Vector3f position, float yaw, float pitch = 0, float roll = 0 );
+
+        sf::Vector2f get2DUnitVector( float angle );
+
+        sf::Vector2f getRandom2DUnitVector();
+
+        sf::Vector3f get3DUnitVector( float angle );
+
+        sf::Vector3f getRandom3DUnitVector();
+
+        float vectorDot( sf::Vector2f vector1, sf::Vector2f vector2 );
+
+        float vectorLength( sf::Vector2f vector );
+    }
     
-    sf::Vector2f rotatePosition( sf::Vector2f position, float angle );
-
-    sf::Vector3f rotatePosition( sf::Vector3f position, float yaw, float pitch = 0, float roll = 0 );
-
-    sf::Vector2f get2DUnitVector( float angle );
-
-    sf::Vector2f getRandom2DUnitVector();
-
-    sf::Vector3f get3DUnitVector( float angle );
-
-    sf::Vector3f getRandom3DUnitVector();
-
-    float vectorDot( sf::Vector2f vector1, sf::Vector2f vector2 );
-
-    float vectorLength( sf::Vector2f vector );
-
 #endif /* VECTOR_HPP */ 

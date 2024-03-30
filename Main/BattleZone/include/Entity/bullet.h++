@@ -3,18 +3,21 @@
 
     #include "Entity/entity.h++"
 
-    class Bullet: public Entity
+    namespace BattleZone
     {
-        Id ownerId;
+        class Bullet: public Entity
+        {
+            Id ownerId;
 
-        public:
-            Bullet( Id ownerId, sf::Vector2f position = {0,0}, float rotation = 0 );
+            public:
+                Bullet( Id ownerId, sf::Vector2f position = {0,0}, float rotation = 0 );
 
-            Id getOwnerId() const;
+                Id getOwnerId() const;
 
-            virtual CollisionRect getCollisionRect() const override;
+                virtual CollisionRect getCollisionRect() const override;
 
-            virtual void update( BattleZone &game ) override;
-    };
+                virtual void update( BattleZoneGame &game ) override;
+        };
+    }
 
 #endif /* BULLET_HPP */

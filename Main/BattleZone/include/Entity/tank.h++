@@ -3,16 +3,19 @@
 
     #include "Entity/entity.h++"
 
-    class Tank: public Entity
+    namespace BattleZone
     {
-        int reloadCooldown;
+        class Tank: public Entity
+        {
+            int reloadCooldown;
 
-        public:
-            Tank( sf::Vector2f position = {0,0} );
+            public:
+                Tank( sf::Vector2f position = {0,0} );
 
-            virtual CollisionRect getCollisionRect() const override;
+                virtual CollisionRect getCollisionRect() const override;
 
-            virtual void update( BattleZone &game ) override;
-    };
+                virtual void update( BattleZoneGame &game ) override;
+        };
+    }
 
 #endif /* TANK_HPP */

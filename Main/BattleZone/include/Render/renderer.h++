@@ -6,57 +6,60 @@
     #include "Entity/entityBase.h++"
     #include <SFML/Graphics.hpp>
 
-    extern sf::Texture mountains;
-    extern sf::Texture crosshair;
-
-    extern bool loadAssets();
-
-    class Renderer
+    namespace BattleZone
     {
-        const sf::Vector2u displaySize;
-        const float zNear;
-        const float mountainHeight;
-        sf::VertexArray lineVertices;
-        Camera camera;
+        extern sf::Texture mountains;
+        extern sf::Texture crosshair;
 
-        public:
-            Renderer( sf::Vector2u displaySize );
+        extern bool loadAssets();
 
-            Camera& getCamera();
-            float getZNear() const;
-            sf::Vector2u getDisplaySize() const;
+        class Renderer
+        {
+            const sf::Vector2u displaySize;
+            const float zNear;
+            const float mountainHeight;
+            sf::VertexArray lineVertices;
+            Camera camera;
 
-            sf::Vector3f clipLineToNearPlane( 
-                const sf::Vector3f& lineStart, 
-                const sf::Vector3f& lineEnd 
-            );
+            public:
+                Renderer( sf::Vector2u displaySize );
 
-            bool projectLine( 
-                sf::Vector3f& lineStart,
-                sf::Vector3f& lineEnd
-            );
+                Camera& getCamera();
+                float getZNear() const;
+                sf::Vector2u getDisplaySize() const;
 
-            void drawTriangle( 
-                const Triangle& triangle, 
-                const Model3D::Transformations& transformations = {} 
-            );
+                sf::Vector3f clipLineToNearPlane( 
+                    const sf::Vector3f& lineStart, 
+                    const sf::Vector3f& lineEnd 
+                );
 
-            void drawLine( 
-                const Line& line, 
-                const Model3D::Transformations& transformations = {} 
-            );
+                bool projectLine( 
+                    sf::Vector3f& lineStart,
+                    sf::Vector3f& lineEnd
+                );
 
-            void draw( 
-                Model3D *model, 
-                Model3D::Transformations transformations = {} 
-            );
+                void drawTriangle( 
+                    const Triangle& triangle, 
+                    const Model3D::Transformations& transformations = {} 
+                );
 
-            void drawEntity( Entity *entity );
-            
-            void clear();
-            void drawBackground( sf::RenderWindow& window );
-            void drawCrosshair( sf::RenderWindow& window );
-            void display( sf::RenderWindow& window );
-    };
+                void drawLine( 
+                    const Line& line, 
+                    const Model3D::Transformations& transformations = {} 
+                );
+
+                void draw( 
+                    Model3D *model, 
+                    Model3D::Transformations transformations = {} 
+                );
+
+                void drawEntity( Entity *entity );
+                
+                void clear();
+                void drawBackground( sf::RenderWindow& window );
+                void drawCrosshair( sf::RenderWindow& window );
+                void display( sf::RenderWindow& window );
+        };
+    }
 
 #endif /* RENDERER_HPP */

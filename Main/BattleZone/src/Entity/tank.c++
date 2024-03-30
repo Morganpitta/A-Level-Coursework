@@ -3,47 +3,50 @@
 #include "battleZone.h++"
 #include <iostream>
 
-Tank::Tank( sf::Vector2f position ): Entity( position )
+namespace BattleZone
 {
-    this->type = TankType;
-    this->model = &tankModel;
-    this->reloadCooldown = 0;
-}
-
-CollisionRect Tank::getCollisionRect() const
-{
-    return CollisionRect( getPosition(), {1,2}, getRotation() );
-}
-
-void Tank::update( BattleZone &game )
-{
-    if ( this->reloadCooldown > 0)
+    Tank::Tank( sf::Vector2f position ): Entity( position )
     {
-        this->reloadCooldown--;
+        this->type = TankType;
+        this->model = &tankModel;
+        this->reloadCooldown = 0;
     }
 
-    sf::Vector2f relativePosition = relativePositionOf( game.getPlayer()->getPosition() );
-
-    float angleOffset = atan2( relativePosition.x, relativePosition.y );
-
-    // To the right 
-    if ( angleOffset > M_PI/100.f )
+    CollisionRect Tank::getCollisionRect() const
     {
-        turnRight( M_PI/200.f );
+        return CollisionRect( getPosition(), {1,2}, getRotation() );
     }
-    else if ( angleOffset < -M_PI/100.f )
-    {
-        turnLeft( M_PI/200.f );
-    }
-    else
-    {
-        if ( game.canMoveInDirection( this, 0.03 ) )
-            moveForward( 0.03 );
 
-        if ( this->reloadCooldown == 0 )
+    void Tank::update( BattleZoneGame &game )
+    {
+        if ( this->reloadCooldown > 0)
         {
-            game.addEntity( new Bullet( getId(), getPosition(), getRotation() ) );
-            this->reloadCooldown = 120;
+            this->reloadCooldown--;
+        }
+
+        sf::Vector2f relativePosition = relativePositionOf( game.getPlayer()->getPosition() );
+
+        float angleOffset = atan2( relativePosition.x, relativePosition.y );
+
+        // To the right 
+        if ( angleOffset > M_PI/100.f )
+        {
+            turnRight( M_PI/200.f );
+        }
+        else if ( angleOffset < -M_PI/100.f )
+        {
+            turnLeft( M_PI/200.f );
+        }
+        else
+        {
+            if ( game.canMoveInDirection( this, 0.03 ) )
+                moveForward( 0.03 );
+
+            if ( this->reloadCooldown == 0 )
+            {
+                game.addEntity( new Bullet( getId(), getPosition(), getRotation() ) );
+                this->reloadCooldown = 120;
+            }
         }
     }
 }

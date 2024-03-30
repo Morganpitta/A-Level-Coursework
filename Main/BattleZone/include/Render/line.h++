@@ -3,20 +3,23 @@
     
     #include <SFML/System.hpp>
 
-    struct LineVertex
+    namespace BattleZone
     {
-        sf::Vector3f position = { 0, 0, 0 };
-    };
+        struct LineVertex
+        {
+            sf::Vector3f position = { 0, 0, 0 };
+        };
 
-    class Line
-    {
-        LineVertex vertices[2];
-        public:
-            LineVertex getVertex( int index ) const;
-            sf::Vector3f getVertexPosition( int index ) const;
+        class Line
+        {
+            LineVertex vertices[2];
+            public:
+                LineVertex getVertex( int index ) const;
+                sf::Vector3f getVertexPosition( int index ) const;
 
-            void setVertex( int index, LineVertex vertex );
-            void setVertexPosition( int index, sf::Vector3f position );
-    };
+                void setVertex( int index, LineVertex vertex );
+                void setVertexPosition( int index, sf::Vector3f position );
+        };
+    }
 
 #endif /* LINE_HPP */

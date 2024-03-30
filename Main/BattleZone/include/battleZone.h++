@@ -5,34 +5,37 @@
     #include "Entity/entityBase.h++"
     #include <map>
 
-    class BattleZone
+    namespace BattleZone
     {
-        Renderer renderer;
-        std::map<Id,Entity*> entities;
-        Id playerId;
-        Id nextId;
-        std::size_t playerKills;
+        class BattleZoneGame
+        {
+            Renderer renderer;
+            std::map<Id,Entity*> entities;
+            Id playerId;
+            Id nextId;
+            std::size_t playerKills;
 
-        public:
-            BattleZone( sf::Vector2u displaySize );
-            ~BattleZone();
+            public:
+                BattleZoneGame( sf::Vector2u displaySize );
+                ~BattleZoneGame();
 
-            Camera &getCamera();
-            Entity *getEntity( Id id );
-            const std::map<Id, Entity*> &getEntities();
-            Entity *getPlayer();
+                Camera &getCamera();
+                Entity *getEntity( Id id );
+                const std::map<Id, Entity*> &getEntities();
+                Entity *getPlayer();
 
-            Id addEntity( Entity* entity );
-            void addPlayerKill();
-            bool canMoveInDirection( Entity *entity, float distance );
+                Id addEntity( Entity* entity );
+                void addPlayerKill();
+                bool canMoveInDirection( Entity *entity, float distance );
 
-            void cleanUpEntities();
-            void attemptToSpawnEntities();
-            void handleInput( sf::Event &event );
-            void update( sf::RenderWindow &window );
+                void cleanUpEntities();
+                void attemptToSpawnEntities();
+                void handleInput( sf::Event &event );
+                void update( sf::RenderWindow &window );
 
-            void drawGUI( sf::RenderWindow &window );
-            void render( sf::RenderWindow &window );
-    };
+                void drawGUI( sf::RenderWindow &window );
+                void render( sf::RenderWindow &window );
+        };
+    }
 
 #endif /* BATTLE_ZONE_HPP */

@@ -5,6 +5,8 @@
 #include "Entity/obstacle.h++"
 #include "Entity/bullet.h++"
 
+using namespace BattleZone;
+
 const float targetWidth = 1600;
 const float targetHeight = 900;
 
@@ -31,7 +33,7 @@ void handleResize(
     window.setView(sf::View(visibleArea));
 }
 
-void handleInputs( sf::RenderWindow &window, BattleZone &game )
+void handleInputs( sf::RenderWindow &window, BattleZoneGame &game )
 {
     sf::Event event;
     // For each event
@@ -65,7 +67,7 @@ int main()
 
     FpsLimiter fps( 60 );
 
-    BattleZone game( {1600,900} );
+    BattleZoneGame game( {1600,900} );
     
     while (window.isOpen() && !game.getPlayer()->isDead())
     {

@@ -22,4 +22,6 @@
 
     float vectorDot( sf::Vector2f vector1, sf::Vector2f vector2 );
 
+    float vectorLength( sf::Vector2f vector );
+
 #endif /* VECTOR_HPP */ 

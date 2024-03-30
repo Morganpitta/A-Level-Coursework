@@ -48,20 +48,36 @@ Id BattleZone::addEntity( Entity* entity )
 
 void BattleZone::addPlayerKill() { this->playerKills++; }
 
+bool BattleZone::canMoveInDirection( Entity *entity, float distance )
+{
+    std::vector<Entity*> collidingEntities = 
+        Entity::getColliding(
+            entity, 
+            distance * get2DUnitVector( getPlayer()->getRotation() ), 
+            getEntities(),
+            [ this ]( Entity *entity ) { return entity->getType() != BulletType; } 
+        );
+    
+    return collidingEntities.empty();
+}
+
 void BattleZone::cleanUpEntities()
 {
     for ( auto iterator = this->entities.begin(); iterator != this->entities.end(); )
     {
         Entity *entity = (*iterator).second;
         sf::Vector2f relativePositionToPlayer = entity->getPosition() - getPlayer()->getPosition();
-        float distanceToPlayer = sqrt( relativePositionToPlayer.x * relativePositionToPlayer.x + relativePositionToPlayer.y * relativePositionToPlayer.y );
+        float distanceToPlayer = vectorLength( relativePositionToPlayer );
+        
         if ( ( entity->isDead() || distanceToPlayer > 30 ) && entity->getType() != PlayerType )
         {
             delete (*iterator).second;
             iterator = this->entities.erase( iterator );
         }
         else
+        {
             iterator++;
+        }
     }
 }
 
@@ -121,21 +137,9 @@ void BattleZone::update( sf::RenderWindow &window )
         getPlayer()->turnLeft( M_PI/100 );
     if ( sf::Keyboard::isKeyPressed( sf::Keyboard::D ) )
         getPlayer()->turnRight( M_PI/100 );
-    if ( sf::Keyboard::isKeyPressed( sf::Keyboard::W ) &&
-         Entity::getColliding(
-            getPlayer(), 
-            0.08f * get2DUnitVector( getPlayer()->getRotation() ), 
-            getEntities(),
-            [ this ]( Entity *entity) { return entity->getType() != BulletType; }
-         ).empty() )
+    if ( sf::Keyboard::isKeyPressed( sf::Keyboard::W ) && canMoveInDirection( getPlayer(), 0.08 ) )
         getPlayer()->moveForward( 0.08 );
-    if ( sf::Keyboard::isKeyPressed( sf::Keyboard::S ) &&
-         Entity::getColliding(
-            getPlayer(), 
-            -0.08f * get2DUnitVector( getPlayer()->getRotation() ), 
-            getEntities(),
-            [ this ]( Entity *entity) { return entity->getType() != BulletType; } 
-         ).empty() )
+    if ( sf::Keyboard::isKeyPressed( sf::Keyboard::S ) && canMoveInDirection( getPlayer(), -0.08 ) )
         getPlayer()->moveForward( -0.08 );
 
     getCamera().setPosition( { getPlayer()->getPosition().x, 0.85, getPlayer()->getPosition().y } );

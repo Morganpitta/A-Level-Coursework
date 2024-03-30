@@ -37,12 +37,7 @@ void Tank::update( BattleZone &game )
     }
     else
     {
-        if ( getColliding( 
-                this, 
-                0.03f * get2DUnitVector( getRotation() ), 
-                game.getEntities(),
-                [ this ]( Entity *entity) { return entity->getType() != BulletType; }
-            ).empty() )
+        if ( game.canMoveInDirection( this, 0.03 ) )
             moveForward( 0.03 );
 
         if ( this->reloadCooldown == 0 )

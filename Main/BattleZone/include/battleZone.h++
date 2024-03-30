@@ -24,6 +24,7 @@
 
             Id addEntity( Entity* entity );
             void addPlayerKill();
+            bool canMoveInDirection( Entity *entity, float distance );
 
             void cleanUpEntities();
             void attemptToSpawnEntities();

@@ -2,6 +2,8 @@
 #include "Entity/entity.h++"
 #include "random.h++"
 
+using namespace MazeWars;
+
 const float targetWidth = 900;
 const float targetHeight = 900;
 
@@ -28,7 +30,7 @@ void handleResize(
     window.setView(sf::View(visibleArea));
 }
 
-void handleInputs( sf::RenderWindow &window, MazeWars &game )
+void handleInputs( sf::RenderWindow &window, MazeWarsGame &game )
 {
     sf::Event event;
     // For each event
@@ -64,7 +66,7 @@ int main()
 
     setRandomNumberSeed( timeNow().time_since_epoch().count() );
 
-    MazeWars game( sf::Vector2u(targetWidth,targetHeight), { 50, 50 } );
+    MazeWarsGame game( sf::Vector2u(targetWidth,targetHeight), { 50, 50 } );
 
     while (window.isOpen() && !game.getPlayer()->isDead())
     {

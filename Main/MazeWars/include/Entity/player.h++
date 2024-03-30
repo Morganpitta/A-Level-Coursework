@@ -3,10 +3,13 @@
 
     #include "entity.h++"
 
-    class Player: public Entity
+    namespace MazeWars
     {
-        public:
-            Player( sf::Vector2i position = {0,0} );
-    };
+        class Player: public Entity
+        {
+            public:
+                Player( sf::Vector2i position = {0,0} );
+        };
+    }
 
 #endif /* PLAYER_HPP */

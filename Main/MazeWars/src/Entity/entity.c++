@@ -1,147 +1,150 @@
 #include "Entity/entity.h++"
 #include "mazeWars.h++"
 
-const Id NullId = -1;
-sf::Texture EnemyTexture;
-sf::Texture BulletTexture;
-
-bool loadEntityAssets()
+namespace MazeWars
 {
-    setWorkingDirectoryToDefault();
+    const Id NullId = -1;
+    sf::Texture EnemyTexture;
+    sf::Texture BulletTexture;
 
-    if ( !EnemyTexture.loadFromFile( "MazeWars/eye.png" ) )
-        return false;
+    bool loadEntityAssets()
+    {
+        setWorkingDirectoryToDefault();
 
-    if ( !BulletTexture.loadFromFile( "MazeWars/circle.png" ) )
-        return false;
+        if ( !EnemyTexture.loadFromFile( "MazeWars/eye.png" ) )
+            return false;
 
-    return true;
-}
+        if ( !BulletTexture.loadFromFile( "MazeWars/circle.png" ) )
+            return false;
 
-Entity::Entity( sf::Vector2i position )
-{
-    this->position = position;
-    this->direction = North;
-    this->health = 1;
-    this->id = NullId;
-    this->dead = false;
-    this->type = NoType;
-    this->texture = nullptr;
-    this->size = 75;
-}
+        return true;
+    }
 
-sf::Vector2i Entity::getPosition() const
-{
-    return this->position;
-}
+    Entity::Entity( sf::Vector2i position )
+    {
+        this->position = position;
+        this->direction = North;
+        this->health = 1;
+        this->id = NullId;
+        this->dead = false;
+        this->type = NoType;
+        this->texture = nullptr;
+        this->size = 75;
+    }
 
-Direction Entity::getDirection() const
-{
-    return this->direction;
-}
+    sf::Vector2i Entity::getPosition() const
+    {
+        return this->position;
+    }
 
-int Entity::getHealth() const
-{
-    return this->health;
-}
+    Direction Entity::getDirection() const
+    {
+        return this->direction;
+    }
 
-Id Entity::getId() const
-{
-    return this->id;
-}
+    int Entity::getHealth() const
+    {
+        return this->health;
+    }
 
-bool Entity::isDead() const
-{
-    return this->dead;
-}
+    Id Entity::getId() const
+    {
+        return this->id;
+    }
 
-EntityType Entity::getType() const
-{
-    return this->type;
-}
+    bool Entity::isDead() const
+    {
+        return this->dead;
+    }
 
-sf::Texture *Entity::getTexture() const
-{
-    return this->texture;
-}
+    EntityType Entity::getType() const
+    {
+        return this->type;
+    }
 
-float Entity::getSize() const
-{
-    return this->size;
-}
+    sf::Texture *Entity::getTexture() const
+    {
+        return this->texture;
+    }
 
-void Entity::setPosition( sf::Vector2i position )
-{
-    this->position = position;
-}
+    float Entity::getSize() const
+    {
+        return this->size;
+    }
 
-void Entity::setDirection( Direction direction )
-{
-    this->direction = direction;
-}
+    void Entity::setPosition( sf::Vector2i position )
+    {
+        this->position = position;
+    }
 
-void Entity::moveForward()
-{
-    setPosition( 
-        transposePosition( 
-            getPosition(), 
-            getDirection() 
-        )
-    );
-}
+    void Entity::setDirection( Direction direction )
+    {
+        this->direction = direction;
+    }
 
-void Entity::moveBackward()
-{
-    setPosition( 
-        transposePosition( 
-            getPosition(), 
-            reverseDirection( getDirection() ) 
-        )
-    );
-}
+    void Entity::moveForward()
+    {
+        setPosition( 
+            transposePosition( 
+                getPosition(), 
+                getDirection() 
+            )
+        );
+    }
 
-void Entity::turnLeft()
-{
-    setDirection( normaliseDirection( int(getDirection()) - 1 ) );
-}
+    void Entity::moveBackward()
+    {
+        setPosition( 
+            transposePosition( 
+                getPosition(), 
+                reverseDirection( getDirection() ) 
+            )
+        );
+    }
 
-void Entity::turnRight()
-{
-    setDirection( normaliseDirection( int(getDirection()) + 1 ) );
-}
+    void Entity::turnLeft()
+    {
+        setDirection( normaliseDirection( int(getDirection()) - 1 ) );
+    }
 
-sf::Vector2i Entity::relativePositionOf( sf::Vector2i position )
-{
-    return sf::Vector2i( rotatePosition( 
-        sf::Vector2f( position - getPosition() ),
-        normaliseDirection( -getDirection() )
-    ) );
-}
+    void Entity::turnRight()
+    {
+        setDirection( normaliseDirection( int(getDirection()) + 1 ) );
+    }
 
-void Entity::setHealth( int health )
-{
-    this->health = health;
-}
+    sf::Vector2i Entity::relativePositionOf( sf::Vector2i position )
+    {
+        return sf::Vector2i( rotatePosition( 
+            sf::Vector2f( position - getPosition() ),
+            normaliseDirection( -getDirection() )
+        ) );
+    }
 
-void Entity::damage( int amount )
-{
-    setHealth( std::max( getHealth() - amount, 0 ) );
+    void Entity::setHealth( int health )
+    {
+        this->health = health;
+    }
 
-    if ( getHealth() <= 0 )
-        kill();
-}
+    void Entity::damage( int amount )
+    {
+        setHealth( std::max( getHealth() - amount, 0 ) );
 
-void Entity::setId( Id id )
-{
-    this->id = id;
-}
+        if ( getHealth() <= 0 )
+            kill();
+    }
 
-void Entity::kill()
-{
-    this->dead = true;
-}
+    void Entity::setId( Id id )
+    {
+        this->id = id;
+    }
 
-void Entity::update( MazeWars &game )
-{
+    void Entity::kill()
+    {
+        this->dead = true;
+    }
 
+    void Entity::update( MazeWarsGame &game )
+    {
+
+    }
 }

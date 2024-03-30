@@ -6,40 +6,43 @@
     #define _USE_MATH_DEFINES
     #include <cmath>
 
-    extern const sf::Vector2i NullPosition;
-
-    enum Direction
+    namespace MazeWars
     {
-        North,
-        East,
-        South,
-        West,
-        NumberOfDirections,
-        NoDirection
-    };
+        extern const sf::Vector2i NullPosition;
 
-    std::string directionToString( Direction direction );
+        enum Direction
+        {
+            North,
+            East,
+            South,
+            West,
+            NumberOfDirections,
+            NoDirection
+        };
 
-    sf::Vector2i transposePosition( 
-        sf::Vector2i position,
-        Direction direction
-    );
+        std::string directionToString( Direction direction );
 
-    Direction getDirectionOf( 
-        sf::Vector2i position1, 
-        sf::Vector2i position2 
-    );
+        sf::Vector2i transposePosition( 
+            sf::Vector2i position,
+            Direction direction
+        );
 
-    sf::Vector2f rotatePosition( 
-        sf::Vector2f position, 
-        Direction direction 
-    );
+        Direction getDirectionOf( 
+            sf::Vector2i position1, 
+            sf::Vector2i position2 
+        );
 
-    Direction normaliseDirection( int direction );
+        sf::Vector2f rotatePosition( 
+            sf::Vector2f position, 
+            Direction direction 
+        );
 
-    Direction reverseDirection( int direction );
+        Direction normaliseDirection( int direction );
 
-    #define forEachDirection( direction )   \
-        for ( Direction direction = North; direction < NumberOfDirections; direction = Direction( direction + 1 ) )
+        Direction reverseDirection( int direction );
+
+        #define forEachDirection( direction )   \
+            for ( Direction direction = North; direction < NumberOfDirections; direction = Direction( direction + 1 ) )
+    }
 
 #endif /* DIRECTIONS_HPP */

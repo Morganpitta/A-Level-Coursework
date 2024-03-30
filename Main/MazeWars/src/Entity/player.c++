@@ -1,6 +1,9 @@
 #include "Entity/player.h++"
 
-Player::Player( sf::Vector2i position ): Entity( position )
+namespace MazeWars
 {
-    this->type = PlayerType;
+    Player::Player( sf::Vector2i position ): Entity( position )
+    {
+        this->type = PlayerType;
+    }
 }

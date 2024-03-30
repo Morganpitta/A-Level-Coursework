@@ -1,51 +1,53 @@
 #if !defined( ENTITY_HPP )
 #define ENTITY_HPP
 
-    class MazeWars;
     #include "direction.h++"
     #include "SFML/Graphics.hpp"
     #include "file.h++"
     #include "Entity/entityBase.h++"
 
-    class Entity
+    namespace MazeWars
     {
-        protected:
-            sf::Vector2i position;
-            Direction direction;
-            int health;
-            Id id;
-            bool dead;
-            EntityType type;
-            sf::Texture *texture;
-            float size;
-        
-        public:
-            Entity( sf::Vector2i position = {0,0} );
+        class Entity
+        {
+            protected:
+                sf::Vector2i position;
+                Direction direction;
+                int health;
+                Id id;
+                bool dead;
+                EntityType type;
+                sf::Texture *texture;
+                float size;
+            
+            public:
+                Entity( sf::Vector2i position = {0,0} );
 
-            sf::Vector2i getPosition() const;
-            Direction getDirection() const;
-            int getHealth() const;
-            Id getId() const;
-            bool isDead() const;
-            EntityType getType() const;
-            sf::Texture *getTexture() const;
-            float getSize() const;
+                sf::Vector2i getPosition() const;
+                Direction getDirection() const;
+                int getHealth() const;
+                Id getId() const;
+                bool isDead() const;
+                EntityType getType() const;
+                sf::Texture *getTexture() const;
+                float getSize() const;
 
-            void setPosition( sf::Vector2i position );
-            void setDirection( Direction direction );
-            void setHealth( int health );
-            void setId( Id id );
+                void setPosition( sf::Vector2i position );
+                void setDirection( Direction direction );
+                void setHealth( int health );
+                void setId( Id id );
 
-            void moveForward();
-            void moveBackward();
-            void turnLeft();
-            void turnRight();
-            void damage( int amount );
-            void kill();
+                void moveForward();
+                void moveBackward();
+                void turnLeft();
+                void turnRight();
+                void damage( int amount );
+                void kill();
 
-            sf::Vector2i relativePositionOf( sf::Vector2i position );
+                sf::Vector2i relativePositionOf( sf::Vector2i position );
 
-            virtual void update( MazeWars &game );
-    };
+                virtual void update( MazeWarsGame &game );
+        };
+    }
 
 #endif /* ENTITY_HPP */

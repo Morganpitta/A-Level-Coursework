@@ -5,39 +5,42 @@
     #include "renderer.h++"
     #include "mazeGenerator.h++"
 
-    class MazeWars
+    namespace MazeWars
     {
-        Renderer renderer;
-        MazeGrid mazeGrid;
-        std::map<Id,Entity*> entities;
-        std::vector<std::vector<std::vector<Entity*>>> entityGrid;
-        Id playerId;
-        Id nextId;
-        std::size_t playerKills;
+        class MazeWarsGame
+        {
+            Renderer renderer;
+            MazeGrid mazeGrid;
+            std::map<Id,Entity*> entities;
+            std::vector<std::vector<std::vector<Entity*>>> entityGrid;
+            Id playerId;
+            Id nextId;
+            std::size_t playerKills;
 
-        public:
-            MazeWars( sf::Vector2u displaySize, sf::Vector2i dimensions );
-            
-            ~MazeWars();
+            public:
+                MazeWarsGame( sf::Vector2u displaySize, sf::Vector2i dimensions );
+                
+                ~MazeWarsGame();
 
-            Camera &getCamera();
-            MazeGrid &getMaze();
-            Entity *getEntity( Id id );
-            Entity *getPlayer();
-            std::vector<Id> getEntitiesAtLocation( sf::Vector2i position ) const;
+                Camera &getCamera();
+                MazeGrid &getMaze();
+                Entity *getEntity( Id id );
+                Entity *getPlayer();
+                std::vector<Id> getEntitiesAtLocation( sf::Vector2i position ) const;
 
-            bool playerCanMove( Direction direction );
+                bool playerCanMove( Direction direction );
 
-            Id addEntity( Entity* entity );
-            void addPlayerKill();
+                Id addEntity( Entity* entity );
+                void addPlayerKill();
 
-            void cleanUpEntities();
-            void attemptToSpawnEntities();
-            void handleInput( sf::Event &event );
-            void update();
+                void cleanUpEntities();
+                void attemptToSpawnEntities();
+                void handleInput( sf::Event &event );
+                void update();
 
-            void drawGUI( sf::RenderWindow &window );
-            void render( sf::RenderWindow &window );
-    };
+                void drawGUI( sf::RenderWindow &window );
+                void render( sf::RenderWindow &window );
+        };
+    }
 
 #endif /* MAZE_WARS_HPP */

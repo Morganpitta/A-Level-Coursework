@@ -127,7 +127,13 @@ void BattleZone::handleInput( sf::Event &event )
     if ( event.type == sf::Event::KeyPressed )
     {
         if ( event.key.code == sf::Keyboard::Space )
-            addEntity( new Bullet( getPlayer()->getId(), getPlayer()->getPosition(), getPlayer()->getRotation() ) );
+            addEntity( 
+                new Bullet( 
+                    getPlayer()->getId(), 
+                    getPlayer()->getPosition(),
+                    getPlayer()->getRotation() 
+                ) 
+            );
     }
 }
 

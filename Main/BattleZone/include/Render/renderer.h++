@@ -1,5 +1,5 @@
-#if !defined( RENDERER_HPP )
-#define RENDERER_HPP
+#if !defined( BZ_RENDERER_HPP )
+#define BZ_RENDERER_HPP
 
     #include "Render/camera.h++"
     #include "Render/model3D.h++"
@@ -62,4 +62,4 @@
         };
     }
 
-#endif /* RENDERER_HPP */
+#endif /* BZ_RENDERER_HPP */

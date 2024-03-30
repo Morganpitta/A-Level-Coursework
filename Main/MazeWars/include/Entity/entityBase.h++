@@ -1,5 +1,5 @@
-#if !defined( ENTITY_BASE_HPP )
-#define ENTITY_BASE_HPP
+#if !defined( MW_ENTITY_BASE_HPP )
+#define MW_ENTITY_BASE_HPP
 
     #include "direction.h++"
     #include "SFML/Graphics.hpp"
@@ -28,4 +28,4 @@
         class Entity;
     }
 
-#endif /* ENTITY_BASE_HPP */
+#endif /* MW_ENTITY_BASE_HPP */

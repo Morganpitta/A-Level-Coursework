@@ -1,5 +1,5 @@
-#if !defined( BULLET_HPP )
-#define BULLET_HPP
+#if !defined( BZ_BULLET_HPP )
+#define BZ_BULLET_HPP
 
     #include "Entity/entity.h++"
 
@@ -20,4 +20,4 @@
         };
     }
 
-#endif /* BULLET_HPP */
+#endif /* BZ_BULLET_HPP */

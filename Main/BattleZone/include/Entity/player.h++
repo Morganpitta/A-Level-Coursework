@@ -1,5 +1,5 @@
-#if !defined( PLAYER_HPP )
-#define PLAYER_HPP
+#if !defined( BZ_PLAYER_HPP )
+#define BZ_PLAYER_HPP
 
     #include "Entity/entity.h++"
 
@@ -14,4 +14,4 @@
         };
     }
 
-#endif /* PLAYER_HPP */
+#endif /* BZ_PLAYER_HPP */

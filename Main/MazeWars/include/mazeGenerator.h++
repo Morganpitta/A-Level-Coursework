@@ -1,5 +1,5 @@
-#if !defined( MAZE_GENERATOR_HPP )
-#define MAZE_GENERATOR_HPP
+#if !defined( MW_MAZE_GENERATOR_HPP )
+#define MW_MAZE_GENERATOR_HPP
 
     #include "mazeGrid.h++"
     #include "time.h++"
@@ -26,4 +26,4 @@
         );
     }
     
-#endif /* MAZE_GENERATOR_HPP */
+#endif /* MW_MAZE_GENERATOR_HPP */

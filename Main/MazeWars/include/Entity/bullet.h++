@@ -1,5 +1,5 @@
-#if !defined( BULLET_HPP )
-#define BULLET_HPP
+#if !defined( MW_BULLET_HPP )
+#define MW_BULLET_HPP
 
     #include "pathFinding.h++"
 
@@ -19,4 +19,4 @@
         };
     }
 
-#endif /* BULLET_HPP */
+#endif /* MW_BULLET_HPP */

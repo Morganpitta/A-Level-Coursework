@@ -1,8 +1,8 @@
-#if !defined( BATTLE_ZONE_HPP )
-#define BATTLE_ZONE_HPP
+#if !defined( BZ_BATTLE_ZONE_HPP )
+#define BZ_BATTLE_ZONE_HPP
 
-    #include "Render/renderer.h++"
     #include "Entity/entityBase.h++"
+    #include "Render/renderer.h++"
     #include <map>
 
     namespace BattleZone
@@ -38,4 +38,4 @@
         };
     }
 
-#endif /* BATTLE_ZONE_HPP */
+#endif /* BZ_BATTLE_ZONE_HPP */

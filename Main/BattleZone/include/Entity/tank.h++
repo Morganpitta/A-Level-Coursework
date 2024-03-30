@@ -1,5 +1,5 @@
-#if !defined( TANK_HPP )
-#define TANK_HPP
+#if !defined( BZ_TANK_HPP )
+#define BZ_TANK_HPP
 
     #include "Entity/entity.h++"
 
@@ -18,4 +18,4 @@
         };
     }
 
-#endif /* TANK_HPP */
+#endif /* BZ_TANK_HPP */

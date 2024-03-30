@@ -1,5 +1,5 @@
-#if !defined( ENTITY_HPP )
-#define ENTITY_HPP
+#if !defined( BZ_ENTITY_HPP )
+#define BZ_ENTITY_HPP
 
     #include "entityBase.h++"
     #include "collisionRect.h++"
@@ -54,4 +54,4 @@
         };
     }
 
-#endif /* ENTITY_HPP */
+#endif /* BZ_ENTITY_HPP */

@@ -1,5 +1,5 @@
-#if !defined ( COLLISION_RECT_HPP )
-#define COLLISION_RECT_HPP
+#if !defined( BZ_COLLISION_RECT_HPP )
+#define BZ_COLLISION_RECT_HPP
 
     #include "vector.h++"
     #include <algorithm>
@@ -51,4 +51,4 @@
         };
     }
 
-#endif /* COLLISION_RECT_HPP */
+#endif /* BZ_COLLISION_RECT_HPP */

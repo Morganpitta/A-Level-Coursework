@@ -1,5 +1,5 @@
-#if !defined( MAZE_WARS_HPP )
-#define MAZE_WARS_HPP
+#if !defined( MW_MAZE_WARS_HPP )
+#define MW_MAZE_WARS_HPP
 
     #include "Entity/entityBase.h++"
     #include "renderer.h++"
@@ -43,4 +43,4 @@
         };
     }
 
-#endif /* MAZE_WARS_HPP */
+#endif /* MW_MAZE_WARS_HPP */

@@ -1,5 +1,5 @@
-#if !defined( CAMERA_HPP )
-#define CAMERA_HPP
+#if !defined( BZ_CAMERA_HPP )
+#define BZ_CAMERA_HPP
 
     #include "vector.h++"
 
@@ -34,4 +34,4 @@
         };
     }
     
-#endif /* CAMERA_HPP */
+#endif /* BZ_CAMERA_HPP */

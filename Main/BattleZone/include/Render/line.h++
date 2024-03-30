@@ -1,5 +1,5 @@
-#if !defined( LINE_HPP )
-#define LINE_HPP
+#if !defined( BZ_LINE_HPP )
+#define BZ_LINE_HPP
     
     #include <SFML/System.hpp>
 
@@ -22,4 +22,4 @@
         };
     }
 
-#endif /* LINE_HPP */
+#endif /* BZ_LINE_HPP */

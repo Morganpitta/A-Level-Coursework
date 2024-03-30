@@ -1,5 +1,5 @@
-#if !defined( ENTITY_HPP )
-#define ENTITY_HPP
+#if !defined( MW_ENTITY_HPP )
+#define MW_ENTITY_HPP
 
     #include "direction.h++"
     #include "SFML/Graphics.hpp"
@@ -50,4 +50,4 @@
         };
     }
 
-#endif /* ENTITY_HPP */
+#endif /* MW_ENTITY_HPP */

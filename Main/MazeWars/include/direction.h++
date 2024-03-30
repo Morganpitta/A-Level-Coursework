@@ -1,5 +1,5 @@
-#if !defined ( DIRECTIONS_HPP )
-#define DIRECTIONS_HPP
+#if !defined ( MW_DIRECTIONS_HPP )
+#define MW_DIRECTIONS_HPP
 
     #include <SFML/System.hpp>
     #include <iostream>
@@ -45,4 +45,4 @@
             for ( Direction direction = North; direction < NumberOfDirections; direction = Direction( direction + 1 ) )
     }
 
-#endif /* DIRECTIONS_HPP */
+#endif /* MW_DIRECTIONS_HPP */

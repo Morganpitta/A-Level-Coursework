@@ -1,5 +1,5 @@
-#if !defined( MODEL_3D_HPP )
-#define MODEL_3D_HPP
+#if !defined( BZ_MODEL_3D_HPP )
+#define BZ_MODEL_3D_HPP
 
     #include <fstream>
     #include <vector>
@@ -72,4 +72,4 @@
         };
     }
 
-#endif /* MODEL_3D_HPP */
+#endif /* BZ_MODEL_3D_HPP */

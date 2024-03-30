@@ -1,5 +1,5 @@
-#if !defined( ENEMY_HPP )
-#define ENEMY_HPP
+#if !defined( MW_ENEMY_HPP )
+#define MW_ENEMY_HPP
 
     #include "pathFinding.h++"
     
@@ -17,4 +17,4 @@
         };
     }
 
-#endif /* ENEMY_HPP */
+#endif /* MW_ENEMY_HPP */

@@ -1,5 +1,5 @@
-#if !defined( ENTITY_BASE_HPP )
-#define ENTITY_BASE_HPP
+#if !defined( BZ_ENTITY_BASE_HPP )
+#define BZ_ENTITY_BASE_HPP
 
     #include "SFML/Graphics.hpp"
     #include "Render/model3D.h++"
@@ -29,4 +29,4 @@
         class Entity;
     }
     
-#endif /* ENTITY_BASE_HPP */
+#endif /* BZ_ENTITY_BASE_HPP */

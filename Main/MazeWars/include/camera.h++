@@ -1,5 +1,5 @@
-#if !defined( CAMERA_HPP )
-#define CAMERA_HPP
+#if !defined( MW_CAMERA_HPP )
+#define MW_CAMERA_HPP
 
     #include "direction.h++"
     #include "SFML/Graphics.hpp"
@@ -32,4 +32,4 @@
         };
     }
     
-#endif /* CAMERA_HPP */
+#endif /* MW_CAMERA_HPP */

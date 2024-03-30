@@ -1,5 +1,5 @@
-#if !defined( PLAYER_HPP )
-#define PLAYER_HPP
+#if !defined( MW_PLAYER_HPP )
+#define MW_PLAYER_HPP
 
     #include "entity.h++"
 
@@ -12,4 +12,4 @@
         };
     }
 
-#endif /* PLAYER_HPP */
+#endif /* MW_PLAYER_HPP */

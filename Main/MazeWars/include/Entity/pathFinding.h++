@@ -1,5 +1,5 @@
-#if !defined( PATH_FINDING_HPP )
-#define PATH_FINDING_HPP
+#if !defined( MW_PATH_FINDING_HPP )
+#define MW_PATH_FINDING_HPP
 
     #include "entity.h++"
     #include "mazeGrid.h++"
@@ -44,4 +44,4 @@
         extern AStarSolver PathSolver;
     }
 
-#endif /* PATH_FINDING_HPP */
+#endif /* MW_PATH_FINDING_HPP */

@@ -1,5 +1,5 @@
-#if !defined( RENDERER_HPP )
-#define RENDERER_HPP
+#if !defined( MW_RENDERER_HPP )
+#define MW_RENDERER_HPP
 
     #include "Entity/entityBase.h++"
     #include "camera.h++"
@@ -78,4 +78,4 @@
         };
     }
 
-#endif /* RENDERER_HPP */
+#endif /* MW_RENDERER_HPP */

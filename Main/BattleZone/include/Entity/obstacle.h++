@@ -1,5 +1,5 @@
-#if !defined( OBSTACLE_HPP )
-#define OBSTACLE_HPP
+#if !defined( BZ_OBSTACLE_HPP )
+#define BZ_OBSTACLE_HPP
 
     #include "Entity/entity.h++"
 
@@ -14,4 +14,4 @@
         };
     }
 
-#endif /* OBSTACLE_HPP */
+#endif /* BZ_OBSTACLE_HPP */

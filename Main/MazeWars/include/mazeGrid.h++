@@ -1,5 +1,5 @@
-#if !defined( MAZE_GRID_HPP )
-#define MAZE_GRID_HPP
+#if !defined( MW_MAZE_GRID_HPP )
+#define MW_MAZE_GRID_HPP
 
     #include <vector>
     #include "direction.h++"
@@ -62,4 +62,4 @@
         );
     }
 
-#endif /* MAZE_GRID_HPP */
+#endif /* MW_MAZE_GRID_HPP */

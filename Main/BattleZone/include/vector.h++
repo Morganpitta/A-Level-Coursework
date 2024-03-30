@@ -1,5 +1,5 @@
-#if !defined( VECTOR_HPP )
-#define VECTOR_HPP    
+#if !defined( BZ_VECTOR_HPP )
+#define BZ_VECTOR_HPP    
     
     #include <SFML/System.hpp>
     #define _USE_MATH_DEFINES
@@ -27,4 +27,4 @@
         float vectorLength( sf::Vector2f vector );
     }
     
-#endif /* VECTOR_HPP */ 
+#endif /* BZ_VECTOR_HPP */ 

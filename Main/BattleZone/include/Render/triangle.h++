@@ -1,5 +1,5 @@
-#if !defined( TRIANGLE_HPP )
-#define TRIANGLE_HPP
+#if !defined( BZ_TRIANGLE_HPP )
+#define BZ_TRIANGLE_HPP
     
     #include <SFML/System.hpp>
 
@@ -25,4 +25,4 @@
         };
     }
 
-#endif /* TRIANGLE_HPP */
+#endif /* BZ_TRIANGLE_HPP */

@@ -18,7 +18,7 @@ else
 endif
 
 
-CFLAGS = -lstdc++ -std=c++17 -Wall -fdiagnostics-color=always -I$(ROOT_DIR)/Include -I$(INCLUDE)
+CFLAGS = -lstdc++ -std=c++17 -Wall -fdiagnostics-color=always -Wdelete-non-virtual-dtor -I$(ROOT_DIR)/Include -I$(INCLUDE)
 
 entities = entity.o tank.o obstacle.o bullet.o player.o
 

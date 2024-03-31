@@ -1,3 +1,4 @@
 .vscode/*
 Main/MazeWars/bin/*.o
 Main/BattleZone/bin/*.o
+Main/*.o

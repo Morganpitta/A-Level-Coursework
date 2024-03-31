@@ -36,7 +36,6 @@
     )
     {
         sf::Text text(string,font,size);
-        sf::FloatRect bounds =  text.getGlobalBounds();
         text.setOrigin( {text.getGlobalBounds().width/2.f,text.getGlobalBounds().height/2.f} );
         text.setPosition( position );
         text.setFillColor( colour );
@@ -54,7 +53,6 @@
     )
     {
         sf::Text text(string,font,size);
-        sf::FloatRect bounds =  text.getGlobalBounds();
         text.setOrigin( {text.getGlobalBounds().width/2.f,text.getGlobalBounds().height/2.f} );
         text.setPosition( position );
         text.setFillColor( colour );

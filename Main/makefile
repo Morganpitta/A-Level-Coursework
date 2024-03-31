@@ -21,10 +21,10 @@ CFLAGS = -std=c++17 -Wall -fdiagnostics-color=always -Wdelete-non-virtual-dtor -
 # Targets needed to bring the executable up to date
 
 default: default_compile main.o
-	$(CC) *.o BattleZone/bin/*.o MazeWars/bin/*.o -o ${ROOT_DIR}/.vscode/a.out $(CFLAGS)
+	$(CC) *.o `ls BattleZone/bin/*.o | grep -v -w "main.o"` `ls MazeWars/bin/*.o | grep -v -w "main.o"` -o ${ROOT_DIR}/.vscode/a.out $(CFLAGS)
 
 exe: exe_compile static_compile main.o
-	$(CC) *.o BattleZone/bin/*.o MazeWars/bin/*.o -o ${ROOT_DIR}/.vscode/a.exe $(CFLAGS)
+	$(CC) *.o `ls BattleZone/bin/*.o | grep -v -w "main.o"` `ls MazeWars/bin/*.o | grep -v -w "main.o"` -o ${ROOT_DIR}/.vscode/a.exe $(CFLAGS)
 
 clean:
 	rm *.o ${ROOT_DIR}/.vscode/a.exe ${ROOT_DIR}/.vscode/a.out

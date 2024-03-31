@@ -43,8 +43,11 @@ static_compile:
 default_compile:
 	$(eval CFLAGS += $(SFMLFLAGS) -g )
 
-main.o: ${SRC}/main.c++ battleZone.o
+main.o: ${SRC}/main.c++ mainLoop.o
 	$(CC) $(CFLAGS) -c ${SRC}/main.c++
+	
+mainLoop.o: ${SRC}/mainLoop.c++ battleZone.o
+	$(CC) $(CFLAGS) -c ${SRC}/mainLoop.c++
 
 battleZone.o: ${SRC}/battleZone.c++ ${INCLUDE}/battleZone.h++ renderer.o ${entities}
 	$(CC) $(CFLAGS) -c ${SRC}/battleZone.c++

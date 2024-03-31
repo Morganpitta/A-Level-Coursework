@@ -44,8 +44,11 @@ static_compile:
 default_compile:
 	$(eval CFLAGS += $(SFMLFLAGS) -g )
 
-main.o: ${SRC}/main.c++ mazeWars.o
+main.o: ${SRC}/main.c++ mainLoop.o
 	$(CC) $(CFLAGS) -c ${SRC}/main.c++
+
+mainLoop.o: ${SRC}/mainLoop.c++ mazeWars.o
+	$(CC) $(CFLAGS) -c ${SRC}/mainLoop.c++
 
 mazeWars.o: ${SRC}/mazeWars.c++ ${INCLUDE}/mazeWars.h++ mazeGenerator.o ${render} ${entities}
 	$(CC) $(CFLAGS) -c ${SRC}/mazeWars.c++

@@ -4,6 +4,7 @@
     #include <SFML/Graphics.hpp>
     #include "math.h"
     #include "file.h++"
+    #include <iostream>
 
     inline sf::Font defaultFont;
     inline sf::Font gameFont;
@@ -26,6 +27,23 @@
         return true;
     }
 
+    inline sf::Text getTextCentered(
+        std::string string,
+        sf::Font &font,
+        unsigned int size,
+        sf::Vector2f position,
+        sf::Color colour
+    )
+    {
+        sf::Text text(string,font,size);
+        sf::FloatRect bounds =  text.getGlobalBounds();
+        text.setOrigin( {text.getGlobalBounds().width/2.f,text.getGlobalBounds().height/2.f} );
+        text.setPosition( position );
+        text.setFillColor( colour );
+
+        return text;
+    }
+
     inline void drawTextCentered(
         sf::RenderWindow &window,
         std::string string,
@@ -36,9 +54,10 @@
     )
     {
         sf::Text text(string,font,size);
+        sf::FloatRect bounds =  text.getGlobalBounds();
         text.setOrigin( {text.getGlobalBounds().width/2.f,text.getGlobalBounds().height/2.f} );
         text.setPosition( position );
-        text.setFillColor(colour);
+        text.setFillColor( colour );
         window.draw( text );
     }
 

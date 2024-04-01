@@ -9,6 +9,8 @@ namespace MazeWars
 {
     MazeWarsGame::MazeWarsGame( sf::Vector2u displaySize, sf::Vector2i dimensions ): renderer(displaySize), mazeGrid( dimensions )//, MiniMapRadius(3)
     {
+        setRandomNumberSeed( timeNow().time_since_epoch().count() );
+        
         this->nextId = 0;
         generateMazeDepthFirst( mazeGrid, 1 );
         entityGrid.resize(

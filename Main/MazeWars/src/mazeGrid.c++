@@ -155,7 +155,7 @@ namespace MazeWars
             value            
         );
 
-        this->numberOfWalls = value ? getNumberOfWalls() : 0;
+        this->numberOfWalls = value ? getNumberOfWallSegments() : 0;
     }
 
     void MazeGrid::resize( sf::Vector2i dimensions )

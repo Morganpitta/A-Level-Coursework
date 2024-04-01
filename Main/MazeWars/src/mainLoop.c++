@@ -63,8 +63,6 @@ namespace MazeWars
 
         FpsLimiter fps( 60 );
 
-        setRandomNumberSeed( timeNow().time_since_epoch().count() );
-
         MazeWarsGame game( sf::Vector2u(targetWidth,targetHeight), { 50, 50 } );
 
         while (window.isOpen() && !game.getPlayer()->isDead())

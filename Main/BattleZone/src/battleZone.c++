@@ -4,14 +4,14 @@
 #include "Entity/bullet.h++"
 #include "Entity/tank.h++"
 #include "Entity/obstacle.h++"
-#include "random.h++"
-#include "draw.h++"
-#include <iostream>
+
 
 namespace BattleZone
 {
     BattleZoneGame::BattleZoneGame( sf::Vector2u displaySize ): renderer(displaySize)
     {
+        setRandomNumberSeed( timeNow().time_since_epoch().count() );
+        
         this->nextId = 0;
 
         this->playerId = 
@@ -95,7 +95,7 @@ namespace BattleZone
                 }
             );
 
-        while ( numberOfTanks < 0 )
+        while ( numberOfTanks < 4 )
         {
             float spawnAngle = randomFloat( 0, 2 * M_PI );
             sf::Vector2f spawnLocation = getPlayer()->getPosition() + 

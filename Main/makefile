@@ -38,5 +38,5 @@ static_compile:
 default_compile:
 	$(eval CFLAGS += $(SFMLFLAGS) -g )
 
-main.o: main.c++
+main.o: main.c++ MazeWars/bin/mainLoop.o BattleZone/bin/mainLoop.o
 	$(CC) $(CFLAGS) -c main.c++

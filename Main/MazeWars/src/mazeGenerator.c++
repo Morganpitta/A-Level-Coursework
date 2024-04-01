@@ -69,6 +69,7 @@ namespace MazeWars
 
             if ( direction == NoDirection )
             {
+                // No direction to go, need to backtrack
                 positionStack.pop_back();
 
                 if ( positionStack.empty() )

@@ -465,6 +465,7 @@ namespace MazeWars
 
         window.draw( wallVertices );
         
+        // This ensures that the entities draw in the correct order
         std::reverse( this->entityRectangles.begin(), this->entityRectangles.end() );
         for ( sf::RectangleShape &entityRectangle: this->entityRectangles )
         {

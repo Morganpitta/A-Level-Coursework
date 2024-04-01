@@ -3,6 +3,10 @@
 
     #include "Entity/entityBase.h++"
     #include "Render/renderer.h++"
+    #include "time.h++"
+    #include "random.h++"
+    #include "draw.h++"
+    #include <iostream>
     #include <map>
 
     namespace BattleZone

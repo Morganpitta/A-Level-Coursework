@@ -4,6 +4,7 @@
     #include "Entity/entityBase.h++"
     #include "renderer.h++"
     #include "mazeGenerator.h++"
+    #include "time.h++"
 
     namespace MazeWars
     {

@@ -33,13 +33,13 @@ namespace MazeWars
         // If the distances are the same, since its a set comparison function it needs to be consistent.
         // So use the position to calculate a consistent comparison.
         if ( getCellData(position1).predictedDistanceToEnd ==
-            getCellData(position2).predictedDistanceToEnd )
+             getCellData(position2).predictedDistanceToEnd )
         {
             return std::tie( position1.x, position1.y ) < std::tie( position2.x, position2.y );
         }
 
         return getCellData(position1).predictedDistanceToEnd <
-            getCellData(position2).predictedDistanceToEnd;
+               getCellData(position2).predictedDistanceToEnd;
     }
 
 
@@ -76,15 +76,11 @@ namespace MazeWars
     void AStarSolver::addCellToVisit( sf::Vector2i currentCell, sf::Vector2i nextCell, sf::Vector2i finalPosition )
     {
         // If the cell is unvisited or the original path was longer than this path, update to use this path.
-        if (
-            getCellData(nextCell).previousCell == NullPosition || 
-            getCellData(nextCell).distanceToStart > 
-            getCellData(currentCell).distanceToStart + 1 
-        )
+        if ( getCellData(nextCell).previousCell == NullPosition || 
+             getCellData(nextCell).distanceToStart > getCellData(currentCell).distanceToStart + 1 )
         { 
             getCellData(nextCell).previousCell = currentCell;
             getCellData(nextCell).distanceToStart = getCellData(currentCell).distanceToStart + 1;
-
             getCellData(nextCell).predictedDistanceToEnd = getCellData(nextCell).distanceToStart + manhattanDistance(nextCell, finalPosition);
             
             cellsToVisit.insert( nextCell );
@@ -110,6 +106,8 @@ namespace MazeWars
         return path;
     }
 
+    // Initialising the cellsToVisit set. 
+    // As the comparison function needs a reference to the AStarSolver instance, I bound the two values together.
     AStarSolver::AStarSolver(): cellsToVisit(std::bind(&AStarSolver::comparisonFunction, this, std::placeholders::_1, std::placeholders::_2))
     {
         

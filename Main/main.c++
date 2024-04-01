@@ -34,15 +34,16 @@ int main()
                     break;
                 
                 case sf::Event::Resized:
+                    BattleZone::handleResize( window, (float) event.size.width, (float) event.size.height );
                     break;
 
                 case sf::Event::MouseButtonPressed:
-                    if ( mazeWarTitle.getGlobalBounds().contains( sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y ) )
+                    if ( mazeWarTitle.getGlobalBounds().contains( window.mapPixelToCoords( sf::Mouse::getPosition(window) ) ) )
                     {
                         MazeWars::mainLoop( window );
                         BattleZone::handleResize( window, window.getSize().x, window.getSize().y );
                     }
-                    if ( battleZoneTitle.getGlobalBounds().contains( sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y ) )
+                    if ( battleZoneTitle.getGlobalBounds().contains( window.mapPixelToCoords( sf::Mouse::getPosition(window) ) ) )
                     {
                         BattleZone::mainLoop( window );
                         BattleZone::handleResize( window, window.getSize().x, window.getSize().y );

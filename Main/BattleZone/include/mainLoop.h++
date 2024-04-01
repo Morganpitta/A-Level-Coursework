@@ -1,24 +1,29 @@
-#include "SFML/Graphics.hpp"
-#include "time.h++"
-#include "battleZone.h++"
-#include "Entity/entity.h++"
-#include "Entity/tank.h++"
-#include "Entity/obstacle.h++"
-#include "Entity/bullet.h++"
+#if !defined ( BZ_MAIN_LOOP_HPP )
+#define BZ_MAIN_LOOP_HPP
 
-namespace BattleZone
-{
-    extern const float targetWidth;
-    extern const float targetHeight;
+    #include "SFML/Graphics.hpp"
+    #include "time.h++"
+    #include "battleZone.h++"
+    #include "Entity/entity.h++"
+    #include "Entity/tank.h++"
+    #include "Entity/obstacle.h++"
+    #include "Entity/bullet.h++"
 
-    void handleResize( 
-        sf::RenderWindow &window,
-        float windowWidth, 
-        float windowHeight
-    );
+    namespace BattleZone
+    {
+        extern const float targetWidth;
+        extern const float targetHeight;
 
-    void handleInputs( sf::RenderWindow &window, BattleZoneGame &game );
+        void handleResize( 
+            sf::RenderWindow &window,
+            float windowWidth, 
+            float windowHeight
+        );
+
+        void handleInputs( sf::RenderWindow &window, BattleZoneGame &game );
+        
+        void mainLoop( sf::RenderWindow &window );
+        void deathScreenLoop( sf::RenderWindow &window );
+    }
     
-    void mainLoop( sf::RenderWindow &window );
-    void deathScreenLoop( sf::RenderWindow &window );
-}
+#endif /* BZ_MAIN_LOOP_HPP */

@@ -1,5 +1,5 @@
-#include "MazeWars\include\mainLoop.h++"
-#include "BattleZone\include\mainLoop.h++"
+#include "MazeWars/include/mainLoop.h++"
+#include "BattleZone/include/mainLoop.h++"
 
 
 int main()

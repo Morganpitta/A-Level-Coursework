@@ -95,7 +95,7 @@ namespace BattleZone
                 }
             );
 
-        while ( numberOfTanks < 4 )
+        while ( numberOfTanks < 0 )
         {
             float spawnAngle = randomFloat( 0, 2 * M_PI );
             sf::Vector2f spawnLocation = getPlayer()->getPosition() + 

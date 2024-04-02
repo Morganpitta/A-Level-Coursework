@@ -22,6 +22,19 @@ int main()
             sf::Color::Green
         );
 
+    sf::Text mazeWarInstructions = 
+        getTextCentered(
+            "INSTRUCTIONS", gameFont, 30,
+            {800, 200+60},
+            sf::Color::Green
+        );
+    sf::Text battleZoneInstructions = 
+        getTextCentered(
+            "INSTRUCTIONS", gameFont, 30,
+            {800,600+60},
+            sf::Color::Green
+        );
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -48,6 +61,12 @@ int main()
                         BattleZone::mainLoop( window );
                         BattleZone::handleResize( window, window.getSize().x, window.getSize().y );
                     }
+                    if ( mazeWarInstructions.getGlobalBounds().contains( window.mapPixelToCoords( sf::Mouse::getPosition(window) ) ) )
+                    {
+                    }
+                    if ( battleZoneInstructions.getGlobalBounds().contains( window.mapPixelToCoords( sf::Mouse::getPosition(window) ) ) )
+                    {
+                    }
                     break;
 
                 default:
@@ -59,6 +78,8 @@ int main()
 
         window.draw( mazeWarTitle );
         window.draw( battleZoneTitle );
+        window.draw( mazeWarInstructions );
+        window.draw( battleZoneInstructions );
 
         window.display();
     }

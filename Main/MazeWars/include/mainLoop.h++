@@ -16,7 +16,7 @@
         );
 
         void handleInputs( sf::RenderWindow &window, MazeWarsGame &game );
-        
+
         void mainLoop( sf::RenderWindow &window );
         void deathScreenLoop( sf::RenderWindow &window );
     }

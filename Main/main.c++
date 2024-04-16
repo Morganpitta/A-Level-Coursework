@@ -1,6 +1,7 @@
 #include "MazeWars/include/mainLoop.h++"
 #include "BattleZone/include/mainLoop.h++"
 
+sf::Texture instructionsTexture;
 
 int main()
 {
@@ -9,29 +10,27 @@ int main()
     if (!loadBaseAssets())
        return 1;
 
-    sf::Text mazeWarTitle = 
+    if ( !instructionsTexture.loadFromFile("instructions.png") )
+        return 1;
+
+    sf::Text instructions = 
         getTextCentered(
-            "MAZE WAR", gameFont, 60,
-            {800, 200},
-            sf::Color::Green
-        );
-    sf::Text battleZoneTitle = 
-        getTextCentered(
-            "BATTLEZONE", gameFont, 60,
-            {800,600},
+            "INSTRUCTIONS", gameFont, 60,
+            {800, 250},
             sf::Color::Green
         );
 
-    sf::Text mazeWarInstructions = 
+    sf::Text mazeWarTitle = 
         getTextCentered(
-            "INSTRUCTIONS", gameFont, 30,
-            {800, 200+60},
+            "MAZE WAR", gameFont, 60,
+            {400, 550},
             sf::Color::Green
         );
-    sf::Text battleZoneInstructions = 
+
+    sf::Text battleZoneTitle = 
         getTextCentered(
-            "INSTRUCTIONS", gameFont, 30,
-            {800,600+60},
+            "BATTLEZONE", gameFont, 60,
+            {1200,550},
             sf::Color::Green
         );
 
@@ -61,11 +60,36 @@ int main()
                         BattleZone::mainLoop( window );
                         BattleZone::handleResize( window, window.getSize().x, window.getSize().y );
                     }
-                    if ( mazeWarInstructions.getGlobalBounds().contains( window.mapPixelToCoords( sf::Mouse::getPosition(window) ) ) )
+                    if ( instructions.getGlobalBounds().contains( window.mapPixelToCoords( sf::Mouse::getPosition(window) ) ) )
                     {
-                    }
-                    if ( battleZoneInstructions.getGlobalBounds().contains( window.mapPixelToCoords( sf::Mouse::getPosition(window) ) ) )
-                    {
+                        sf::RectangleShape instructionsRect;
+                        instructionsRect.setTexture( &instructionsTexture );
+                        instructionsRect.setSize( {1600,900} );
+
+                        bool end = false;
+                        while ( !end )
+                        {
+                            while ( window.pollEvent(event) )
+                            {
+                                if ( event.type == sf::Event::Closed  )
+                                {
+                                    end = true;
+                                    window.close();
+                                }
+                                    
+                                if ( event.type == sf::Event::KeyPressed )
+                                {
+                                    end = true;
+                                }
+                            }
+
+                            window.clear( sf::Color::Black );
+
+                            window.draw( instructionsRect );
+
+                            window.display();
+                        }
+                        break;
                     }
                     break;
 
@@ -78,8 +102,7 @@ int main()
 
         window.draw( mazeWarTitle );
         window.draw( battleZoneTitle );
-        window.draw( mazeWarInstructions );
-        window.draw( battleZoneInstructions );
+        window.draw( instructions );
 
         window.display();
     }

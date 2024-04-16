@@ -136,6 +136,9 @@ namespace BattleZone
                         getPlayer()->getRotation() 
                     ) 
                 );
+
+            if ( event.key.code == sf::Keyboard::Escape )
+                getPlayer()->kill();
         }
     }
 

@@ -175,6 +175,10 @@ namespace MazeWars
                     );
                     break;
 
+                case sf::Keyboard::Escape:
+                    getPlayer()->kill();
+                    break;
+
                 default:
                     break;
             }

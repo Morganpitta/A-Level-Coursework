@@ -129,11 +129,11 @@ namespace BattleZone
         if ( event.type == sf::Event::KeyPressed )
         {
             if ( event.key.code == sf::Keyboard::Space )
-                addEntity( 
-                    new Bullet( 
-                        getPlayer()->getId(), 
+                addEntity(
+                    new Bullet(
+                        getPlayer()->getId(),
                         getPlayer()->getPosition(),
-                        getPlayer()->getRotation() 
+                        getPlayer()->getRotation()
                     ) 
                 );
 

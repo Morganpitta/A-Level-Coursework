@@ -107,7 +107,5 @@ int main()
         window.display();
     }
 
-    BattleZone::mainLoop( window );
-
     return 0;
 }

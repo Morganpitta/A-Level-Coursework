@@ -15,6 +15,8 @@
         extern Model3D obstacleModel;
         extern Model3D bulletModel;
 
+        extern bool loadEntityAssets();
+
         enum EntityType
         {
             NoType,
@@ -23,8 +25,6 @@
             BulletType,
             PlayerType
         };
-
-        extern bool loadEntityAssets();
 
         class Entity;
     }
